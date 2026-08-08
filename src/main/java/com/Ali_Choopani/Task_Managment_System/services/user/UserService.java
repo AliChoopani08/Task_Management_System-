@@ -1,8 +1,8 @@
 package com.Ali_Choopani.Task_Managment_System.services.user;
 
-import com.Ali_Choopani.Task_Managment_System.dto.AuthResponse;
-import com.Ali_Choopani.Task_Managment_System.dto.LoginRequest;
-import com.Ali_Choopani.Task_Managment_System.dto.RegisterRequest;
+import com.Ali_Choopani.Task_Managment_System.dto.user.AuthResponse;
+import com.Ali_Choopani.Task_Managment_System.dto.user.LoginRequest;
+import com.Ali_Choopani.Task_Managment_System.dto.user.device.refreshToken.RegisterRequest;
 
 import java.util.UUID;
 

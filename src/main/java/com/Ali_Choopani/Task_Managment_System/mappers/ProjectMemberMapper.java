@@ -1,6 +1,6 @@
 package com.Ali_Choopani.Task_Managment_System.mappers;
 
-import com.Ali_Choopani.Task_Managment_System.dto.ProjectMemberSummary;
+import com.Ali_Choopani.Task_Managment_System.dto.project.ProjectMemberSummary;
 import com.Ali_Choopani.Task_Managment_System.entities.Profile;
 import com.Ali_Choopani.Task_Managment_System.entities.ProjectMember;
 import org.mapstruct.*;
@@ -21,7 +21,7 @@ public interface ProjectMemberMapper {
     ProjectMemberSummary toSummary(ProjectMember entity);
 
     default String getMemberName(Profile profile) {
-        return format("%s %s", profile.getName(), profile.getLastName());
+        return format("%s %s", profile.getFirstName(), profile.getSurname());
     }
     }
 

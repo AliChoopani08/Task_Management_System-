@@ -1,13 +1,10 @@
 package com.Ali_Choopani.Task_Managment_System.mappers;
 
-import com.Ali_Choopani.Task_Managment_System.dto.ProjectMemberSummary;
+import com.Ali_Choopani.Task_Managment_System.dto.project.ProjectMemberSummary;
 import com.Ali_Choopani.Task_Managment_System.entities.*;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
-
-import java.time.LocalDate;
 
 import static com.Ali_Choopani.Task_Managment_System.entities.ProjectRole.ROLE_DEVELOPER;
 import static com.Ali_Choopani.Task_Managment_System.entities.UserRole.ROLE_USER;
@@ -29,8 +26,8 @@ public class ProjectMemberMapperTest {
                 .password("Ali@12345")
                 .build();
         Profile profile = Profile.builder()
-                .name("Ali")
-                .lastName("Choopani")
+                .firstName("Ali")
+                .surname("Choopani")
                 .build();
         profile.addProfileToUser(member);
 

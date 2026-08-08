@@ -1,6 +1,6 @@
 package com.Ali_Choopani.Task_Managment_System.services.user.device;
 
-import com.Ali_Choopani.Task_Managment_System.dto.DeviceSummary;
+import com.Ali_Choopani.Task_Managment_System.dto.user.device.DeviceSummary;
 import com.Ali_Choopani.Task_Managment_System.entities.Device;
 import com.Ali_Choopani.Task_Managment_System.entities.User;
 import com.Ali_Choopani.Task_Managment_System.mappers.DeviceMapper;

@@ -6,7 +6,9 @@ import lombok.*;
 import java.time.LocalDate;
 import java.time.Period;
 
+import static jakarta.persistence.FetchType.EAGER;
 import static jakarta.persistence.GenerationType.IDENTITY;
+import static java.time.LocalDate.now;
 import static java.time.LocalDate.of;
 import static java.time.Period.between;
 
@@ -22,13 +24,13 @@ public class Profile {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    @OneToOne
+    @OneToOne(fetch = EAGER)
     @JoinColumn(name = "user_id")
     private User user;
 
 
-    private String name;
-    private String lastName;
+    private String firstName;
+    private String surname;
     private LocalDate birthDate;
     private String biography;
 
@@ -40,7 +42,7 @@ public class Profile {
 
 
     public LocalDate getAge() {
-        final Period ageDifference = between(this.getBirthDate(), LocalDate.now());
+        final Period ageDifference = between(this.getBirthDate(), now());
 
         return of(ageDifference.getYears(), ageDifference.getMonths(), ageDifference.getDays());
     }

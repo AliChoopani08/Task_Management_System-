@@ -1,13 +1,10 @@
 package com.Ali_Choopani.Task_Managment_System.mappers;
 
-import com.Ali_Choopani.Task_Managment_System.dto.DeviceSummary;
+import com.Ali_Choopani.Task_Managment_System.dto.user.device.DeviceSummary;
 import com.Ali_Choopani.Task_Managment_System.entities.Device;
 import com.Ali_Choopani.Task_Managment_System.entities.User;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
-
-import java.util.UUID;
 
 import static java.util.UUID.randomUUID;
 import static org.assertj.core.api.Assertions.assertThat;

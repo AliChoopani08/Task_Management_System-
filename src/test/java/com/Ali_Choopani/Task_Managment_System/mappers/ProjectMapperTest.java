@@ -1,13 +1,10 @@
 package com.Ali_Choopani.Task_Managment_System.mappers;
 
-import com.Ali_Choopani.Task_Managment_System.dto.CreateProjectRequest;
+import com.Ali_Choopani.Task_Managment_System.dto.project.CreateProjectRequest;
 import com.Ali_Choopani.Task_Managment_System.entities.Project;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
-
-import java.time.LocalDate;
 
 import static java.time.LocalDate.of;
 import static org.assertj.core.api.Assertions.assertThat;

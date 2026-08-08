@@ -1,9 +1,9 @@
 package com.Ali_Choopani.Task_Managment_System.controllers;
 
 import com.Ali_Choopani.Task_Managment_System.ApiResponse;
-import com.Ali_Choopani.Task_Managment_System.dto.AuthResponse;
-import com.Ali_Choopani.Task_Managment_System.dto.LoginRequest;
-import com.Ali_Choopani.Task_Managment_System.dto.RegisterRequest;
+import com.Ali_Choopani.Task_Managment_System.dto.user.AuthResponse;
+import com.Ali_Choopani.Task_Managment_System.dto.user.LoginRequest;
+import com.Ali_Choopani.Task_Managment_System.dto.user.device.refreshToken.RegisterRequest;
 import com.Ali_Choopani.Task_Managment_System.services.user.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

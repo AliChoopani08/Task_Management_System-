@@ -1,6 +1,5 @@
-package com.Ali_Choopani.Task_Managment_System.dto;
+package com.Ali_Choopani.Task_Managment_System.dto.project;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

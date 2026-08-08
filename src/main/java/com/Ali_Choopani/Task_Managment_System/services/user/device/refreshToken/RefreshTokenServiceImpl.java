@@ -1,6 +1,6 @@
 package com.Ali_Choopani.Task_Managment_System.services.user.device.refreshToken;
 
-import com.Ali_Choopani.Task_Managment_System.dto.RefreshTokenSummary;
+import com.Ali_Choopani.Task_Managment_System.dto.user.device.refreshToken.RefreshTokenSummary;
 import com.Ali_Choopani.Task_Managment_System.entities.Device;
 import com.Ali_Choopani.Task_Managment_System.entities.RefreshToken;
 import com.Ali_Choopani.Task_Managment_System.exceptions.DuplicateRefreshToken;

@@ -1,9 +1,8 @@
 package com.Ali_Choopani.Task_Managment_System.service;
 
-import com.Ali_Choopani.Task_Managment_System.dto.DeviceSummary;
+import com.Ali_Choopani.Task_Managment_System.dto.user.device.DeviceSummary;
 import com.Ali_Choopani.Task_Managment_System.entities.Device;
 import com.Ali_Choopani.Task_Managment_System.entities.User;
-import com.Ali_Choopani.Task_Managment_System.entities.UserRole;
 import com.Ali_Choopani.Task_Managment_System.mappers.DeviceMapper;
 import com.Ali_Choopani.Task_Managment_System.repositories.DeviceRepository;
 import com.Ali_Choopani.Task_Managment_System.services.user.device.DeviceServiceImpl;
@@ -17,7 +16,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.UUID;
 
 import static com.Ali_Choopani.Task_Managment_System.TestMocksHelper.MockWhenHelper.whenHelper;
-import static com.Ali_Choopani.Task_Managment_System.entities.ProjectRole.ROLE_DEVELOPER;
 import static com.Ali_Choopani.Task_Managment_System.entities.UserRole.ROLE_USER;
 import static java.util.Optional.empty;
 import static java.util.UUID.randomUUID;

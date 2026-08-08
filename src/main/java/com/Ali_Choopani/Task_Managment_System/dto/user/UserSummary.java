@@ -1,6 +1,5 @@
-package com.Ali_Choopani.Task_Managment_System.dto;
+package com.Ali_Choopani.Task_Managment_System.dto.user;
 
-import com.Ali_Choopani.Task_Managment_System.entities.ProjectRole;
 import com.Ali_Choopani.Task_Managment_System.entities.UserRole;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;

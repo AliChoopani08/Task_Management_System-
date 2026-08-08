@@ -1,8 +1,12 @@
 package com.Ali_Choopani.Task_Managment_System.service;
 
-import com.Ali_Choopani.Task_Managment_System.dto.*;
+import com.Ali_Choopani.Task_Managment_System.dto.user.AuthResponse;
+import com.Ali_Choopani.Task_Managment_System.dto.user.LoginRequest;
+import com.Ali_Choopani.Task_Managment_System.dto.user.device.refreshToken.RefreshTokenSummary;
+import com.Ali_Choopani.Task_Managment_System.dto.user.device.refreshToken.RegisterRequest;
+import com.Ali_Choopani.Task_Managment_System.dto.user.UserSummary;
+import com.Ali_Choopani.Task_Managment_System.dto.user.device.DeviceSummary;
 import com.Ali_Choopani.Task_Managment_System.entities.User;
-import com.Ali_Choopani.Task_Managment_System.entities.UserRole;
 import com.Ali_Choopani.Task_Managment_System.mappers.UserMapper;
 import com.Ali_Choopani.Task_Managment_System.repositories.UserRepository;
 import com.Ali_Choopani.Task_Managment_System.security.JwtService;
@@ -25,7 +29,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.UUID;
 
 import static com.Ali_Choopani.Task_Managment_System.TestMocksHelper.MockWhenHelper.whenHelper;
-import static com.Ali_Choopani.Task_Managment_System.entities.ProjectRole.ROLE_MANAGER;
 import static com.Ali_Choopani.Task_Managment_System.entities.UserRole.ROLE_USER;
 import static java.util.Collections.singleton;
 import static java.util.List.of;

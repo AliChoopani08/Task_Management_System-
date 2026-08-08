@@ -1,4 +1,4 @@
-package com.Ali_Choopani.Task_Managment_System.dto;
+package com.Ali_Choopani.Task_Managment_System.dto.user.device;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

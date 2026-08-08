@@ -1,7 +1,7 @@
 package com.Ali_Choopani.Task_Managment_System.services;
 
-import com.Ali_Choopani.Task_Managment_System.dto.CreateProjectRequest;
-import com.Ali_Choopani.Task_Managment_System.dto.ProjectMemberSummary;
+import com.Ali_Choopani.Task_Managment_System.dto.project.CreateProjectRequest;
+import com.Ali_Choopani.Task_Managment_System.dto.project.ProjectMemberSummary;
 
 public interface ProjectService {
 

@@ -1,6 +1,6 @@
 package com.Ali_Choopani.Task_Managment_System.mappers;
 
-import com.Ali_Choopani.Task_Managment_System.dto.RegisterRequest;
+import com.Ali_Choopani.Task_Managment_System.dto.user.device.refreshToken.RegisterRequest;
 import com.Ali_Choopani.Task_Managment_System.entities.User;
 import com.Ali_Choopani.Task_Managment_System.security.UserDetailImpl;
 import org.junit.jupiter.api.BeforeEach;

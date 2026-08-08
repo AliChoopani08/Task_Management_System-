@@ -1,26 +1,20 @@
 package com.Ali_Choopani.Task_Managment_System.service;
 
-import com.Ali_Choopani.Task_Managment_System.TestMocksHelper.MockWhenHelper;
-import com.Ali_Choopani.Task_Managment_System.dto.CreateProjectRequest;
-import com.Ali_Choopani.Task_Managment_System.dto.ProjectMemberSummary;
-import com.Ali_Choopani.Task_Managment_System.dto.ProjectSummary;
+import com.Ali_Choopani.Task_Managment_System.dto.project.CreateProjectRequest;
+import com.Ali_Choopani.Task_Managment_System.dto.project.ProjectMemberSummary;
 import com.Ali_Choopani.Task_Managment_System.entities.*;
 import com.Ali_Choopani.Task_Managment_System.mappers.ProjectMapper;
 import com.Ali_Choopani.Task_Managment_System.mappers.ProjectMemberMapper;
 import com.Ali_Choopani.Task_Managment_System.repositories.ProjectMemberRepository;
 import com.Ali_Choopani.Task_Managment_System.repositories.UserRepository;
 import com.Ali_Choopani.Task_Managment_System.services.ProjectServiceImpl;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import java.time.LocalDate;
 import java.util.Optional;
 
 import static com.Ali_Choopani.Task_Managment_System.TestMocksHelper.MockWhenHelper.whenHelper;
@@ -58,8 +52,8 @@ public class ProjectServiceTest {
             .role(ROLE_USER)
             .build();
         Profile profile = Profile.builder()
-                .name("Ali")
-                .lastName("Choopani")
+                .firstName("Ali")
+                .surname("Choopani")
                 .build();
         profile.addProfileToUser(member);
         member.setProfileCompleted(true);

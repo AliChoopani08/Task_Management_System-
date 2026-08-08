@@ -1,6 +1,11 @@
 package com.Ali_Choopani.Task_Managment_System.services.user;
 
-import com.Ali_Choopani.Task_Managment_System.dto.*;
+import com.Ali_Choopani.Task_Managment_System.dto.user.AuthResponse;
+import com.Ali_Choopani.Task_Managment_System.dto.user.LoginRequest;
+import com.Ali_Choopani.Task_Managment_System.dto.user.device.refreshToken.RefreshTokenSummary;
+import com.Ali_Choopani.Task_Managment_System.dto.user.device.refreshToken.RegisterRequest;
+import com.Ali_Choopani.Task_Managment_System.dto.user.UserSummary;
+import com.Ali_Choopani.Task_Managment_System.dto.user.device.DeviceSummary;
 import com.Ali_Choopani.Task_Managment_System.entities.Profile;
 import com.Ali_Choopani.Task_Managment_System.entities.User;
 import com.Ali_Choopani.Task_Managment_System.exceptions.DuplicateUsername;
