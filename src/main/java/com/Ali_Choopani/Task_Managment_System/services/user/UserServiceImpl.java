@@ -8,6 +8,7 @@ import com.Ali_Choopani.Task_Managment_System.dto.user.UserSummary;
 import com.Ali_Choopani.Task_Managment_System.dto.user.device.DeviceSummary;
 import com.Ali_Choopani.Task_Managment_System.entities.Profile;
 import com.Ali_Choopani.Task_Managment_System.entities.User;
+import com.Ali_Choopani.Task_Managment_System.entities.UserRole;
 import com.Ali_Choopani.Task_Managment_System.exceptions.DuplicateUsername;
 import com.Ali_Choopani.Task_Managment_System.mappers.UserMapper;
 import com.Ali_Choopani.Task_Managment_System.repositories.UserRepository;
@@ -26,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
+import static com.Ali_Choopani.Task_Managment_System.entities.UserRole.ROLE_USER;
 import static java.time.Instant.now;
 
 @Service
@@ -49,6 +51,7 @@ public class UserServiceImpl implements UserService {
         final User entity = mapper.toEntity(request);
 
         entity.setPassword(encoder.encode(entity.getPassword()));
+        entity.setRole(ROLE_USER);
         Profile profile = Profile.builder().build();
         profile.addProfileToUser(entity);
         final User savedUser = repository.save(entity);
@@ -77,7 +80,19 @@ public class UserServiceImpl implements UserService {
     }
 
     private void validateUniqueEmailAndPhone(String email, String phoneNumber) {
-        if (repository.findByEmail(email).isPresent() || repository.findByPhoneNumber(phoneNumber).isPresent()) {
+        boolean foundByEmail = false;
+        boolean foundByPhoneNumber = false;
+
+        if ((email != null && !email.isBlank())) {
+             foundByEmail = repository.findByEmail(email)
+                     .isPresent();}
+        if ((phoneNumber != null && !phoneNumber.isBlank())) {
+             foundByPhoneNumber = repository.findByPhoneNumber(phoneNumber)
+                     .isPresent();}
+        log.info("email     {} +                     found   {}", email, foundByEmail );
+        log.info("phone     {} +                     found   {}", phoneNumber, foundByPhoneNumber );
+
+        if (foundByEmail || foundByPhoneNumber) {
             final DuplicateUsername ex = new DuplicateUsername();
             log.warn(ex.getMessage());
             throw ex;

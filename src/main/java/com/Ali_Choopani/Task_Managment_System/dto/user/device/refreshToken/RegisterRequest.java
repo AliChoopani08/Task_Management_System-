@@ -25,21 +25,18 @@ public class RegisterRequest {
     @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[A-Za-z\\d@$%._*!?]{8,}$", message = "Password must have at least 1 upper character, lower character, number and one special character")
     private String password;
 
-
-    @NotBlank(message = "You have to identify your role !")
-    @Pattern(regexp = "(^ROLE_MANAGER|ROLE_DEVELOPER)$", message = "For role only (ROLE_MANAGER) Or (ROLE_DEVELOPER) are valid !")
-    private String role;
-
-    public RegisterRequest(String email, String phoneNumber, String password, String role) {
+    public RegisterRequest(String email, String phoneNumber, String password) {
         if ((phoneNumber == null || phoneNumber.isBlank()) && (email == null || email.isBlank())) {
             throw new InsufficientInformationException();
         }
         ofNullable(email)
+                .filter(e -> !e.isBlank())
                 .ifPresent(this::setEmail);
+
         ofNullable(phoneNumber)
+                .filter(p -> !p.isBlank())
                 .ifPresent(this::setPhoneNumber);
 
         this.password = password;
-        this.role = role;
     }
 }

@@ -10,6 +10,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -26,6 +28,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
     private final CustomUserDetailsService detailsService;
+    private final AuthenticationEntryPoint entryPoint;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -46,11 +49,16 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             }
             filterChain.doFilter(request, response);
         } catch (ExpiredJwtException ex) {
-            throw new JwtAuthenticationException("This JWT token has been expired !", ex);
+            handlerJwtExceptions(request, response, new JwtAuthenticationException("This JWT token has been expired !", ex));
         } catch (MalformedJwtException ex) {
-            throw new JwtAuthenticationException("This JWt token has an invalid format !", ex);
+            handlerJwtExceptions(request, response, new JwtAuthenticationException("This JWt token has an invalid format !", ex));
         } catch (SignatureException ex) {
-            throw new JwtAuthenticationException("The signature of this JWT token is invalid !", ex);
+            handlerJwtExceptions(request, response, new JwtAuthenticationException("The signature of this JWT token is invalid !", ex));
         }
+    }
+
+    private void handlerJwtExceptions(HttpServletRequest request, HttpServletResponse response, AuthenticationException ex) throws ServletException, IOException {
+        SecurityContextHolder.clearContext();
+        entryPoint.commence(request, response, ex);
     }
 }

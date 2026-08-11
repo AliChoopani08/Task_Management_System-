@@ -18,5 +18,6 @@ public interface ProfileMapper {
     void updateProfile(@MappingTarget Profile profile, CompleteOrUpdateProfileRequest request);
 
     @Mapping(target = "userId", source = "user.id")
+    @Mapping(target = "age" , expression = "java(profile.getAge())")
     ProfileSummary toSummary(Profile profile);
 }

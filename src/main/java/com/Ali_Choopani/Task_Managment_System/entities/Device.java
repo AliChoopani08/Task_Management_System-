@@ -19,6 +19,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @Builder
 @Setter
 @Getter
+@ToString
 public class Device {
 
     @Id
@@ -42,7 +43,7 @@ public class Device {
 
     public void addDeviceToUser(User user) {
         this.setUser(user);
-        if (user.getDevices() == null) {
+        if (user.devices == null) {
             user.devices = new HashSet<>();
         }
         user.getDevices().add(this);

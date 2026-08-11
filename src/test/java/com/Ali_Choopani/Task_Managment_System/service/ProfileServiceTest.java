@@ -59,7 +59,6 @@ public class ProfileServiceTest {
                 .id(1L)
                 .firstName("Amin")
                 .surname("Mohammadi")
-                .birthDate(of(2009, 9, 17))
                 .biography("Front End Developer")
                 .userId(1L)
                 .build();

@@ -14,6 +14,7 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 import java.util.HashMap;
 import java.util.Map;
 
+import static jakarta.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
 import static java.lang.String.format;
 import static java.time.LocalDateTime.now;
 import static org.springframework.http.HttpStatus.*;
@@ -84,6 +85,11 @@ public class GlocalExceptionHandler {
     @ExceptionHandler(UserWithRoleAndIdNotFoundException.class)
     public ResponseEntity<ErrorResponse> notFoundUserWithIdAndRoleHandler(UserWithRoleAndIdNotFoundException ex, HttpServletRequest request) {
         return getErrorResponse(NOT_FOUND, "Not Found User", ex.getMessage(), request);
+    }
+
+    @ExceptionHandler(DuplicateProjectMemberException.class)
+    public ResponseEntity<ErrorResponse> duplicateMemberInProjectHandler(DuplicateProjectMemberException ex, HttpServletRequest request) {
+        return getErrorResponse(CONFLICT, "Duplicate Member", ex.getMessage(), request);
     }
 
         private ResponseEntity<ErrorResponse> getErrorResponse(HttpStatus status, String error, String message, HttpServletRequest request) {

@@ -29,6 +29,7 @@ public class Project {
     private String description;
     @CreatedDate
     private LocalDate startDate;
+
     private LocalDate dueDate;
 
     @OneToMany(mappedBy = "project", fetch = LAZY)

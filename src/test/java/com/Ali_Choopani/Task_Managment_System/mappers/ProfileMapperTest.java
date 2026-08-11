@@ -66,6 +66,7 @@ public class ProfileMapperTest {
         final Long userId = user.getId();
 
         final ProfileSummary summary = mapper.toSummary(profile);
+        System.out.println(summary);
 
         assertThat(summary)
                 .extracting(ProfileSummary::firstName, ProfileSummary::userId)

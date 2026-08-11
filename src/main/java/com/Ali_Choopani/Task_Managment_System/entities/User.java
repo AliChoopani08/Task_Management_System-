@@ -22,8 +22,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @NoArgsConstructor
 @Getter
 @Setter
-@EqualsAndHashCode(of = {"phoneNumber", "email", "role"})
-@ToString
+@EqualsAndHashCode(of = {"phoneNumber", "email", "role", "devices"})
 public class User {
 
     @Id

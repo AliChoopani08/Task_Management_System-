@@ -41,9 +41,9 @@ public class Profile {
     }
 
 
-    public LocalDate getAge() {
-        final Period ageDifference = between(this.getBirthDate(), now());
+    public String getAge() {
+        final Period age = between(this.getBirthDate(), now());
 
-        return of(ageDifference.getYears(), ageDifference.getMonths(), ageDifference.getDays());
+        return String.format("%d years, %d months, %d days", age.getYears(), age.getMonths(), age.getDays());
     }
 }

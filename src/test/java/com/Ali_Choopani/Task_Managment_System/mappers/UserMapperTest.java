@@ -24,7 +24,6 @@ public class UserMapperTest {
         request = RegisterRequest.builder()
                 .phoneNumber("09876543210")
                 .email("Shdhfh123@gmai.com")
-                .role("ROLE_MANAGER")
                 .build();
     }
 

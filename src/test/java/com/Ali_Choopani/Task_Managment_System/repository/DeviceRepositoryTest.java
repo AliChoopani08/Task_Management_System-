@@ -39,9 +39,10 @@ public class DeviceRepositoryTest {
                 .deviceUuid(randomUUID())
                 .available(true)
                 .build();
-
-        device.addDeviceToUser(user);
        savedUser =  userRepository.save(user);
+
+        device.addDeviceToUser(savedUser);
+       repository.save(device);
     }
 
     @Test
@@ -59,6 +60,7 @@ public class DeviceRepositoryTest {
     }
 
     @Test
+    @Transactional(readOnly = true)
     void shouldFindByIdAndBeAvailable_wheExits() {
         final Long deviceId = savedUser.getDevices().iterator().next().getId();
 

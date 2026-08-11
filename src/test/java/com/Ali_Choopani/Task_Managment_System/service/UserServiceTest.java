@@ -96,7 +96,6 @@ public class UserServiceTest {
         RegisterRequest request = RegisterRequest.builder()
                 .phoneNumber("098765432101")
                 .password("Ali@12345")
-                .role("ROLE_MANAGER")
                 .build();
 
         whenHelper(mapper.toEntity(any(RegisterRequest.class)), user);

@@ -5,12 +5,14 @@ import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.ToString;
 
 import java.time.LocalDate;
 
 @AllArgsConstructor
 @Builder
 @Getter
+@ToString
 public class CompleteOrUpdateProfileRequest {
 
     @NotBlank(message = "First name can't be null or empty !")

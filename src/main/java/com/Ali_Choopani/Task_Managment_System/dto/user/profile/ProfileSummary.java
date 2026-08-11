@@ -4,12 +4,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 
 import java.time.LocalDate;
+import java.time.Period;
 
 @Builder
 public record ProfileSummary(Long id,
                              @JsonProperty("first name")String firstName,
                              @JsonProperty("surname")String surname,
-                             @JsonProperty("birth date")LocalDate birthDate,
+                             @JsonProperty("age") String age,
                              String biography,
                              @JsonProperty("user id")Long userId
 ) {

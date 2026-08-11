@@ -24,6 +24,7 @@ public class ProfileServiceImpl implements ProfileService{
                 .orElseThrow(() -> new NotFoundProfile(userId));
 
         mapper.updateProfile(profile, request);
+        profile.getUser().setProfileCompleted(true);
         final Profile updatedProfile = repository.save(profile);
 
         return mapper.toSummary(updatedProfile);
