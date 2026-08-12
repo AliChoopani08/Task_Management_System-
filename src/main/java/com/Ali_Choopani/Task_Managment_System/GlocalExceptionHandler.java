@@ -92,6 +92,11 @@ public class GlocalExceptionHandler {
         return getErrorResponse(CONFLICT, "Duplicate Member", ex.getMessage(), request);
     }
 
+    @ExceptionHandler(NotFoundRefreshToken.class)
+    public ResponseEntity<ErrorResponse> notFoundRefreshTokenException(NotFoundRefreshToken ex, HttpServletRequest request) {
+        return getErrorResponse(NOT_FOUND, "Not Found Refresh Token", ex.getMessage(), request);
+    }
+
         private ResponseEntity<ErrorResponse> getErrorResponse(HttpStatus status, String error, String message, HttpServletRequest request) {
         return ResponseEntity.status(status)
                 .body(new ErrorResponse(status.value(), error, message, request.getRequestURI(), now()));
