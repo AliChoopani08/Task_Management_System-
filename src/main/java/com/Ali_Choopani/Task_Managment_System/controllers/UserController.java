@@ -28,7 +28,7 @@ public class UserController {
 
     private final UserService service;
 
-    @PostMapping("/auth")
+    @PostMapping("/register")
     @Operation(security =
             {@SecurityRequirement(name = "")})
     public ResponseEntity<ApiResponse<AuthResponse>> register(@RequestBody @Valid RegisterRequest request, HttpServletRequest httpRequest) {

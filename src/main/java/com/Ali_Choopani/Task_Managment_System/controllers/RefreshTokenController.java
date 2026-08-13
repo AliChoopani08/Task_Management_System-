@@ -31,6 +31,6 @@ public class RefreshTokenController {
         final RefreshAccessTokenResponse responseMethod = service.refreshAccessToken(deviceUuid, request);
 
         return status(CREATED)
-                .body(new ApiResponse<>(CREATED.value(), "A new access token generated successfully", responseMethod, now()));
+                .body(new ApiResponse<>(CREATED.value(), "A new access token was generated successfully", responseMethod, now()));
     }
 }
