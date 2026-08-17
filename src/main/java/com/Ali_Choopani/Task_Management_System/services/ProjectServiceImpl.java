@@ -57,19 +57,23 @@ public class ProjectServiceImpl implements ProjectService{
     @Override
     @Transactional
     public ProjectMemberSummary addProjecetMember(Long projectId, Long managerId, Long newMemberId, AddNewProjectMemberRequest request) {
-        final ProjectMember projectMember = projectMemberRepository.findByMemberIdAndProjectIdAndRole(managerId, projectId, ROLE_MANAGER)
+        final ProjectMember projectManager = projectMemberRepository.findByMemberIdAndProjectIdAndRole(managerId, projectId, ROLE_MANAGER)
                 .orElseThrow(() -> new NotFoundProjectAndMemberException(projectId, managerId, ROLE_MANAGER));
-        final Project project = projectMember.getProject();
+        final Project project = projectManager.getProject();
         final User newMember = userRepository.findById(newMemberId)
                 .orElseThrow(() -> new NotFoundUserException(newMemberId));
+
+        if (projectMemberRepository.existsByProjectIdAndMemberId(project.getId(), newMember.getId())) {
+            throw new DuplicateProjectMemberException(newMember.getId(), project.getId());
+        }
 
         ProjectMember newProjectMember = ProjectMember.builder()
                 .role(valueOf(request.getMemberRole()))
                 .build();
         newProjectMember.addProjectMember(newMember, project);
-        final ProjectMember savedNewProjectMember = projectMemberRepository.save(newProjectMember);
+        projectMemberRepository.save(newProjectMember);
 
-        final ProjectSummary projectSummary = projectMemberMapper.toSummary(savedNewProjectMember);
+        final ProjectSummary projectSummary = projectMemberMapper.toSummary(projectManager);
         final Set<MemberSummary> members = projectMemberRepository.findMembersOfProjectByProjectId(project.getId());
 
         return new ProjectMemberSummary(projectSummary, members);

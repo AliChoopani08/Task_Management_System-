@@ -5,6 +5,7 @@ import com.Ali_Choopani.Task_Management_System.exceptions.project.DuplicateProje
 import com.Ali_Choopani.Task_Management_System.exceptions.project.NotFoundProjectAndMemberException;
 import com.Ali_Choopani.Task_Management_System.exceptions.user.DuplicateUsername;
 import com.Ali_Choopani.Task_Management_System.exceptions.user.InsufficientInformationException;
+import com.Ali_Choopani.Task_Management_System.exceptions.user.NotFoundUserException;
 import com.Ali_Choopani.Task_Management_System.exceptions.user.UserWithRoleAndIdNotFoundException;
 import com.Ali_Choopani.Task_Management_System.exceptions.user.device.InvalidDeviceException;
 import com.Ali_Choopani.Task_Management_System.exceptions.user.device.refreshToken.DuplicateRefreshTokenException;
@@ -106,6 +107,11 @@ public class GlocalExceptionHandler {
 
     @ExceptionHandler(NotFoundProjectAndMemberException.class)
     public ResponseEntity<ErrorResponse> NotFoundProjectAndMemberHandler(NotFoundProjectAndMemberException ex, HttpServletRequest request) {
+        return getErrorResponse(NOT_FOUND, "Not Found", ex.getMessage(), request);
+    }
+
+    @ExceptionHandler(NotFoundUserException.class)
+    public ResponseEntity<ErrorResponse> notFoundUserException(NotFoundUserException ex, HttpServletRequest request) {
         return getErrorResponse(NOT_FOUND, "Not Found", ex.getMessage(), request);
     }
 

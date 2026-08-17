@@ -7,6 +7,7 @@ import com.Ali_Choopani.Task_Management_System.dto.project.ProjectMemberSummary;
 import com.Ali_Choopani.Task_Management_System.dto.project.ProjectSummary;
 import com.Ali_Choopani.Task_Management_System.security.UserDetailImpl;
 import com.Ali_Choopani.Task_Management_System.services.ProjectService;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -34,8 +35,9 @@ public class ProjectController {
                 .body(new ApiResponse<>(CREATED.value(), "A New Project Was Created Successfully", methodResponse, now()));
     }
 
+    @PreAuthorize("@projectAuthorization.isManager(authentication)")
     @PostMapping("/{projectId}/member/{memberId}")
-    @PreAuthorize("@projectAuthorization.isManager(#projectId, authentication")
+    @Operation(description = "This endpoint is only accessible for project manager !")
     public ResponseEntity<ApiResponse<ProjectMemberSummary>> addNewProjectMember(@AuthenticationPrincipal UserDetailImpl currentManager,
                                                                                  @PathVariable("projectId") Long projectId,
                                                                                  @PathVariable("memberId") Long memberId,

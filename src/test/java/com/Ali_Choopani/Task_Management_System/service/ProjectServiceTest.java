@@ -2,6 +2,7 @@ package com.Ali_Choopani.Task_Management_System.service;
 
 import com.Ali_Choopani.Task_Management_System.dto.project.*;
 import com.Ali_Choopani.Task_Management_System.entities.*;
+import com.Ali_Choopani.Task_Management_System.exceptions.project.DuplicateProjectMemberException;
 import com.Ali_Choopani.Task_Management_System.mappers.ProjectMapper;
 import com.Ali_Choopani.Task_Management_System.mappers.ProjectMemberMapper;
 import com.Ali_Choopani.Task_Management_System.repositories.ProjectMemberRepository;
@@ -23,6 +24,7 @@ import static com.Ali_Choopani.Task_Management_System.entities.ProjectRole.ROLE_
 import static com.Ali_Choopani.Task_Management_System.entities.UserRole.ROLE_USER;
 import static java.time.LocalDate.of;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -50,15 +52,15 @@ public class ProjectServiceTest {
     @BeforeEach
     void setUp() {
         project = Project.builder()
-                .id(3L)
+                .id(1L)
                 .title("Company Website")
                 .description("Create a responsive company website to showcase services and contact information.")
                 .startDate(of(2026, 3, 2))
                 .dueDate(of(2026, 11, 2))
                 .build();
 
-       projectManager = createMember(1L, "09876543210", "Ali Choopani", ROLE_MANAGER, project);
-       projectMember = createMember(2L, "09123456789", "Mohammad Majd", ROLE_DEVELOPER, project);
+       projectManager = createMember(2L, "09876543210", "Ali Choopani", ROLE_MANAGER, project);
+       projectMember = createMember(3L, "09123456789", "Mohammad Majd", ROLE_DEVELOPER, project);
 
         summaryManager = ProjectSummary.builder()
                 .title("Company Website")
@@ -68,7 +70,7 @@ public class ProjectServiceTest {
                 .manager(new MemberSummary(1L, "Ali Choopani", ROLE_MANAGER))
                 .build();
         summaryMember = summaryManager.toBuilder()
-                .manager(new MemberSummary(2L, "Mohammad Majd", ROLE_DEVELOPER))
+                .manager(new MemberSummary(3L, "Mohammad Majd", ROLE_DEVELOPER))
                 .build();
     }
 
@@ -107,6 +109,7 @@ public class ProjectServiceTest {
 
         whenHelper(projectMemberRepository.findByMemberIdAndProjectIdAndRole(anyLong(), anyLong(), any(ProjectRole.class)), Optional.of(projectManager));
         whenHelper(userRepository.findById(anyLong()), Optional.of(member));
+        whenHelper(projectMemberRepository.existsByProjectIdAndMemberId(anyLong(), anyLong()), false);
         whenHelper(projectMemberRepository.save(any(ProjectMember.class)), projectMember);
         whenHelper(projectMemberMapper.toSummary(any(ProjectMember.class)), summaryManager);
         whenHelper(projectMemberRepository.findMembersOfProjectByProjectId(anyLong()), expectedMembersOfProject);
@@ -117,6 +120,25 @@ public class ProjectServiceTest {
                 .extracting(p -> p.project().title(), p -> p.project().manager().name(),
                         p -> p.members().iterator().next().name())
                 .containsExactly("Company Website", "Ali Choopani", "Mohammad Majd");
+    }
+
+    @Test
+    void shouldThrowException_whenUserWantsToAddADuplicateProjectMember() {
+        final User member = projectMember.getMember();
+        AddNewProjectMemberRequest request = AddNewProjectMemberRequest.builder()
+                .memberRole(ROLE_DEVELOPER.name())
+                .build();
+        final User manager = projectManager.getMember();
+        final Long projectId = project.getId();
+
+        whenHelper(projectMemberRepository.findByMemberIdAndProjectIdAndRole(anyLong(), anyLong(), any(ProjectRole.class)), Optional.of(projectManager));
+        whenHelper(userRepository.findById(anyLong()), Optional.of(member));
+        whenHelper(projectMemberRepository.existsByProjectIdAndMemberId(anyLong(), anyLong()), true);
+
+        assertThatThrownBy(() -> service.addProjecetMember(projectId, manager.getId(), member.getId(), request))
+                .isInstanceOf(DuplicateProjectMemberException.class)
+                .hasMessage("User with id [3] is already an active member of project with id  [1] !");
+
     }
 
     private ProjectMember createMember(Long id, String phoneNumber, String fullName, ProjectRole role, Project project) {

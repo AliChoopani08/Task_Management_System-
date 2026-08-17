@@ -79,4 +79,5 @@ public class RefreshTokenRepositoryTest {
                         rf -> rf.getDevice().getUser().getPhoneNumber())
                 .containsExactly(token, deviceUuid, "09876543210"));
     }
+
 }

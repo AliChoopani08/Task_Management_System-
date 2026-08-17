@@ -1,5 +1,6 @@
 package com.Ali_Choopani.Task_Management_System.security;
 
+import com.Ali_Choopani.Task_Management_System.security.securityExceptionHandlers.AccessDeniedHandlerImpl;
 import com.Ali_Choopani.Task_Management_System.security.securityExceptionHandlers.AuthenticationEntryPoint;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -23,6 +24,7 @@ public class SecurityConfig {
 
     private final JwtAuthFilter jwtAuthFilter;
     private final AuthenticationEntryPoint entryPoint;
+    private final AccessDeniedHandlerImpl deniedHandler;
 
     @Bean
     public PasswordEncoder encoder() {
@@ -52,8 +54,10 @@ public class SecurityConfig {
                                 .anyRequest()
                                 .authenticated()
                 ).addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-                .exceptionHandling(exception ->
-                        exception.authenticationEntryPoint(entryPoint));
+                .exceptionHandling(exception ->{
+                        exception.authenticationEntryPoint(entryPoint);
+                        exception.accessDeniedHandler(deniedHandler);
+                });
         return http.build();
     }
 }

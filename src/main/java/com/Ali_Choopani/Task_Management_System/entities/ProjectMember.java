@@ -21,11 +21,11 @@ public class ProjectMember {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "member_id",nullable = false)
     private User member;
 
     @ManyToOne(cascade = ALL)
-    @JoinColumn(name = "project_id")
+    @JoinColumn(name = "project_id", nullable = false)
     private Project project;
 
     @Enumerated(STRING)

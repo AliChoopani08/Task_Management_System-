@@ -110,7 +110,7 @@ public class ProjectControllerTest {
                 .members(Set.of(new MemberSummary(3L, "Akbar Hoseyni", ROLE_DEVELOPER)))
                 .build();
 
-        given(projectAuthorization.isManager(any(Authentication.class), anyLong()))
+        given(projectAuthorization.isManager(any(Authentication.class)))
                 .willReturn(true);
         given(service.addProjecetMember(anyLong(), anyLong(), anyLong(), any(AddNewProjectMemberRequest.class)))
                 .willReturn(projectMemberSummary);

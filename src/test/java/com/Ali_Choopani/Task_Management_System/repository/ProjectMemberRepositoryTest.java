@@ -41,6 +41,8 @@ public class ProjectMemberRepositoryTest {
 
     @BeforeEach
     void setUp() {
+        repository.deleteAll();
+
        Project project = Project.builder()
                 .title("Implementation a store site")
                 .description("Completing the initial version of site")
@@ -93,6 +95,16 @@ public class ProjectMemberRepositoryTest {
                 .containsExactly(tuple("Zahra Asadi", ROLE_DEVELOPER));
     }
 
+    @Test
+    void shouldVerifyIfTheMemberExistsInProjectOrNot() {
+        final Long activeMemberId = developer.getId();
+        final Long projectId = project.getId();
+
+        final boolean memberExists = repository.existsByProjectIdAndMemberId(projectId, activeMemberId);
+
+        assertThat(memberExists).isTrue();
+    }
+
     private ProjectMember addManagerToProject(Project project){
         User manager = User.builder()
                 .password("Ali.12345.ch")
@@ -104,7 +116,7 @@ public class ProjectMemberRepositoryTest {
         ProjectMember projectMember = ProjectMember.builder()
                 .role(ROLE_MANAGER)
                 .build();
-        projectMember.addProjectMember(manager, project);
+        projectMember.addProjectMember(this.manager, project);
 
         return repository.save(projectMember);
     }
