@@ -36,7 +36,6 @@ public class RefreshTokenControllerTest {
 
     @MockitoBean
     private RefreshTokenService service;
-
     @MockitoBean
     private JwtService jwtService;
     @MockitoBean

@@ -2,8 +2,15 @@ package com.Ali_Choopani.Task_Management_System.testFactories;
 
 import com.Ali_Choopani.Task_Management_System.entities.Profile;
 import com.Ali_Choopani.Task_Management_System.entities.User;
+import com.Ali_Choopani.Task_Management_System.entities.UserRole;
+import com.Ali_Choopani.Task_Management_System.security.UserDetailImpl;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
+import java.util.Collections;
+import java.util.List;
 
 import static com.Ali_Choopani.Task_Management_System.entities.UserRole.ROLE_USER;
+import static java.util.Collections.singleton;
 
 public class UserTestFactory {
 
@@ -29,5 +36,13 @@ public class UserTestFactory {
         profile.addProfileToUser(user);
 
         return user;
+    }
+
+    public static UserDetailImpl createUserDetail(Long id, String username, UserRole role) {
+        return UserDetailImpl.builder()
+                .id(id)
+                .username(username)
+                .authorities(singleton(new SimpleGrantedAuthority(role.name())))
+                .build();
     }
 }

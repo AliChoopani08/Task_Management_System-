@@ -20,8 +20,8 @@ public class CreateTaskRequest {
     @Size(min = 10, max = 1000, message = "Description must be between 10 and 1000 characters")
     private String description;
 
-    @Future(message = "Due date must be a date in future !")
     @NotNull(message = "Due date can't be null or empty !")
+    @Future(message = "Due date must be a date in future !")
     @JsonProperty("due date")
     private LocalDate dueDate;
 }
