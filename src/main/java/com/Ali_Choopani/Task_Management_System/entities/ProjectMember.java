@@ -3,8 +3,12 @@ package com.Ali_Choopani.Task_Management_System.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 import static jakarta.persistence.CascadeType.ALL;
 import static jakarta.persistence.EnumType.STRING;
+import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Table(name = "project_member")
@@ -31,6 +35,9 @@ public class ProjectMember {
     @Enumerated(STRING)
     private ProjectRole role;
 
+    @OneToMany(mappedBy = "assignee", cascade = ALL, fetch = LAZY)
+    public Set<Task> tasks = new LinkedHashSet<>();
+
     public void addProjectMember(User member , Project project) {
         this.setMember(member);
         this.setProject(project);
@@ -39,4 +46,7 @@ public class ProjectMember {
         project.getProjectMembers().add(this);
     }
 
+    public Set<Task> getTasks() {
+        return this.tasks == null ? new LinkedHashSet<>() : this.tasks;
+    }
 }

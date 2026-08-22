@@ -25,7 +25,5 @@ public interface ProjectMemberMapper {
     @Mapping(target = "role", source = "role")
     MemberSummary toMemberSummary(ProjectMember projectMember);
 
-
-
     }
 

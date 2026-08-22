@@ -7,6 +7,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import static jakarta.persistence.FetchType.LAZY;
@@ -35,8 +36,15 @@ public class Project {
     @OneToMany(mappedBy = "project", fetch = LAZY)
     private Set<ProjectMember> projectMembers = new HashSet<>();
 
+    @OneToMany(mappedBy = "project", fetch = LAZY)
+    private Set<Task> tasks = new LinkedHashSet<>();
+
 
     public Set<ProjectMember> getProjectMembers() {
        return this.projectMembers == null ? new HashSet<>() : this.projectMembers;
+    }
+
+    public Set<Task> getTasks() {
+        return this.tasks == null ? new LinkedHashSet<>() : this.tasks;
     }
 }

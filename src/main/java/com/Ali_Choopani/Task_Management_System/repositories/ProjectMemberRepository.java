@@ -9,15 +9,16 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
 @Repository
 public interface ProjectMemberRepository extends JpaRepository<ProjectMember, Long> {
 
-    @EntityGraph(attributePaths = {"project"})
-    Optional<ProjectMember> findByMemberIdAndProjectIdAndRole(Long memberId, Long projectId, ProjectRole role);
+    @EntityGraph(attributePaths = {"user","project"})
+    Optional<ProjectMember> findByProjectIdAndMemberIdAndRole(Long projectId, Long memberId, ProjectRole role);
+
+    Optional<ProjectMember> findByProjectIdAndMemberId(Long projectId, Long memberId);
 
     boolean existsByProjectIdAndMemberId(Long projectId, Long memberId);
 

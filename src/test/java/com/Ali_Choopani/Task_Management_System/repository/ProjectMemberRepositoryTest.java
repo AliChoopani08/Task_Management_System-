@@ -61,7 +61,7 @@ public class ProjectMemberRepositoryTest {
         final Long memberId = manager.getId();
         final Long projectId = project.getId();
 
-        final Optional<ProjectMember> foundEntity = repository.findByMemberIdAndProjectIdAndRole(memberId,projectId, ROLE_MANAGER);
+        final Optional<ProjectMember> foundEntity = repository.findByProjectIdAndMemberIdAndRole(memberId,projectId, ROLE_MANAGER);
 
         assertThat(foundEntity.isPresent()).isTrue();
         foundEntity.ifPresent(pm -> assertThat(pm)

@@ -9,7 +9,7 @@ import com.Ali_Choopani.Task_Management_System.security.CustomUserDetailsService
 import com.Ali_Choopani.Task_Management_System.security.JwtService;
 import com.Ali_Choopani.Task_Management_System.security.UserDetailImpl;
 import com.Ali_Choopani.Task_Management_System.security.customeAuthorization.ProjectAuthorization;
-import com.Ali_Choopani.Task_Management_System.services.ProjectService;
+import com.Ali_Choopani.Task_Management_System.services.project.ProjectService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
