@@ -6,7 +6,7 @@ import lombok.Builder;
 import java.time.LocalDate;
 
 @Builder(toBuilder = true)
-public record ProjectSummary(@JsonProperty("project id")Long id,
+public record ProjectSummary(Long id,
                              String title, String description,
                              @JsonProperty("start date") LocalDate startDate,
                              @JsonProperty("due date") LocalDate dueDate,

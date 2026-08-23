@@ -6,7 +6,7 @@ import com.Ali_Choopani.Task_Management_System.dto.project.CreateProjectRequest;
 import com.Ali_Choopani.Task_Management_System.dto.project.ProjectMemberSummary;
 import com.Ali_Choopani.Task_Management_System.dto.project.ProjectSummary;
 import com.Ali_Choopani.Task_Management_System.security.UserDetailImpl;
-import com.Ali_Choopani.Task_Management_System.services.ProjectService;
+import com.Ali_Choopani.Task_Management_System.services.project.ProjectService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

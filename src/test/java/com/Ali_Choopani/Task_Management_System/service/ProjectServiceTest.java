@@ -7,7 +7,7 @@ import com.Ali_Choopani.Task_Management_System.mappers.ProjectMapper;
 import com.Ali_Choopani.Task_Management_System.mappers.ProjectMemberMapper;
 import com.Ali_Choopani.Task_Management_System.repositories.ProjectMemberRepository;
 import com.Ali_Choopani.Task_Management_System.repositories.UserRepository;
-import com.Ali_Choopani.Task_Management_System.services.ProjectServiceImpl;
+import com.Ali_Choopani.Task_Management_System.services.project.ProjectServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -107,7 +107,7 @@ public class ProjectServiceTest {
         final Long projectId = project.getId();
         final Set<MemberSummary> expectedMembersOfProject = Set.of(new MemberSummary(2L, "Mohammad Majd", ROLE_DEVELOPER));
 
-        whenHelper(projectMemberRepository.findByMemberIdAndProjectIdAndRole(anyLong(), anyLong(), any(ProjectRole.class)), Optional.of(projectManager));
+        whenHelper(projectMemberRepository.findByProjectIdAndMemberIdAndRole(anyLong(), anyLong(), any(ProjectRole.class)), Optional.of(projectManager));
         whenHelper(userRepository.findById(anyLong()), Optional.of(member));
         whenHelper(projectMemberRepository.existsByProjectIdAndMemberId(anyLong(), anyLong()), false);
         whenHelper(projectMemberRepository.save(any(ProjectMember.class)), projectMember);
@@ -131,7 +131,7 @@ public class ProjectServiceTest {
         final User manager = projectManager.getMember();
         final Long projectId = project.getId();
 
-        whenHelper(projectMemberRepository.findByMemberIdAndProjectIdAndRole(anyLong(), anyLong(), any(ProjectRole.class)), Optional.of(projectManager));
+        whenHelper(projectMemberRepository.findByProjectIdAndMemberIdAndRole(anyLong(), anyLong(), any(ProjectRole.class)), Optional.of(projectManager));
         whenHelper(userRepository.findById(anyLong()), Optional.of(member));
         whenHelper(projectMemberRepository.existsByProjectIdAndMemberId(anyLong(), anyLong()), true);
 

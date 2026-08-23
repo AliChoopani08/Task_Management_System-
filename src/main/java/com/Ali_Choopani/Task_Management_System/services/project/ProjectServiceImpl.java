@@ -1,4 +1,4 @@
-package com.Ali_Choopani.Task_Management_System.services;
+package com.Ali_Choopani.Task_Management_System.services.project;
 
 import com.Ali_Choopani.Task_Management_System.dto.project.*;
 import com.Ali_Choopani.Task_Management_System.entities.Project;
@@ -57,7 +57,7 @@ public class ProjectServiceImpl implements ProjectService{
     @Override
     @Transactional
     public ProjectMemberSummary addProjecetMember(Long projectId, Long managerId, Long newMemberId, AddNewProjectMemberRequest request) {
-        final ProjectMember projectManager = projectMemberRepository.findByMemberIdAndProjectIdAndRole(managerId, projectId, ROLE_MANAGER)
+        final ProjectMember projectManager = projectMemberRepository.findByProjectIdAndMemberIdAndRole(managerId, projectId, ROLE_MANAGER)
                 .orElseThrow(() -> new NotFoundProjectAndMemberException(projectId, managerId, ROLE_MANAGER));
         final Project project = projectManager.getProject();
         final User newMember = userRepository.findById(newMemberId)

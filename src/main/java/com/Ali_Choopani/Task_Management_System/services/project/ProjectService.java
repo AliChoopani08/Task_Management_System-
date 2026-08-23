@@ -1,4 +1,4 @@
-package com.Ali_Choopani.Task_Management_System.services;
+package com.Ali_Choopani.Task_Management_System.services.project;
 
 import com.Ali_Choopani.Task_Management_System.dto.project.AddNewProjectMemberRequest;
 import com.Ali_Choopani.Task_Management_System.dto.project.CreateProjectRequest;

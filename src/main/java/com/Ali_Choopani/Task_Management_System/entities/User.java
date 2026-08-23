@@ -7,6 +7,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.Instant;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import static jakarta.persistence.CascadeType.ALL;
@@ -49,21 +50,14 @@ public class User {
     private Set<ProjectMember> projectMembers = new HashSet<>();
 
     @OneToMany(mappedBy = "user", cascade = ALL, fetch = LAZY)
-    private Set<Task> tasks = new HashSet<>();
-
-    @OneToMany(mappedBy = "user", cascade = ALL, fetch = LAZY)
     private Set<Comment> comments = new HashSet<>();
 
     @OneToMany(mappedBy = "user", cascade = ALL, fetch = LAZY)
-    public Set<Device> devices = new HashSet<>();
+    public Set<Device> devices = new LinkedHashSet<>();
 
 
     public Set<ProjectMember> getProjectMembers() {
         return initializeIfNull(this.projectMembers, new HashSet<>());
-    }
-
-    public Set<Task> getTasks() {
-        return initializeIfNull(this.tasks, new HashSet<>());
     }
 
     public Set<Comment> getComments() {

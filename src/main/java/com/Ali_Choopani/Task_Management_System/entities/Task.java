@@ -7,9 +7,11 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import static jakarta.persistence.EnumType.STRING;
+import static jakarta.persistence.FetchType.EAGER;
 import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
@@ -34,16 +36,24 @@ public class Task {
     private LocalDate createAt;
     private LocalDate dueDate;
 
-
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "assignee_id")
+    public ProjectMember assignee;
+
+    @ManyToOne(fetch = EAGER)
+    @JoinColumn(name = "project_id", nullable = false)
+    private Project project;
 
     @OneToMany(mappedBy = "task", fetch = LAZY)
     private Set<Comment> comments = new HashSet<>();
 
-    public void addTaskToUser(User user) {
-        user.getTasks().add(this);
-        this.setUser(user);
+    public void assignTaskToMember(ProjectMember projectMember) {
+        this.setAssignee(projectMember);
+        projectMember.getTasks().add(this);
+    }
+
+    public void addTaskProject(Project project) {
+        this.setProject(project);
+        project.getTasks().add(this);
     }
 }
