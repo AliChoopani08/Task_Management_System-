@@ -20,6 +20,8 @@ public interface ProjectMemberRepository extends JpaRepository<ProjectMember, Lo
 
     Optional<ProjectMember> findByProjectIdAndMemberId(Long projectId, Long memberId);
 
+    Set<ProjectMember> findByMemberId(Long memberId);
+
     boolean existsByProjectIdAndMemberId(Long projectId, Long memberId);
 
     @Query("""

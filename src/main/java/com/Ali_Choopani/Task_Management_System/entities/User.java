@@ -47,6 +47,7 @@ public class User {
     private boolean isProfileCompleted;
 
     @OneToMany(mappedBy = "member", fetch = LAZY, cascade = ALL)
+    @Column(unique = true)
     private Set<ProjectMember> projectMembers = new HashSet<>();
 
     @OneToMany(mappedBy = "user", cascade = ALL, fetch = LAZY)

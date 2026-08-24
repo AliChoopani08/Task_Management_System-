@@ -105,14 +105,14 @@ public class ProjectControllerTest {
         AddNewProjectMemberRequest request = AddNewProjectMemberRequest.builder()
                 .memberRole(ROLE_DEVELOPER.name())
                 .build();
-        ProjectMemberSummary projectMemberSummary = ProjectMemberSummary.builder()
+        ProjectDetails projectMemberSummary = ProjectDetails.builder()
                 .project(projectSummary)
                 .members(Set.of(new MemberSummary(3L, "Akbar Hoseyni", ROLE_DEVELOPER)))
                 .build();
 
         given(projectAuthorization.isManager(any(Authentication.class)))
                 .willReturn(true);
-        given(service.addProjecetMember(anyLong(), anyLong(), anyLong(), any(AddNewProjectMemberRequest.class)))
+        given(service.addProjectMember(anyLong(), anyLong(), anyLong(), any(AddNewProjectMemberRequest.class)))
                 .willReturn(projectMemberSummary);
 
         mockMvc.perform(post("/project/1/member/3")

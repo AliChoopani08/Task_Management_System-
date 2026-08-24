@@ -1,58 +1,66 @@
 package com.Ali_Choopani.Task_Management_System.mappers;
 
+import com.Ali_Choopani.Task_Management_System.dto.project.MyProjectsSummary;
 import com.Ali_Choopani.Task_Management_System.dto.project.ProjectSummary;
 import com.Ali_Choopani.Task_Management_System.entities.*;
+import com.Ali_Choopani.Task_Management_System.testFactories.ProjectMemberTestFactory;
+import org.assertj.core.groups.Tuple;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import static com.Ali_Choopani.Task_Management_System.entities.ProjectRole.ROLE_DEVELOPER;
-import static com.Ali_Choopani.Task_Management_System.entities.UserRole.ROLE_USER;
+import static com.Ali_Choopani.Task_Management_System.entities.ProjectRole.ROLE_MANAGER;
+import static com.Ali_Choopani.Task_Management_System.testFactories.ProjectMemberTestFactory.createProjectMember;
+import static com.Ali_Choopani.Task_Management_System.testFactories.ProjectTestFactory.createProject;
+import static com.Ali_Choopani.Task_Management_System.testFactories.UserTestFactory.createUser;
 import static java.time.LocalDate.of;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.groups.Tuple.tuple;
 
 public class ProjectMemberMapperTest {
 
     private final ProjectMemberMapper mapper = Mappers.getMapper(ProjectMemberMapper.class);
 
-    private ProjectMember projectMember;
+    private Set<ProjectMember> memberProjects = new HashSet<>();
 
     @BeforeEach
     void setUp() {
-        User member = User.builder()
-                .id(2L)
-                .email("Ali_ch_1234@gami.com")
-                .role(ROLE_USER)
-                .password("Ali@12345")
-                .build();
-        Profile profile = Profile.builder()
-                .firstName("Ali")
-                .surname("Choopani")
-                .build();
-        profile.addProfileToUser(member);
+        Project mobileProject = createProject(1L,"Mobile Application",null,of(2026,8,30));
+        Project taskManagementProject = createProject(2L,"Task Management System",null,of(2026,12,10));
 
-        Project project = Project.builder()
-                .id(3L)
-                .title("Implementation the backend of a business site")
-                .description("Writing the initial business logic of site")
-                .startDate(of(2026,2,10))
-                .dueDate(of(2026,8,30))
-                .build();
+        User user =  createUser(2L, "Ali_ch_1234@gami.com",null, "Ali Choopani");
 
-        projectMember = ProjectMember.builder()
-                .role(ROLE_DEVELOPER)
-                .build();
+        memberProjects.add(createProjectMember(mobileProject, user, ROLE_DEVELOPER));
+        memberProjects.add(createProjectMember(taskManagementProject, user, ROLE_MANAGER));
 
-        projectMember.addProjectMember(member, project);
     }
 
     @Test
     void shouldMapEntityToSummary() {
-        final ProjectSummary summary = mapper.toSummary(projectMember);
-        System.out.println(summary);
+        final ProjectMember getFirstProject = memberProjects.stream()
+                .filter(pr -> pr.getProject().getTitle().equalsIgnoreCase("Mobile Application"))
+                .findFirst()
+                .orElse(null);
+
+        final ProjectSummary summary = mapper.toSummary(getFirstProject);
 
         assertThat(summary)
-                .extracting(ProjectSummary::title, ProjectSummary::startDate, p -> p.manager().name())
-                .containsExactly("Implementation the backend of a business site", of(2026,2,10),"Ali Choopani");
+                .extracting(ProjectSummary::title, ProjectSummary::dueDate, p -> p.manager().name())
+                .containsExactly("Mobile Application", of(2026,8,30),"Ali Choopani");
         }
+
+    @Test
+    void shouldMapProjectMembersToMyProjectsSummary() {
+        final Set<MyProjectsSummary> myProjectsSummary = mapper.toMyProjectsSummary(memberProjects);
+
+        assertThat(myProjectsSummary)
+                .hasSize(2)
+                .extracting(MyProjectsSummary::title, MyProjectsSummary::role)
+                .containsExactly(tuple("Mobile Application", ROLE_DEVELOPER),
+                                 tuple("Task Management System", ROLE_MANAGER));
     }
+}

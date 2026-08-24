@@ -1,9 +1,12 @@
 package com.Ali_Choopani.Task_Management_System.mappers;
 
 import com.Ali_Choopani.Task_Management_System.dto.project.MemberSummary;
+import com.Ali_Choopani.Task_Management_System.dto.project.MyProjectsSummary;
 import com.Ali_Choopani.Task_Management_System.dto.project.ProjectSummary;
 import com.Ali_Choopani.Task_Management_System.entities.ProjectMember;
 import org.mapstruct.*;
+
+import java.util.Set;
 
 import static java.lang.String.format;
 import static org.mapstruct.NullValuePropertyMappingStrategy.IGNORE;
@@ -25,5 +28,10 @@ public interface ProjectMemberMapper {
     @Mapping(target = "role", source = "role")
     MemberSummary toMemberSummary(ProjectMember projectMember);
 
+    @Mapping(target = "id", source = "project.id")
+    @Mapping(target = "title", source = "project.title")
+    MyProjectsSummary toMyProjectsSummary(ProjectMember entity);
+
+    Set<MyProjectsSummary> toMyProjectsSummary(Set<ProjectMember> entity);
     }
 

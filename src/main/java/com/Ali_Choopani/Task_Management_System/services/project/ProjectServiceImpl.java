@@ -30,7 +30,7 @@ public class ProjectServiceImpl implements ProjectService{
     private final ProjectRepository repository;
     private final ProjectMemberRepository projectMemberRepository;
     private final UserRepository userRepository;
-    private final ProjectMapper mapper;
+    private final ProjectMapper projectMapper;
     private final ProjectMemberMapper projectMemberMapper;
 
     @Override
@@ -40,7 +40,7 @@ public class ProjectServiceImpl implements ProjectService{
                 .orElseThrow(() -> new NotFoundUserException(managerId));
         if (!manager.isProfileCompleted()) {
             throw new ProfileNotCompletedException(manager.getId());}
-        final Project project = mapper.toEntity(request);
+        final Project project = projectMapper.toEntity(request);
 
         projectMemberRepository.existsByMemberIdAndRoleAndProjectTitle(manager.getId(), ROLE_MANAGER, project.getTitle())
                 .ifPresent(__ -> {
@@ -56,7 +56,7 @@ public class ProjectServiceImpl implements ProjectService{
 
     @Override
     @Transactional
-    public ProjectMemberSummary addProjecetMember(Long projectId, Long managerId, Long newMemberId, AddNewProjectMemberRequest request) {
+    public ProjectDetails addProjectMember(Long projectId, Long managerId, Long newMemberId, AddNewProjectMemberRequest request) {
         final ProjectMember projectManager = projectMemberRepository.findByProjectIdAndMemberIdAndRole(managerId, projectId, ROLE_MANAGER)
                 .orElseThrow(() -> new NotFoundProjectAndMemberException(projectId, managerId, ROLE_MANAGER));
         final Project project = projectManager.getProject();
@@ -76,7 +76,14 @@ public class ProjectServiceImpl implements ProjectService{
         final ProjectSummary projectSummary = projectMemberMapper.toSummary(projectManager);
         final Set<MemberSummary> members = projectMemberRepository.findMembersOfProjectByProjectId(project.getId());
 
-        return new ProjectMemberSummary(projectSummary, members);
+        return new ProjectDetails(projectSummary, members);
+    }
+
+    @Override
+    public Set<MyProjectsSummary> getMyProjects(Long memberId) {
+        final Set<ProjectMember> memberProjects = projectMemberRepository.findByMemberId(memberId);
+
+        return projectMemberMapper.toMyProjectsSummary(memberProjects);
     }
 
 
