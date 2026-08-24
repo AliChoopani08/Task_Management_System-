@@ -1,13 +1,13 @@
 package com.Ali_Choopani.Task_Management_System.services.project;
 
-import com.Ali_Choopani.Task_Management_System.dto.project.AddNewProjectMemberRequest;
-import com.Ali_Choopani.Task_Management_System.dto.project.CreateProjectRequest;
-import com.Ali_Choopani.Task_Management_System.dto.project.ProjectMemberSummary;
-import com.Ali_Choopani.Task_Management_System.dto.project.ProjectSummary;
+import com.Ali_Choopani.Task_Management_System.dto.project.*;
+
+import java.util.Set;
 
 public interface ProjectService {
 
     ProjectSummary createAProject(CreateProjectRequest request, Long managerId);
-    ProjectMemberSummary addProjecetMember(Long projectId, Long managerId, Long newMemberId, AddNewProjectMemberRequest request);
+    ProjectDetails addProjectMember(Long projectId, Long managerId, Long newMemberId, AddNewProjectMemberRequest request);
+    Set<MyProjectsSummary> getMyProjectsSummary(Long memberId);
 
 }

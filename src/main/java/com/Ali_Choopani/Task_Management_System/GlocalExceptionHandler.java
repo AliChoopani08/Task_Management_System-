@@ -9,7 +9,7 @@ import com.Ali_Choopani.Task_Management_System.exceptions.user.NotFoundUserExcep
 import com.Ali_Choopani.Task_Management_System.exceptions.user.UserWithRoleAndIdNotFoundException;
 import com.Ali_Choopani.Task_Management_System.exceptions.user.device.InvalidDeviceException;
 import com.Ali_Choopani.Task_Management_System.exceptions.user.device.refreshToken.DuplicateRefreshTokenException;
-import com.Ali_Choopani.Task_Management_System.exceptions.user.device.refreshToken.NotFoundRefreshTokenException;
+import com.Ali_Choopani.Task_Management_System.exceptions.user.device.refreshToken.NotBeingMatchDeviceAndRefreshToken;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -100,8 +100,8 @@ public class GlocalExceptionHandler {
         return getErrorResponse(CONFLICT, "Duplicate Member", ex.getMessage(), request);
     }
 
-    @ExceptionHandler(NotFoundRefreshTokenException.class)
-    public ResponseEntity<ErrorResponse> notFoundRefreshTokenHandler(NotFoundRefreshTokenException ex, HttpServletRequest request) {
+    @ExceptionHandler(NotBeingMatchDeviceAndRefreshToken.class)
+    public ResponseEntity<ErrorResponse> notFoundRefreshTokenHandler(NotBeingMatchDeviceAndRefreshToken ex, HttpServletRequest request) {
         return getErrorResponse(NOT_FOUND, "Not Found Refresh Token", ex.getMessage(), request);
     }
 

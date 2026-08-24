@@ -34,6 +34,7 @@ public class Project {
     private LocalDate dueDate;
 
     @OneToMany(mappedBy = "project", fetch = LAZY)
+    @Column(unique = true)
     private Set<ProjectMember> projectMembers = new HashSet<>();
 
     @OneToMany(mappedBy = "project", fetch = LAZY)

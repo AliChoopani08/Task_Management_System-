@@ -58,8 +58,8 @@ public class TaskServiceTest {
         final User user1 = UserTestFactory.createUser(2L, "09876543210", null, "Maryam Hosseini");
         final User user2 = UserTestFactory.createUser(3L,"reza_salami.123@gmail.com", null, "Reza Salami");
 
-        projectManager = ProjectMemberTestFactory.createProject(project, user1, ROLE_MANAGER);
-        projectDeveloper = ProjectMemberTestFactory.createProject(project, user2, ROLE_DEVELOPER);
+        projectManager = ProjectMemberTestFactory.createProjectMember(project, user1, ROLE_MANAGER);
+        projectDeveloper = ProjectMemberTestFactory.createProjectMember(project, user2, ROLE_DEVELOPER);
 
         ProjectSummary projectSummary = createProjectSummary(projectManager);
 

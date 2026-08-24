@@ -114,7 +114,7 @@ public class ProjectServiceTest {
         whenHelper(projectMemberMapper.toSummary(any(ProjectMember.class)), summaryManager);
         whenHelper(projectMemberRepository.findMembersOfProjectByProjectId(anyLong()), expectedMembersOfProject);
 
-        final ProjectMemberSummary response = service.addProjecetMember(projectId, manager.getId(), member.getId(), request);
+        final ProjectDetails response = service.addProjectMember(projectId, manager.getId(), member.getId(), request);
 
         assertThat(response)
                 .extracting(p -> p.project().title(), p -> p.project().manager().name(),
@@ -135,7 +135,7 @@ public class ProjectServiceTest {
         whenHelper(userRepository.findById(anyLong()), Optional.of(member));
         whenHelper(projectMemberRepository.existsByProjectIdAndMemberId(anyLong(), anyLong()), true);
 
-        assertThatThrownBy(() -> service.addProjecetMember(projectId, manager.getId(), member.getId(), request))
+        assertThatThrownBy(() -> service.addProjectMember(projectId, manager.getId(), member.getId(), request))
                 .isInstanceOf(DuplicateProjectMemberException.class)
                 .hasMessage("User with id [3] is already an active member of project with id  [1] !");
 
