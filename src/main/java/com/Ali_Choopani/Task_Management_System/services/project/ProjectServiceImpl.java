@@ -80,7 +80,7 @@ public class ProjectServiceImpl implements ProjectService{
     }
 
     @Override
-    public Set<MyProjectsSummary> getMyProjects(Long memberId) {
+    public Set<MyProjectsSummary> getMyProjectsSummary(Long memberId) {
         final Set<ProjectMember> memberProjects = projectMemberRepository.findByMemberId(memberId);
 
         return projectMemberMapper.toMyProjectsSummary(memberProjects);

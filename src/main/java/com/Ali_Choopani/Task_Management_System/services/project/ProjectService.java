@@ -8,6 +8,6 @@ public interface ProjectService {
 
     ProjectSummary createAProject(CreateProjectRequest request, Long managerId);
     ProjectDetails addProjectMember(Long projectId, Long managerId, Long newMemberId, AddNewProjectMemberRequest request);
-    Set<MyProjectsSummary> getMyProjects(Long memberId);
+    Set<MyProjectsSummary> getMyProjectsSummary(Long memberId);
 
 }

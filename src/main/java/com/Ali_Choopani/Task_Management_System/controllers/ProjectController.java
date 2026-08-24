@@ -51,7 +51,7 @@ public class ProjectController {
 
     @GetMapping("/my/projects-summary")
     public ResponseEntity<ApiResponse<Set<MyProjectsSummary>>> getMyProjectsSummary(@AuthenticationPrincipal UserDetailImpl currentUser) {
-        final Set<MyProjectsSummary> serviceResponse = service.getMyProjects(currentUser.getId());
+        final Set<MyProjectsSummary> serviceResponse = service.getMyProjectsSummary(currentUser.getId());
 
         return ok(new ApiResponse<>(OK.value(), "User's projects were returned successfully", serviceResponse, now()));
     }

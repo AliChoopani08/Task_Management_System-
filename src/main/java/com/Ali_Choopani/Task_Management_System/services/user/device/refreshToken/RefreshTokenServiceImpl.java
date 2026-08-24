@@ -9,7 +9,7 @@ import com.Ali_Choopani.Task_Management_System.entities.User;
 import com.Ali_Choopani.Task_Management_System.exceptions.user.device.BlockedDeviceException;
 import com.Ali_Choopani.Task_Management_System.exceptions.user.device.InvalidDeviceException;
 import com.Ali_Choopani.Task_Management_System.exceptions.user.device.refreshToken.DuplicateRefreshTokenException;
-import com.Ali_Choopani.Task_Management_System.exceptions.user.device.refreshToken.NotFoundRefreshTokenException;
+import com.Ali_Choopani.Task_Management_System.exceptions.user.device.refreshToken.NotBeingMatchDeviceAndRefreshToken;
 import com.Ali_Choopani.Task_Management_System.exceptions.user.device.refreshToken.RevokedOrExpiredRefreshToken;
 import com.Ali_Choopani.Task_Management_System.mappers.RefreshTokenMapper;
 import com.Ali_Choopani.Task_Management_System.repositories.DeviceRepository;
@@ -60,7 +60,7 @@ public class RefreshTokenServiceImpl implements RefreshTokenService{
     @Transactional
     public RefreshAccessTokenResponse refreshAccessToken(UUID deviceUuid, RefreshAccessTokenRequest request) {
         final RefreshToken refreshToken = repository.findByTokenAndDevice_DeviceUuid(request.getRefreshToken(), deviceUuid)
-                .orElseThrow(() -> new NotFoundRefreshTokenException(request.getRefreshToken()));
+                .orElseThrow(NotBeingMatchDeviceAndRefreshToken::new);
         final Device device = refreshToken.getDevice();
         final User user = device.getUser();
 
