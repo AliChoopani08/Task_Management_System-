@@ -83,7 +83,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Page<UserViewSummary> getUsersByFullNameOrEmail(String fullNameOrEmail, Pageable pageable) {
+    public Page<UserViewSummary> searchUsersByFullNameOrEmail(String fullNameOrEmail, Pageable pageable) {
         return repository.findAll(searchByNameOrEmail(fullNameOrEmail), pageable)
                 .map(mapper::toViewSummary);
     }

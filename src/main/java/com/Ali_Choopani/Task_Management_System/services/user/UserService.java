@@ -12,5 +12,5 @@ import java.util.UUID;
 public interface UserService {
     AuthResponse register(RegisterRequest request, String userAgent);
     AuthResponse login(LoginRequest request, UUID deviceUuid, String userAgent);
-    Page<UserViewSummary> getUsersByFullNameOrEmail(String fullNameOrEmail, Pageable pageable);
+    Page<UserViewSummary> searchUsersByFullNameOrEmail(String fullNameOrEmail, Pageable pageable);
 }

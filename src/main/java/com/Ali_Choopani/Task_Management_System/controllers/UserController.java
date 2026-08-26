@@ -12,9 +12,9 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -60,11 +60,13 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<Page<UserViewSummary>>> getUsersByFullNameOrEmail(@RequestParam String fullNameOrEmail,
-                                                                                        @PageableDefault(size = 20, sort = "profile.firstName",
-                                                                                                direction = DESC)Pageable pageable) {
+    public ResponseEntity<ApiResponse<Page<UserViewSummary>>> searchUsersByFullNameOrEmail(@RequestParam String fullNameOrEmail,
+                                                                                           @PageableDefault(size = 20, sort = "profile.firstName",
+                                                                                                direction = DESC)
+                                                                                           @ParameterObject
+                                                                                           Pageable pageable) {
 
-        final Page<UserViewSummary> response = service.getUsersByFullNameOrEmail(fullNameOrEmail, pageable);
+        final Page<UserViewSummary> response = service.searchUsersByFullNameOrEmail(fullNameOrEmail, pageable);
 
         return status(OK)
                 .body(new ApiResponse<>(OK.value(), "Users were found successfully", response, now()));
