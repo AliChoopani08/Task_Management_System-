@@ -3,6 +3,7 @@ package com.Ali_Choopani.Task_Management_System.controllers;
 import com.Ali_Choopani.Task_Management_System.ApiResponse;
 import com.Ali_Choopani.Task_Management_System.dto.user.AuthResponse;
 import com.Ali_Choopani.Task_Management_System.dto.user.LoginRequest;
+import com.Ali_Choopani.Task_Management_System.dto.user.UserViewSummary;
 import com.Ali_Choopani.Task_Management_System.dto.user.device.refreshToken.RegisterRequest;
 import com.Ali_Choopani.Task_Management_System.services.user.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -11,12 +12,17 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
 import static java.time.LocalDateTime.now;
+import static org.springframework.data.domain.Sort.Direction.DESC;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.ResponseEntity.status;
@@ -51,6 +57,19 @@ public class UserController {
 
         return status(OK)
                 .body(new ApiResponse<>(OK.value(), "User longed in successfully", response, now()));
+    }
+
+    @GetMapping
+    public ResponseEntity<ApiResponse<Page<UserViewSummary>>> searchUsersByFullNameOrEmail(@RequestParam String fullNameOrEmail,
+                                                                                           @PageableDefault(size = 20, sort = "profile.firstName",
+                                                                                                direction = DESC)
+                                                                                           @ParameterObject
+                                                                                           Pageable pageable) {
+
+        final Page<UserViewSummary> response = service.searchUsersByFullNameOrEmail(fullNameOrEmail, pageable);
+
+        return status(OK)
+                .body(new ApiResponse<>(OK.value(), "Users were found successfully", response, now()));
     }
 
     }

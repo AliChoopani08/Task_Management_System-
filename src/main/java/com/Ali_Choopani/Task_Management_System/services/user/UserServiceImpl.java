@@ -2,6 +2,7 @@ package com.Ali_Choopani.Task_Management_System.services.user;
 
 import com.Ali_Choopani.Task_Management_System.dto.user.AuthResponse;
 import com.Ali_Choopani.Task_Management_System.dto.user.LoginRequest;
+import com.Ali_Choopani.Task_Management_System.dto.user.UserViewSummary;
 import com.Ali_Choopani.Task_Management_System.dto.user.device.refreshToken.RefreshTokenSummary;
 import com.Ali_Choopani.Task_Management_System.dto.user.device.refreshToken.RegisterRequest;
 import com.Ali_Choopani.Task_Management_System.dto.user.UserSummary;
@@ -17,6 +18,8 @@ import com.Ali_Choopani.Task_Management_System.services.user.device.DeviceServic
 import com.Ali_Choopani.Task_Management_System.services.user.device.refreshToken.RefreshTokenService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -27,6 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.UUID;
 
 import static com.Ali_Choopani.Task_Management_System.entities.UserRole.ROLE_USER;
+import static com.Ali_Choopani.Task_Management_System.services.user.UserSpecification.searchByNameOrEmail;
 import static java.time.Instant.now;
 
 @Service
@@ -76,6 +80,12 @@ public class UserServiceImpl implements UserService {
         final String jwtToken = jwtService.generateToken(entity.getId(), entity.getRole().name());
 
         return new AuthResponse(mapper.toSummary(entity), device, refreshToken, jwtToken);
+    }
+
+    @Override
+    public Page<UserViewSummary> searchUsersByFullNameOrEmail(String fullNameOrEmail, Pageable pageable) {
+        return repository.findAll(searchByNameOrEmail(fullNameOrEmail), pageable)
+                .map(mapper::toViewSummary);
     }
 
     private void validateUniqueEmailAndPhone(String email, String phoneNumber) {
