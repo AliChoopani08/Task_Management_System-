@@ -3,8 +3,6 @@ package com.Ali_Choopani.Task_Management_System.mappers;
 import com.Ali_Choopani.Task_Management_System.dto.project.MyProjectsSummary;
 import com.Ali_Choopani.Task_Management_System.dto.project.ProjectSummary;
 import com.Ali_Choopani.Task_Management_System.entities.*;
-import com.Ali_Choopani.Task_Management_System.testFactories.ProjectMemberTestFactory;
-import org.assertj.core.groups.Tuple;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
@@ -34,8 +32,8 @@ public class ProjectMemberMapperTest {
 
         User user =  createUser(2L, "Ali_ch_1234@gami.com",null, "Ali Choopani");
 
-        memberProjects.add(createProjectMember(mobileProject, user, ROLE_DEVELOPER));
-        memberProjects.add(createProjectMember(taskManagementProject, user, ROLE_MANAGER));
+        memberProjects.add(createProjectMember(3L, user, ROLE_DEVELOPER, mobileProject));
+        memberProjects.add(createProjectMember(4L, user, ROLE_MANAGER, taskManagementProject));
 
     }
 

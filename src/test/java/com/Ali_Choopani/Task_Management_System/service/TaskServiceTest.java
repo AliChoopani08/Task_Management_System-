@@ -8,11 +8,7 @@ import com.Ali_Choopani.Task_Management_System.mappers.TaskMapper;
 import com.Ali_Choopani.Task_Management_System.repositories.ProjectMemberRepository;
 import com.Ali_Choopani.Task_Management_System.repositories.TaskRepository;
 import com.Ali_Choopani.Task_Management_System.services.task.TaskServiceImpl;
-import com.Ali_Choopani.Task_Management_System.testFactories.ProjectMemberTestFactory;
-import com.Ali_Choopani.Task_Management_System.testFactories.ProjectTestFactory;
 import com.Ali_Choopani.Task_Management_System.testFactories.TaskTestFactory;
-import com.Ali_Choopani.Task_Management_System.testFactories.UserTestFactory;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,9 +22,14 @@ import static com.Ali_Choopani.Task_Management_System.TestMocksHelper.MockWhenHe
 import static com.Ali_Choopani.Task_Management_System.entities.ProjectRole.ROLE_DEVELOPER;
 import static com.Ali_Choopani.Task_Management_System.entities.ProjectRole.ROLE_MANAGER;
 import static com.Ali_Choopani.Task_Management_System.entities.TaskStatus.TODO;
+import static com.Ali_Choopani.Task_Management_System.testFactories.ProjectMemberTestFactory.createProjectMember;
 import static com.Ali_Choopani.Task_Management_System.testFactories.ProjectMemberTestFactory.createProjectSummary;
+import static com.Ali_Choopani.Task_Management_System.testFactories.ProjectTestFactory.createProject;
+import static com.Ali_Choopani.Task_Management_System.testFactories.TaskTestFactory.createTaskSummary;
+import static com.Ali_Choopani.Task_Management_System.testFactories.UserTestFactory.createUser;
 import static java.time.LocalDate.of;
 import static java.util.Optional.empty;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -49,24 +50,25 @@ public class TaskServiceTest {
     private TaskSummary summary;
     private ProjectMember projectManager;
     private ProjectMember projectDeveloper;
+    private ProjectSummary projectSummary;
 
     @BeforeEach
     void setUp() {
-        project = ProjectTestFactory.createProject(1L,"Set Up A Sporting Web Site",
+        project = createProject(1L,"Set Up A Sporting Web Site",
                 "Implementation a sporting web site to share the sport news", of(2027,1,30));
 
-        final User user1 = UserTestFactory.createUser(2L, "09876543210", null, "Maryam Hosseini");
-        final User user2 = UserTestFactory.createUser(3L,"reza_salami.123@gmail.com", null, "Reza Salami");
+        final User user1 = createUser(2L, "09876543210", null, "Maryam Hosseini");
+        final User user2 = createUser(3L,"reza_salami.123@gmail.com", null, "Reza Salami");
 
-        projectManager = ProjectMemberTestFactory.createProjectMember(project, user1, ROLE_MANAGER);
-        projectDeveloper = ProjectMemberTestFactory.createProjectMember(project, user2, ROLE_DEVELOPER);
+        projectManager = createProjectMember(4L, user1, ROLE_MANAGER, project);
+        projectDeveloper = createProjectMember(5L, user2, ROLE_DEVELOPER, project);
 
-        ProjectSummary projectSummary = createProjectSummary(projectManager);
+        projectSummary = createProjectSummary(projectManager);
 
-        task = TaskTestFactory.createTask("Implementation authentication flow", "Implementation login and registration flow",
+        task = TaskTestFactory.createTask(6L ,"Implementation authentication flow", "Implementation login and registration flow",
                 of(2027,1,30), TODO, project, null);
 
-        summary = TaskTestFactory.createTaskSummary(task, projectSummary);
+        summary = createTaskSummary(task, projectSummary);
     }
 
     @Test
@@ -88,10 +90,31 @@ public class TaskServiceTest {
         whenHelper(repository.save(any(Task.class)), task);
         whenHelper(mapper.toSummary(any(Task.class), any(ProjectMember.class)), summary);
 
-        final TaskSummary responseMethod = service.createANewTaskOfProject(projectId, managerId, request);
+        final TaskSummary methodResponse = service.createANewTaskOfProject(projectId, managerId, request);
 
-        Assertions.assertThat(responseMethod)
+        assertThat(methodResponse)
                 .extracting(TaskSummary::title, t -> t.project().title(), t -> t.project().manager().name())
                 .containsExactly(task.getTitle(), project.getTitle(), "Maryam Hosseini");
+    }
+
+    @Test
+    void shouldAssignTaskToProjectMember_whenBothTaskAndProjectMemberExist() {
+        final Task assignedTaskToMember = task.toBuilder()
+                        .assignee(projectDeveloper)
+                                .build();
+        final TaskSummary expectedTaskSummary = createTaskSummary(assignedTaskToMember, projectSummary);
+
+        whenHelper(projectMemberRepository.findByProjectIdAndMemberIdAndRole(anyLong(), anyLong(), any(ProjectRole.class)),
+                Optional.of(projectManager));
+        whenHelper(projectMemberRepository.findByProjectIdAndMemberId(anyLong(), anyLong()), Optional.of(projectDeveloper));
+        whenHelper(repository.findById(anyLong()), Optional.of(task));
+        whenHelper(repository.save(any(Task.class)), assignedTaskToMember);
+        whenHelper(mapper.toSummary(any(Task.class), any(ProjectMember.class)), expectedTaskSummary);
+
+        final TaskSummary methodResponse = service.assignToProjectMember(task.getId(), project.getId(), projectDeveloper.getId(), projectManager.getId());
+
+        assertThat(methodResponse)
+                .extracting(TaskSummary::title, t -> t.project().title(), t -> t.assignee().fullName())
+                .containsExactly("Implementation authentication flow", "Set Up A Sporting Web Site","Reza Salami");
     }
 }

@@ -6,8 +6,9 @@ import com.Ali_Choopani.Task_Management_System.entities.*;
 
 public class ProjectMemberTestFactory {
 
-    public static ProjectMember createProjectMember(Project project, User user, ProjectRole role) {
+    public static ProjectMember createProjectMember(Long id, User user, ProjectRole role, Project project) {
         ProjectMember projectMember = ProjectMember.builder()
+                .id(id)
                 .role(role)
                 .build();
         projectMember.addProjectMember(user, project);

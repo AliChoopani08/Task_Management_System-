@@ -15,8 +15,9 @@ import static java.util.Optional.ofNullable;
 
 public class TaskTestFactory {
 
-    public static Task createTask(String title, String description, LocalDate duaDate, TaskStatus status, Project project, ProjectMember projectMember) {
+    public static Task createTask(Long id, String title, String description, LocalDate duaDate, TaskStatus status, Project project, ProjectMember projectMember) {
         Task task = Task.builder()
+                .id(id)
                 .title(title)
                 .description(description)
                 .dueDate(duaDate)
