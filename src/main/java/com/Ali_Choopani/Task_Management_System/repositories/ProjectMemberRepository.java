@@ -15,7 +15,7 @@ import java.util.Set;
 @Repository
 public interface ProjectMemberRepository extends JpaRepository<ProjectMember, Long> {
 
-    @EntityGraph(attributePaths = {"user","project"})
+    @EntityGraph(attributePaths = {"member","project"})
     Optional<ProjectMember> findByProjectIdAndMemberIdAndRole(Long projectId, Long memberId, ProjectRole role);
 
     Optional<ProjectMember> findByProjectIdAndMemberId(Long projectId, Long memberId);

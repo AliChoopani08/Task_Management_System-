@@ -2,6 +2,7 @@ package com.Ali_Choopani.Task_Management_System;
 
 import com.Ali_Choopani.Task_Management_System.exceptions.*;
 import com.Ali_Choopani.Task_Management_System.exceptions.project.DuplicateProjectMemberException;
+import com.Ali_Choopani.Task_Management_System.exceptions.project.NotFoundMemberInProjectException;
 import com.Ali_Choopani.Task_Management_System.exceptions.project.NotFoundProjectAndMemberException;
 import com.Ali_Choopani.Task_Management_System.exceptions.user.DuplicateUsername;
 import com.Ali_Choopani.Task_Management_System.exceptions.user.InsufficientInformationException;
@@ -112,6 +113,11 @@ public class GlocalExceptionHandler {
 
     @ExceptionHandler(NotFoundUserException.class)
     public ResponseEntity<ErrorResponse> notFoundUserException(NotFoundUserException ex, HttpServletRequest request) {
+        return getErrorResponse(NOT_FOUND, "Not Found", ex.getMessage(), request);
+    }
+
+    @ExceptionHandler(NotFoundMemberInProjectException.class)
+    public ResponseEntity<ErrorResponse> notFoundMemberInProject(NotFoundMemberInProjectException ex, HttpServletRequest request) {
         return getErrorResponse(NOT_FOUND, "Not Found", ex.getMessage(), request);
     }
 

@@ -17,7 +17,6 @@ public interface ProjectMemberMapper {
 
     @Mapping(target = "id", source = "project.id")
     @Mapping(target = "title", source = "project.title")
-    @Mapping(target = "description", source = "project.description")
     @Mapping(target = "startDate", source = "project.startDate")
     @Mapping(target = "dueDate", source = "project.dueDate")
     @Mapping(target = "manager", source = ".")

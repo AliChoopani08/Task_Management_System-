@@ -7,7 +7,7 @@ import java.time.LocalDate;
 
 @Builder(toBuilder = true)
 public record ProjectSummary(Long id,
-                             String title, String description,
+                             String title,
                              @JsonProperty("start date") LocalDate startDate,
                              @JsonProperty("due date") LocalDate dueDate,
                              @JsonProperty("manager") MemberSummary manager) {

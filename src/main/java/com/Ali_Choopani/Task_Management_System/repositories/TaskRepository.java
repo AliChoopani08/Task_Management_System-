@@ -11,4 +11,5 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
 
     Optional<Task> findByAssigneeIdAndTitleIgnoreCase(Long assignee, String title);
     Optional<Task> findByProjectIdAndTitleIgnoreCase(Long projectId, String title);
+    Optional<Task> findByProjectIdAndId(Long projectId, Long id);
 }

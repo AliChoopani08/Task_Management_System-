@@ -15,8 +15,12 @@ import com.Ali_Choopani.Task_Management_System.repositories.TaskRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.Objects;
+
 import static com.Ali_Choopani.Task_Management_System.entities.ProjectRole.ROLE_MANAGER;
 import static com.Ali_Choopani.Task_Management_System.entities.TaskStatus.TODO;
+import static java.time.LocalDate.now;
 
 @Service
 @RequiredArgsConstructor
@@ -38,6 +42,7 @@ public class TaskServiceImpl implements TaskService{
                 });
         final Task task = mapper.toEntity(request);
         task.setStatus(TODO);
+        task.setCreateAt(now());
         task.addTaskProject(project);
 
         final Task savedNewTask = repository.save(task);
@@ -51,7 +56,7 @@ public class TaskServiceImpl implements TaskService{
                 .orElseThrow(() -> new NotFoundProjectAndMemberException(projectId, managerId, ROLE_MANAGER));
         final ProjectMember projectMember = projectMemberRepository.findByProjectIdAndMemberId(projectId, memberId)
                 .orElseThrow(() -> new NotFoundMemberInProjectException(memberId, projectId));
-        final Task task = repository.findById(taskId)
+        final Task task = repository.findByProjectIdAndId(projectId,taskId)
                 .orElseThrow(() -> new NotFoundTaskException(taskId));
 
         task.assignTaskToMember(projectMember);
