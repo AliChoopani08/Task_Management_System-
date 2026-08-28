@@ -74,9 +74,6 @@ public class ProjectControllerTest {
         projectSummary = ProjectSummary.builder()
                 .id(2L)
                 .title("Design A Formal Logo")
-                .description("Design a formal logo for a transportation company")
-                .startDate(of(20026,2,20))
-                .dueDate(of(2026,5,10))
                 .manager(new MemberSummary(1L, "Ali Ahmadi", ROLE_MANAGER))
                 .build();
     }
@@ -107,8 +104,6 @@ public class ProjectControllerTest {
                 .memberRole(ROLE_DEVELOPER.name())
                 .build();
         ProjectDetails projectMemberSummary = ProjectDetails.builder()
-                .project(projectSummary)
-                .members(Set.of(new MemberSummary(3L, "Akbar Hoseyni", ROLE_DEVELOPER)))
                 .build();
 
         given(projectAuthorization.isManager(any(Authentication.class)))

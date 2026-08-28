@@ -23,8 +23,6 @@ public class ProjectMemberTestFactory {
         return ProjectSummary.builder()
                 .id(project.getId())
                 .title(project.getTitle())
-                .description(project.getDescription())
-                .dueDate(project.getDueDate())
                 .manager(new MemberSummary(manager.getId(), manager.getProfile().getFullName(),  projectMember.getRole()))
                 .build();
     }

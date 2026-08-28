@@ -7,7 +7,7 @@ import java.util.Set;
 public interface ProjectService {
 
     ProjectSummary createAProject(CreateProjectRequest request, Long managerId);
-    ProjectDetails addProjectMember(Long projectId, Long managerId, Long newMemberId, AddNewProjectMemberRequest request);
+    ProjectMembersDetails addProjectMember(Long projectId, Long managerId, Long newMemberId, AddNewProjectMemberRequest request);
     Set<MyProjectsSummary> getMyProjectsSummary(Long memberId);
 
 }

@@ -1,6 +1,7 @@
 package com.Ali_Choopani.Task_Management_System.mappers;
 
 import com.Ali_Choopani.Task_Management_System.dto.project.MyProjectsSummary;
+import com.Ali_Choopani.Task_Management_System.dto.project.ProjectDetails;
 import com.Ali_Choopani.Task_Management_System.dto.project.ProjectSummary;
 import com.Ali_Choopani.Task_Management_System.entities.*;
 import org.junit.jupiter.api.BeforeEach;
@@ -47,8 +48,8 @@ public class ProjectMemberMapperTest {
         final ProjectSummary summary = mapper.toSummary(getFirstProject);
 
         assertThat(summary)
-                .extracting(ProjectSummary::title, ProjectSummary::dueDate, p -> p.manager().name())
-                .containsExactly("Mobile Application", of(2026,8,30),"Ali Choopani");
+                .extracting(ProjectSummary::title,p -> p.manager().name())
+                .containsExactly("Mobile Application", "Ali Choopani");
         }
 
     @Test
@@ -60,5 +61,19 @@ public class ProjectMemberMapperTest {
                 .extracting(MyProjectsSummary::title, MyProjectsSummary::role)
                 .containsExactly(tuple("Mobile Application", ROLE_DEVELOPER),
                                  tuple("Task Management System", ROLE_MANAGER));
+    }
+
+    @Test
+    void shouldMapProjectMemberToProjectDetails() {
+        final ProjectMember projectManager = memberProjects.stream()
+                .filter(p -> p.getRole() == ROLE_MANAGER)
+                .findFirst()
+                .orElse(null);
+
+        final ProjectDetails projectDetails = mapper.toProjectDetails(projectManager);
+
+        assertThat(projectDetails)
+                .extracting(ProjectDetails::title, p -> p.manager().name())
+                .containsExactly("Task Management System", "Ali Choopani");
     }
 }

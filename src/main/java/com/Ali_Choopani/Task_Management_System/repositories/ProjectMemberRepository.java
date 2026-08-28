@@ -39,7 +39,7 @@ public interface ProjectMemberRepository extends JpaRepository<ProjectMember, Lo
             JOIN pm.project p
             JOIN pm.member m
             JOIN m.profile pr
-            WHERE p.id = :projectId AND pm.role != ROLE_MANAGER
+            WHERE p.id = :projectId
             """)
     Set<MemberSummary> findMembersOfProjectByProjectId(@Param("projectId") Long projectId);
 

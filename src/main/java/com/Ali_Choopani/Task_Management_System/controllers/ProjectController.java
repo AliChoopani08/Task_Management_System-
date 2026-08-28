@@ -39,11 +39,11 @@ public class ProjectController {
     @PreAuthorize("@projectAuthorization.isManager(authentication)")
     @PostMapping("/{projectId}/member/{memberId}")
     @Operation(description = "This endpoint is only accessible for project manager !")
-    public ResponseEntity<ApiResponse<ProjectDetails>> addNewProjectMember(@AuthenticationPrincipal UserDetailImpl currentManager,
+    public ResponseEntity<ApiResponse<ProjectMembersDetails>> addNewProjectMember(@AuthenticationPrincipal UserDetailImpl currentManager,
                                                                            @PathVariable("projectId") Long projectId,
                                                                            @PathVariable("memberId") Long memberId,
                                                                            @RequestBody @Valid AddNewProjectMemberRequest request) {
-        final ProjectDetails response = service.addProjectMember(projectId, currentManager.getId(), memberId, request);
+        final ProjectMembersDetails response = service.addProjectMember(projectId, currentManager.getId(), memberId, request);
 
         return status(CREATED)
                 .body(new ApiResponse<>(CREATED.value(), "A new member added to project successfully", response, now()));
