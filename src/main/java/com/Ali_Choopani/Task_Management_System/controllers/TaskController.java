@@ -5,21 +5,17 @@ import com.Ali_Choopani.Task_Management_System.dto.task.CreateTaskRequest;
 import com.Ali_Choopani.Task_Management_System.dto.task.TaskSummary;
 import com.Ali_Choopani.Task_Management_System.security.UserDetailImpl;
 import com.Ali_Choopani.Task_Management_System.services.task.TaskService;
-import com.Ali_Choopani.Task_Management_System.services.task.TaskServiceImpl;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import javax.xml.stream.events.EntityReference;
-
-import java.time.LocalDateTime;
-
 import static java.time.LocalDateTime.now;
 import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.ResponseEntity.ok;
 import static org.springframework.http.ResponseEntity.status;
 
 @RestController
@@ -39,4 +35,14 @@ public class TaskController {
                 .body(new ApiResponse<>(CREATED.value(), "A new task in project was created successfully", responseService, now()));
     }
 
+    @PreAuthorize("@projectAuthorization.isManager(authentication)")
+    @PatchMapping("project/{projectId}/task/{taskId}/member/{memberId}")
+    public ResponseEntity<ApiResponse<TaskSummary>> assignTaskToProjectMember(@AuthenticationPrincipal UserDetailImpl currentUser,
+                                                                              @PathVariable Long projectId,
+                                                                              @PathVariable Long taskId,
+                                                                              @PathVariable Long memberId) {
+        final TaskSummary serviceResponse = service.assignToProjectMember(taskId, projectId, memberId, currentUser.getId());
+
+        return ok(new ApiResponse<>(OK.value(), "Task was assigned to project member successfully", serviceResponse, now()));
+    }
 }

@@ -34,6 +34,7 @@ public class Task {
     private TaskStatus status;
     @CreatedDate
     private LocalDate createAt;
+
     private LocalDate dueDate;
 
     @ManyToOne(fetch = LAZY)

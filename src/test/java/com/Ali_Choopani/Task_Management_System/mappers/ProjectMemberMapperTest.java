@@ -1,10 +1,9 @@
 package com.Ali_Choopani.Task_Management_System.mappers;
 
 import com.Ali_Choopani.Task_Management_System.dto.project.MyProjectsSummary;
+import com.Ali_Choopani.Task_Management_System.dto.project.ProjectDetails;
 import com.Ali_Choopani.Task_Management_System.dto.project.ProjectSummary;
 import com.Ali_Choopani.Task_Management_System.entities.*;
-import com.Ali_Choopani.Task_Management_System.testFactories.ProjectMemberTestFactory;
-import org.assertj.core.groups.Tuple;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
@@ -34,8 +33,8 @@ public class ProjectMemberMapperTest {
 
         User user =  createUser(2L, "Ali_ch_1234@gami.com",null, "Ali Choopani");
 
-        memberProjects.add(createProjectMember(mobileProject, user, ROLE_DEVELOPER));
-        memberProjects.add(createProjectMember(taskManagementProject, user, ROLE_MANAGER));
+        memberProjects.add(createProjectMember(3L, user, ROLE_DEVELOPER, mobileProject));
+        memberProjects.add(createProjectMember(4L, user, ROLE_MANAGER, taskManagementProject));
 
     }
 
@@ -49,8 +48,8 @@ public class ProjectMemberMapperTest {
         final ProjectSummary summary = mapper.toSummary(getFirstProject);
 
         assertThat(summary)
-                .extracting(ProjectSummary::title, ProjectSummary::dueDate, p -> p.manager().name())
-                .containsExactly("Mobile Application", of(2026,8,30),"Ali Choopani");
+                .extracting(ProjectSummary::title,p -> p.manager().name())
+                .containsExactly("Mobile Application", "Ali Choopani");
         }
 
     @Test
@@ -62,5 +61,19 @@ public class ProjectMemberMapperTest {
                 .extracting(MyProjectsSummary::title, MyProjectsSummary::role)
                 .containsExactly(tuple("Mobile Application", ROLE_DEVELOPER),
                                  tuple("Task Management System", ROLE_MANAGER));
+    }
+
+    @Test
+    void shouldMapProjectMemberToProjectDetails() {
+        final ProjectMember projectManager = memberProjects.stream()
+                .filter(p -> p.getRole() == ROLE_MANAGER)
+                .findFirst()
+                .orElse(null);
+
+        final ProjectDetails projectDetails = mapper.toProjectDetails(projectManager);
+
+        assertThat(projectDetails)
+                .extracting(ProjectDetails::title, p -> p.manager().name())
+                .containsExactly("Task Management System", "Ali Choopani");
     }
 }

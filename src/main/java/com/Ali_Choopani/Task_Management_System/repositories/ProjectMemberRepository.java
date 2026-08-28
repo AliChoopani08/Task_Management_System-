@@ -15,7 +15,7 @@ import java.util.Set;
 @Repository
 public interface ProjectMemberRepository extends JpaRepository<ProjectMember, Long> {
 
-    @EntityGraph(attributePaths = {"user","project"})
+    @EntityGraph(attributePaths = {"member","project"})
     Optional<ProjectMember> findByProjectIdAndMemberIdAndRole(Long projectId, Long memberId, ProjectRole role);
 
     Optional<ProjectMember> findByProjectIdAndMemberId(Long projectId, Long memberId);
@@ -39,7 +39,7 @@ public interface ProjectMemberRepository extends JpaRepository<ProjectMember, Lo
             JOIN pm.project p
             JOIN pm.member m
             JOIN m.profile pr
-            WHERE p.id = :projectId AND pm.role != ROLE_MANAGER
+            WHERE p.id = :projectId
             """)
     Set<MemberSummary> findMembersOfProjectByProjectId(@Param("projectId") Long projectId);
 

@@ -6,8 +6,9 @@ import com.Ali_Choopani.Task_Management_System.entities.*;
 
 public class ProjectMemberTestFactory {
 
-    public static ProjectMember createProjectMember(Project project, User user, ProjectRole role) {
+    public static ProjectMember createProjectMember(Long id, User user, ProjectRole role, Project project) {
         ProjectMember projectMember = ProjectMember.builder()
+                .id(id)
                 .role(role)
                 .build();
         projectMember.addProjectMember(user, project);
@@ -22,8 +23,6 @@ public class ProjectMemberTestFactory {
         return ProjectSummary.builder()
                 .id(project.getId())
                 .title(project.getTitle())
-                .description(project.getDescription())
-                .dueDate(project.getDueDate())
                 .manager(new MemberSummary(manager.getId(), manager.getProfile().getFullName(),  projectMember.getRole()))
                 .build();
     }

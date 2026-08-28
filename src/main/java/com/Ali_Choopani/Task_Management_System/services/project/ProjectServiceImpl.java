@@ -56,8 +56,8 @@ public class ProjectServiceImpl implements ProjectService{
 
     @Override
     @Transactional
-    public ProjectDetails addProjectMember(Long projectId, Long managerId, Long newMemberId, AddNewProjectMemberRequest request) {
-        final ProjectMember projectManager = projectMemberRepository.findByProjectIdAndMemberIdAndRole(managerId, projectId, ROLE_MANAGER)
+    public ProjectMembersDetails addProjectMember(Long projectId, Long managerId, Long newMemberId, AddNewProjectMemberRequest request) {
+        final ProjectMember projectManager = projectMemberRepository.findByProjectIdAndMemberIdAndRole(projectId, managerId, ROLE_MANAGER)
                 .orElseThrow(() -> new NotFoundProjectAndMemberException(projectId, managerId, ROLE_MANAGER));
         final Project project = projectManager.getProject();
         final User newMember = userRepository.findById(newMemberId)
@@ -73,10 +73,9 @@ public class ProjectServiceImpl implements ProjectService{
         newProjectMember.addProjectMember(newMember, project);
         projectMemberRepository.save(newProjectMember);
 
-        final ProjectSummary projectSummary = projectMemberMapper.toSummary(projectManager);
         final Set<MemberSummary> members = projectMemberRepository.findMembersOfProjectByProjectId(project.getId());
 
-        return new ProjectDetails(projectSummary, members);
+        return new ProjectMembersDetails(project.getId(), project.getTitle(), members);
     }
 
     @Override

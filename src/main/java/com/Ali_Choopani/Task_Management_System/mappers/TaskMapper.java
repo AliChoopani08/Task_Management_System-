@@ -18,7 +18,7 @@ public interface TaskMapper {
     Task toEntity(CreateTaskRequest request);
 
     @Mapping(target = "id", source = "entity.id")
-    @Mapping(target = "assignee", source = "entity")
+    @Mapping(target = "assignee", expression = "java(hasAssignee(entity))")
     @Mapping(target = "project", source = "projectManager")
     TaskSummary toSummary(Task entity, ProjectMember projectManager);
 
@@ -27,4 +27,10 @@ public interface TaskMapper {
     AssigneeSummary toAssigneeSummary(Task entity);
 
 
+    default AssigneeSummary hasAssignee(Task entity) {
+        if (entity.getAssignee() != null) {
+            return toAssigneeSummary(entity);
+        }
+        else return null;
+    }
 }
