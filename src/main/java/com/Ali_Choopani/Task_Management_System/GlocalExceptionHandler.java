@@ -4,6 +4,7 @@ import com.Ali_Choopani.Task_Management_System.exceptions.*;
 import com.Ali_Choopani.Task_Management_System.exceptions.project.DuplicateProjectMemberException;
 import com.Ali_Choopani.Task_Management_System.exceptions.project.NotFoundMemberInProjectException;
 import com.Ali_Choopani.Task_Management_System.exceptions.project.NotFoundProjectAndMemberException;
+import com.Ali_Choopani.Task_Management_System.exceptions.project.NotFoundProjectException;
 import com.Ali_Choopani.Task_Management_System.exceptions.user.DuplicateUsername;
 import com.Ali_Choopani.Task_Management_System.exceptions.user.InsufficientInformationException;
 import com.Ali_Choopani.Task_Management_System.exceptions.user.NotFoundUserException;
@@ -121,6 +122,10 @@ public class GlocalExceptionHandler {
         return getErrorResponse(NOT_FOUND, "Not Found", ex.getMessage(), request);
     }
 
+    @ExceptionHandler(NotFoundProjectException.class)
+    public ResponseEntity<ErrorResponse> notFoundProjectHandler(NotFoundProjectException ex, HttpServletRequest request) {
+        return getErrorResponse(NOT_FOUND, "Not Found", ex.getMessage(), request);
+    }
         private ResponseEntity<ErrorResponse> getErrorResponse(HttpStatus status, String error, String message, HttpServletRequest request) {
         return ResponseEntity.status(status)
                 .body(new ErrorResponse(status.value(), error, message, request.getRequestURI(), now()));

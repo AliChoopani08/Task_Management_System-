@@ -6,6 +6,7 @@ import com.Ali_Choopani.Task_Management_System.entities.ProjectMember;
 import com.Ali_Choopani.Task_Management_System.entities.User;
 import com.Ali_Choopani.Task_Management_System.exceptions.project.DuplicateProjectMemberException;
 import com.Ali_Choopani.Task_Management_System.exceptions.project.NotFoundProjectAndMemberException;
+import com.Ali_Choopani.Task_Management_System.exceptions.project.NotFoundProjectException;
 import com.Ali_Choopani.Task_Management_System.exceptions.user.NotFoundUserException;
 import com.Ali_Choopani.Task_Management_System.exceptions.user.profile.ProfileNotCompletedException;
 import com.Ali_Choopani.Task_Management_System.mappers.ProjectMapper;
@@ -14,6 +15,8 @@ import com.Ali_Choopani.Task_Management_System.repositories.ProjectMemberReposit
 import com.Ali_Choopani.Task_Management_System.repositories.ProjectRepository;
 import com.Ali_Choopani.Task_Management_System.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -56,7 +59,7 @@ public class ProjectServiceImpl implements ProjectService{
 
     @Override
     @Transactional
-    public ProjectMembersDetails addProjectMember(Long projectId, Long managerId, Long newMemberId, AddNewProjectMemberRequest request) {
+    public ProjectMembersDetails addProjectMember(Long projectId, Long managerId, Long newMemberId, AddNewProjectMemberRequest request, Pageable pageable) {
         final ProjectMember projectManager = projectMemberRepository.findByProjectIdAndMemberIdAndRole(projectId, managerId, ROLE_MANAGER)
                 .orElseThrow(() -> new NotFoundProjectAndMemberException(projectId, managerId, ROLE_MANAGER));
         final Project project = projectManager.getProject();
@@ -73,7 +76,7 @@ public class ProjectServiceImpl implements ProjectService{
         newProjectMember.addProjectMember(newMember, project);
         projectMemberRepository.save(newProjectMember);
 
-        final Set<MemberSummary> members = projectMemberRepository.findMembersOfProjectByProjectId(project.getId());
+        final Page<MemberSummary> members = projectMemberRepository.findMembersOfProjectByProjectId(project.getId(), pageable);
 
         return new ProjectMembersDetails(project.getId(), project.getTitle(), members);
     }
@@ -83,6 +86,15 @@ public class ProjectServiceImpl implements ProjectService{
         final Set<ProjectMember> memberProjects = projectMemberRepository.findByMemberId(memberId);
 
         return projectMemberMapper.toMyProjectsSummary(memberProjects);
+    }
+
+    @Override
+    public ProjectMembersDetails getProjectMembersDetails(Long projectId, Pageable pageable) {
+        final Project project = repository.findById(projectId)
+                .orElseThrow(() -> new NotFoundProjectException(projectId));
+        final Page<MemberSummary> projectMembers = projectMemberRepository.findMembersOfProjectByProjectId(projectId, pageable);
+
+        return new ProjectMembersDetails(project.getId(), project.getTitle(), projectMembers);
     }
 
 

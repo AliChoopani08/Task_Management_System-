@@ -108,7 +108,7 @@ public class ProjectControllerTest {
 
         given(projectAuthorization.isManager(any(Authentication.class)))
                 .willReturn(true);
-        given(service.addProjectMember(anyLong(), anyLong(), anyLong(), any(AddNewProjectMemberRequest.class)))
+        given(service.addProjectMember(anyLong(), anyLong(), anyLong(), any(AddNewProjectMemberRequest.class), ))
                 .willReturn(projectMemberSummary);
 
         mockMvc.perform(post("/project/1/member/3")
