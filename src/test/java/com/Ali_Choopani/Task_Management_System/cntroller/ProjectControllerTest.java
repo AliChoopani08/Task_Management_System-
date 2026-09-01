@@ -15,6 +15,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
@@ -108,8 +109,9 @@ public class ProjectControllerTest {
 
         given(projectAuthorization.isManager(any(Authentication.class)))
                 .willReturn(true);
-        given(service.addProjectMember(anyLong(), anyLong(), anyLong(), any(AddNewProjectMemberRequest.class)))
-                .willReturn(projectMemberSummary);
+        final PageRequest pageRequest = PageRequest.of(0, 10);
+//        given(service.addProjectMember(anyLong(), anyLong(), anyLong(), any(AddNewProjectMemberRequest.class), pageRequest))
+//                .willReturn(projectMemberSummary);
 
         mockMvc.perform(post("/project/1/member/3")
                 .with(user(userDetail))

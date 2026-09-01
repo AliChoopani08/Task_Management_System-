@@ -3,6 +3,8 @@ package com.Ali_Choopani.Task_Management_System.repositories;
 import com.Ali_Choopani.Task_Management_System.dto.project.MemberSummary;
 import com.Ali_Choopani.Task_Management_System.entities.ProjectMember;
 import com.Ali_Choopani.Task_Management_System.entities.ProjectRole;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -41,7 +43,7 @@ public interface ProjectMemberRepository extends JpaRepository<ProjectMember, Lo
             JOIN m.profile pr
             WHERE p.id = :projectId
             """)
-    Set<MemberSummary> findMembersOfProjectByProjectId(@Param("projectId") Long projectId);
+    Page<MemberSummary> findMembersOfProjectByProjectId(@Param("projectId") Long projectId, Pageable pageable);
 
     Optional<Set<ProjectMember>> findByMemberIdAndRole(Long memberId, ProjectRole role);
 }

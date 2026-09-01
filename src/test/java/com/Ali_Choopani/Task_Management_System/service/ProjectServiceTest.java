@@ -14,6 +14,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.Optional;
 import java.util.Set;
@@ -109,9 +111,9 @@ public class ProjectServiceTest {
         whenHelper(projectMemberRepository.existsByProjectIdAndMemberId(anyLong(), anyLong()), false);
         whenHelper(projectMemberRepository.save(any(ProjectMember.class)), projectMember);
         whenHelper(projectMemberMapper.toSummary(any(ProjectMember.class)), summaryManager);
-        whenHelper(projectMemberRepository.findMembersOfProjectByProjectId(anyLong()), expectedMembersOfProject);
+        whenHelper(projectMemberRepository.findMembersOfProjectByProjectId(anyLong(), any(Pageable.class)), expectedMembersOfProject);
 
-        final ProjectDetails response = service.addProjectMember(projectId, manager.getId(), member.getId(), request);
+        final ProjectMembersDetails response = service.addProjectMember(projectId, manager.getId(), member.getId(), request, PageRequest.of(0,10));
 
 //        assertThat(response)
 //                .extracting(p -> p.project().title(), p -> p.project().manager().name(),
@@ -132,7 +134,7 @@ public class ProjectServiceTest {
         whenHelper(userRepository.findById(anyLong()), Optional.of(member));
         whenHelper(projectMemberRepository.existsByProjectIdAndMemberId(anyLong(), anyLong()), true);
 
-        assertThatThrownBy(() -> service.addProjectMember(projectId, manager.getId(), member.getId(), request))
+        assertThatThrownBy(() -> service.addProjectMember(projectId, manager.getId(), member.getId(), request, PageRequest.of(0,10)))
                 .isInstanceOf(DuplicateProjectMemberException.class)
                 .hasMessage("User with id [3] is already an active member of project with id  [1] !");
 

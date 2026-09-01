@@ -7,6 +7,9 @@ import com.Ali_Choopani.Task_Management_System.services.project.ProjectService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -42,8 +45,11 @@ public class ProjectController {
     public ResponseEntity<ApiResponse<ProjectMembersDetails>> addNewProjectMember(@AuthenticationPrincipal UserDetailImpl currentManager,
                                                                            @PathVariable("projectId") Long projectId,
                                                                            @PathVariable("memberId") Long memberId,
-                                                                           @RequestBody @Valid AddNewProjectMemberRequest request) {
-        final ProjectMembersDetails response = service.addProjectMember(projectId, currentManager.getId(), memberId, request);
+                                                                           @RequestBody @Valid AddNewProjectMemberRequest request,
+                                                                                  @ParameterObject
+                                                                                  @PageableDefault(size = 20, sort = "profile.firstName")
+                                                                                  Pageable pageable) {
+        final ProjectMembersDetails response = service.addProjectMember(projectId, currentManager.getId(), memberId, request, pageable);
 
         return status(CREATED)
                 .body(new ApiResponse<>(CREATED.value(), "A new member added to project successfully", response, now()));
@@ -54,5 +60,14 @@ public class ProjectController {
         final Set<MyProjectsSummary> serviceResponse = service.getMyProjectsSummary(currentUser.getId());
 
         return ok(new ApiResponse<>(OK.value(), "User's projects were returned successfully", serviceResponse, now()));
+    }
+
+    @GetMapping("/{projectId}/members")
+    public ResponseEntity<ApiResponse<ProjectMembersDetails>> getProjectMembersDetails(@PathVariable Long projectId,
+                                                                                       @ParameterObject
+                                                                                       @PageableDefault(size = 20, sort = "member.profile.firstName")Pageable pageable) {
+        final ProjectMembersDetails serviceResponse = service.getProjectMembersDetails(projectId, pageable);
+
+        return ok(new ApiResponse<>(OK.value(), "Project members details were returned successfully", serviceResponse, now()));
     }
 }
