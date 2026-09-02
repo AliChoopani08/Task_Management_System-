@@ -3,6 +3,7 @@ package com.Ali_Choopani.Task_Management_System.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -38,6 +39,9 @@ public class ProjectMember {
     @OneToMany(mappedBy = "assignee", cascade = ALL, fetch = LAZY)
     public Set<Task> tasks = new LinkedHashSet<>();
 
+    @OneToMany(mappedBy = "author", cascade = ALL, fetch = LAZY)
+    public Set<Comment> comments = new HashSet<>();
+
     public void addProjectMember(User member , Project project) {
         this.setMember(member);
         this.setProject(project);
@@ -48,5 +52,9 @@ public class ProjectMember {
 
     public Set<Task> getTasks() {
         return this.tasks == null ? new LinkedHashSet<>() : this.tasks;
+    }
+
+    public Set<Comment> getComments() {
+        return this.comments == null ? new HashSet<>() : this.comments;
     }
 }

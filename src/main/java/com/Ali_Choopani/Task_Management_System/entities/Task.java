@@ -57,4 +57,8 @@ public class Task {
         this.setProject(project);
         project.getTasks().add(this);
     }
+
+    public Set<Comment> getComments() {
+        return this.comments == null ? new HashSet<>() : this.comments;
+    }
 }
