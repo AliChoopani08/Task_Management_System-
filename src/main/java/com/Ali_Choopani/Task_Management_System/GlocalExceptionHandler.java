@@ -5,6 +5,8 @@ import com.Ali_Choopani.Task_Management_System.exceptions.project.DuplicateProje
 import com.Ali_Choopani.Task_Management_System.exceptions.project.NotFoundMemberInProjectException;
 import com.Ali_Choopani.Task_Management_System.exceptions.project.NotFoundProjectAndMemberException;
 import com.Ali_Choopani.Task_Management_System.exceptions.project.NotFoundProjectException;
+import com.Ali_Choopani.Task_Management_System.exceptions.task.NotFoundTaskAndAssigneeException;
+import com.Ali_Choopani.Task_Management_System.exceptions.task.NotMatchTaskWithAssigneeException;
 import com.Ali_Choopani.Task_Management_System.exceptions.user.DuplicateUsername;
 import com.Ali_Choopani.Task_Management_System.exceptions.user.InsufficientInformationException;
 import com.Ali_Choopani.Task_Management_System.exceptions.user.NotFoundUserException;
@@ -126,6 +128,17 @@ public class GlocalExceptionHandler {
     public ResponseEntity<ErrorResponse> notFoundProjectHandler(NotFoundProjectException ex, HttpServletRequest request) {
         return getErrorResponse(NOT_FOUND, "Not Found", ex.getMessage(), request);
     }
+
+    @ExceptionHandler(NotFoundTaskAndAssigneeException.class)
+    public ResponseEntity<ErrorResponse> notFoundTaskAndAssigneeHandler(NotFoundTaskAndAssigneeException ex, HttpServletRequest request) {
+        return getErrorResponse(NOT_FOUND, "Not Found", ex.getMessage(), request);
+    }
+
+    @ExceptionHandler(NotMatchTaskWithAssigneeException.class)
+    public ResponseEntity<ErrorResponse> notMatchTaskWithAssigneeHandler(NotMatchTaskWithAssigneeException ex, HttpServletRequest request) {
+        return getErrorResponse(NOT_FOUND, "Not Match Task With Assignee", ex.getMessage(), request);
+    }
+
         private ResponseEntity<ErrorResponse> getErrorResponse(HttpStatus status, String error, String message, HttpServletRequest request) {
         return ResponseEntity.status(status)
                 .body(new ErrorResponse(status.value(), error, message, request.getRequestURI(), now()));

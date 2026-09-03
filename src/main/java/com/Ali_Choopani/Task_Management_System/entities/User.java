@@ -51,18 +51,11 @@ public class User {
     private Set<ProjectMember> projectMembers = new HashSet<>();
 
     @OneToMany(mappedBy = "user", cascade = ALL, fetch = LAZY)
-    private Set<Comment> comments = new HashSet<>();
-
-    @OneToMany(mappedBy = "user", cascade = ALL, fetch = LAZY)
     public Set<Device> devices = new LinkedHashSet<>();
 
 
     public Set<ProjectMember> getProjectMembers() {
         return initializeIfNull(this.projectMembers, new HashSet<>());
-    }
-
-    public Set<Comment> getComments() {
-        return initializeIfNull(this.comments, new HashSet<>());
     }
 
     public Set<Device> getDevices() {
