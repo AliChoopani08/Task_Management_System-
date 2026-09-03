@@ -16,7 +16,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Comment {
+public class WorkLog {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -33,11 +33,11 @@ public class Comment {
     @JoinColumn(name = "task_id")
     private Task task;
 
-    public void addCommentTask(ProjectMember author, Task task) {
+    public void addReportTask(ProjectMember author, Task task) {
         this.setAuthor(author);
-        author.getComments().add(this);
+        author.getWorkLogs().add(this);
 
         this.setTask(task);
-        task.getComments().add(this);
+        task.getWorkLogs().add(this);
     }
 }

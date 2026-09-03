@@ -1,14 +1,13 @@
 package com.Ali_Choopani.Task_Management_System.services.comment;
 
-import com.Ali_Choopani.Task_Management_System.dto.comment.CommentSummary;
-import com.Ali_Choopani.Task_Management_System.dto.comment.CreateCommentRequest;
-import com.Ali_Choopani.Task_Management_System.entities.Comment;
+import com.Ali_Choopani.Task_Management_System.dto.comment.CreateWorkLogRequest;
+import com.Ali_Choopani.Task_Management_System.dto.comment.WorkLogSummary;
+import com.Ali_Choopani.Task_Management_System.entities.WorkLog;
 import com.Ali_Choopani.Task_Management_System.entities.Task;
-import com.Ali_Choopani.Task_Management_System.exceptions.task.NotFoundTaskAndAssignee;
-import com.Ali_Choopani.Task_Management_System.exceptions.task.NotMatchTaskWithAssignee;
-import com.Ali_Choopani.Task_Management_System.mappers.CommentMapper;
-import com.Ali_Choopani.Task_Management_System.repositories.CommentRepository;
-import com.Ali_Choopani.Task_Management_System.repositories.ProjectMemberRepository;
+import com.Ali_Choopani.Task_Management_System.exceptions.task.NotFoundTaskAndAssigneeException;
+import com.Ali_Choopani.Task_Management_System.exceptions.task.NotMatchTaskWithAssigneeException;
+import com.Ali_Choopani.Task_Management_System.mappers.WorkLogMapper;
+import com.Ali_Choopani.Task_Management_System.repositories.WorkLogRepository;
 import com.Ali_Choopani.Task_Management_System.repositories.TaskRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,25 +15,25 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class CommentServiceImpl implements CommentService{
+public class WorkLogServiceImpl implements WorkLogService {
 
-    private final CommentRepository repository;
+    private final WorkLogRepository repository;
     private final TaskRepository taskRepository;
-    private final CommentMapper mapper;
+    private final WorkLogMapper mapper;
 
     @Override
     @Transactional
-    public CommentSummary createComment(Long authorId, Long taskId, CreateCommentRequest request) {
+    public WorkLogSummary createWorkLog(Long authorId, Long taskId, CreateWorkLogRequest request) {
         final Task task = taskRepository.findByIdAndAssigneeId(taskId, authorId)
-                .orElseThrow(() -> new NotFoundTaskAndAssignee(taskId, authorId));
+                .orElseThrow(() -> new NotFoundTaskAndAssigneeException(taskId, authorId));
 
         if (!task.getProject().getId().equals(task.getAssignee().getProject().getId())) {
-            throw new NotMatchTaskWithAssignee(taskId, authorId);
+            throw new NotMatchTaskWithAssigneeException(taskId, authorId);
         }
-        final Comment comment = mapper.toEntity(request);
-        comment.addCommentTask(task.getAssignee(), task);
-        final Comment savedComment = repository.save(comment);
+        final WorkLog log = mapper.toEntity(request);
+        log.addReportTask(task.getAssignee(), task);
+        final WorkLog savedLog = repository.save(log);
 
-        return mapper.toSummary(savedComment);
+        return mapper.toSummary(savedLog);
     }
 }

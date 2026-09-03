@@ -1,9 +1,9 @@
 package com.Ali_Choopani.Task_Management_System.services.comment;
 
-import com.Ali_Choopani.Task_Management_System.dto.comment.CommentSummary;
-import com.Ali_Choopani.Task_Management_System.dto.comment.CreateCommentRequest;
+import com.Ali_Choopani.Task_Management_System.dto.comment.CreateWorkLogRequest;
+import com.Ali_Choopani.Task_Management_System.dto.comment.WorkLogSummary;
 
-public interface CommentService {
+public interface WorkLogService {
 
-    CommentSummary createComment(Long authorId, Long taskId, CreateCommentRequest request);
+    WorkLogSummary createWorkLog(Long authorId, Long taskId, CreateWorkLogRequest request);
 }

@@ -7,7 +7,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDate;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.Set;
 
 import static jakarta.persistence.EnumType.STRING;
@@ -22,6 +21,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @NoArgsConstructor
 @Getter
 @Setter
+@EqualsAndHashCode
 public class Task {
 
     @Id
@@ -46,7 +46,7 @@ public class Task {
     private Project project;
 
     @OneToMany(mappedBy = "task", fetch = LAZY)
-    private Set<Comment> comments = new HashSet<>();
+    private Set<WorkLog> workLogs = new HashSet<>();
 
     public void assignTaskToMember(ProjectMember projectMember) {
         this.setAssignee(projectMember);
@@ -58,7 +58,7 @@ public class Task {
         project.getTasks().add(this);
     }
 
-    public Set<Comment> getComments() {
-        return this.comments == null ? new HashSet<>() : this.comments;
+    public Set<WorkLog> getWorkLogs() {
+        return this.workLogs == null ? new HashSet<>() : this.workLogs;
     }
 }
