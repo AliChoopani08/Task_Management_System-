@@ -15,11 +15,19 @@ import java.util.Optional;
 @Repository
 public interface TaskRepository extends JpaRepository<Task, Long> {
 
-    Optional<Task> findByAssigneeIdAndTitleIgnoreCase(Long assignee, String title);
+    Optional<Task> findByAssigneeIdAndTitleIgnoreCase(Long assigneeId, String title);
     Optional<Task> findByProjectIdAndTitleIgnoreCase(Long projectId, String title);
     Optional<Task> findByProjectIdAndId(Long projectId, Long id);
+    @Query("""
+            SELECT t 
+            FROM Task t
+            JOIN t.assignee a
+            JOIN a.member m
+            WHERE t.id = :taskId AND m.id = :assigneeId
+            """)
     @EntityGraph(attributePaths = "assignee")
-    Optional<Task> findByIdAndAssigneeId(Long id, Long assigneeId);
+    Optional<Task> findByIdAndAssigneeId(@Param("taskId") Long id, @Param("assigneeId") Long assigneeId);
+
     @Query("""
             SELECT new com.Ali_Choopani.Task_Management_System.dto.task.MyTasksSummary(t.id, t.title, t.status)
             FROM Task t
