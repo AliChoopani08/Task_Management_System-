@@ -2,7 +2,7 @@ package com.Ali_Choopani.Task_Management_System.service;
 
 import com.Ali_Choopani.Task_Management_System.dto.project.ProjectSummary;
 import com.Ali_Choopani.Task_Management_System.dto.task.CreateTaskRequest;
-import com.Ali_Choopani.Task_Management_System.dto.task.TaskSummary;
+import com.Ali_Choopani.Task_Management_System.dto.task.TaskDetails;
 import com.Ali_Choopani.Task_Management_System.entities.*;
 import com.Ali_Choopani.Task_Management_System.mappers.TaskMapper;
 import com.Ali_Choopani.Task_Management_System.repositories.ProjectMemberRepository;
@@ -47,7 +47,7 @@ public class TaskServiceTest {
 
     private Project project;
     private Task task;
-    private TaskSummary summary;
+    private TaskDetails summary;
     private ProjectMember projectManager;
     private ProjectMember projectDeveloper;
     private ProjectSummary projectSummary;
@@ -90,10 +90,10 @@ public class TaskServiceTest {
         whenHelper(repository.save(any(Task.class)), task);
         whenHelper(mapper.toSummary(any(Task.class), any(ProjectMember.class)), summary);
 
-        final TaskSummary methodResponse = service.createANewTaskOfProject(projectId, managerId, request);
+        final TaskDetails methodResponse = service.createANewTaskOfProject(projectId, managerId, request);
 
         assertThat(methodResponse)
-                .extracting(TaskSummary::title, t -> t.project().title(), t -> t.project().manager().name())
+                .extracting(TaskDetails::title, t -> t.project().title(), t -> t.project().manager().name())
                 .containsExactly(task.getTitle(), project.getTitle(), "Maryam Hosseini");
     }
 
@@ -102,7 +102,7 @@ public class TaskServiceTest {
         final Task assignedTaskToMember = task.toBuilder()
                         .assignee(projectDeveloper)
                                 .build();
-        final TaskSummary expectedTaskSummary = createTaskSummary(assignedTaskToMember, projectSummary);
+        final TaskDetails expectedTaskSummary = createTaskSummary(assignedTaskToMember, projectSummary);
 
         whenHelper(projectMemberRepository.findByProjectIdAndMemberIdAndRole(anyLong(), anyLong(), any(ProjectRole.class)),
                 Optional.of(projectManager));
@@ -111,10 +111,10 @@ public class TaskServiceTest {
         whenHelper(repository.save(any(Task.class)), assignedTaskToMember);
         whenHelper(mapper.toSummary(any(Task.class), any(ProjectMember.class)), expectedTaskSummary);
 
-        final TaskSummary methodResponse = service.assignToProjectMember(task.getId(), project.getId(), projectDeveloper.getId(), projectManager.getId());
+        final TaskDetails methodResponse = service.assignToProjectMember(task.getId(), project.getId(), projectDeveloper.getId(), projectManager.getId());
 
         assertThat(methodResponse)
-                .extracting(TaskSummary::title, t -> t.project().title(), t -> t.assignee().fullName())
+                .extracting(TaskDetails::title, t -> t.project().title(), t -> t.assignee().fullName())
                 .containsExactly("Implementation authentication flow", "Set Up A Sporting Web Site","Reza Salami");
     }
 }

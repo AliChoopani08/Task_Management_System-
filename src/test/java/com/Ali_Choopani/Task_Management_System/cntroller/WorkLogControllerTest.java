@@ -1,27 +1,20 @@
 package com.Ali_Choopani.Task_Management_System.cntroller;
 
 import com.Ali_Choopani.Task_Management_System.controllers.WorkLogController;
-import com.Ali_Choopani.Task_Management_System.dto.comment.CreateWorkLogRequest;
-import com.Ali_Choopani.Task_Management_System.dto.comment.WorkLogSummary;
+import com.Ali_Choopani.Task_Management_System.dto.workLog.CreateWorkLogRequest;
+import com.Ali_Choopani.Task_Management_System.dto.workLog.WorkLogDetails;
 import com.Ali_Choopani.Task_Management_System.security.CustomUserDetailsService;
 import com.Ali_Choopani.Task_Management_System.security.JwtService;
 import com.Ali_Choopani.Task_Management_System.security.UserDetailImpl;
 import com.Ali_Choopani.Task_Management_System.security.securityExceptionHandlers.AuthenticationEntryPoint;
-import com.Ali_Choopani.Task_Management_System.services.comment.WorkLogService;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.Ali_Choopani.Task_Management_System.services.workLog.WorkLogService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentMatchers;
-import org.mockito.BDDMockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
-
-import java.time.LocalDateTime;
 
 import static com.Ali_Choopani.Task_Management_System.entities.UserRole.ROLE_USER;
 import static com.Ali_Choopani.Task_Management_System.testFactories.UserTestFactory.createUserDetail;
@@ -55,12 +48,12 @@ public class WorkLogControllerTest {
     private ObjectMapper mapper;
 
     private UserDetailImpl currentUser;
-    private WorkLogSummary summary;
+    private WorkLogDetails summary;
 
     @BeforeEach
     void setUp() {
         currentUser = createUserDetail(1L, "Ahmad_1376.sajad@gmail.com", ROLE_USER);
-        summary = WorkLogSummary.builder()
+        summary = WorkLogDetails.builder()
                 .taskId(2L)
                 .taskTitle("Implementation Login Flow")
                 .description("Jwt authentication was implemented")

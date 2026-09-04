@@ -2,14 +2,13 @@ package com.Ali_Choopani.Task_Management_System.testFactories;
 
 import com.Ali_Choopani.Task_Management_System.dto.project.ProjectSummary;
 import com.Ali_Choopani.Task_Management_System.dto.task.AssigneeSummary;
-import com.Ali_Choopani.Task_Management_System.dto.task.TaskSummary;
+import com.Ali_Choopani.Task_Management_System.dto.task.TaskDetails;
 import com.Ali_Choopani.Task_Management_System.entities.Project;
 import com.Ali_Choopani.Task_Management_System.entities.ProjectMember;
 import com.Ali_Choopani.Task_Management_System.entities.Task;
 import com.Ali_Choopani.Task_Management_System.entities.TaskStatus;
 
 import java.time.LocalDate;
-import java.util.Optional;
 
 import static java.util.Optional.ofNullable;
 
@@ -31,8 +30,8 @@ public class TaskTestFactory {
         return task;
     }
 
-    public static TaskSummary createTaskSummary(Task task, ProjectSummary projectSummary) {
-        TaskSummary.TaskSummaryBuilder summaryBuilder = TaskSummary.builder();
+    public static TaskDetails createTaskSummary(Task task, ProjectSummary projectSummary) {
+        TaskDetails.TaskDetailsBuilder summaryBuilder = TaskDetails.builder();
         ofNullable(task.getAssignee())
                 .ifPresent(a -> summaryBuilder.assignee(
                         new AssigneeSummary(a.getMember().getId(), a.getMember().getProfile().getFullName())));

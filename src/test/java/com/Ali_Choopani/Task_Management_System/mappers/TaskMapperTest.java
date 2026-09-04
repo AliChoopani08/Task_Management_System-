@@ -1,15 +1,11 @@
 package com.Ali_Choopani.Task_Management_System.mappers;
 
-import com.Ali_Choopani.Task_Management_System.dto.task.TaskSummary;
+import com.Ali_Choopani.Task_Management_System.dto.task.TaskDetails;
 import com.Ali_Choopani.Task_Management_System.entities.*;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.time.LocalDate;
 
 import static com.Ali_Choopani.Task_Management_System.entities.ProjectRole.ROLE_DEVELOPER;
 import static com.Ali_Choopani.Task_Management_System.entities.ProjectRole.ROLE_MANAGER;
@@ -54,10 +50,10 @@ public class TaskMapperTest {
 
     @Test
     void shouldMapEntityToSummary() {
-        final TaskSummary summary = taskMapper.toSummary(task, projectManager);
+        final TaskDetails summary = taskMapper.toSummary(task, projectManager);
 
         assertThat(summary)
-                .extracting(TaskSummary::title, t -> t.project().title(), t-> t.assignee().fullName(),
+                .extracting(TaskDetails::title, t -> t.project().title(), t-> t.assignee().fullName(),
                         t -> t.project().manager().name())
                 .containsExactly(task.getTitle(), task.getProject().getTitle(), "Ali Ahmadi", "Zahra Akbari");
     }

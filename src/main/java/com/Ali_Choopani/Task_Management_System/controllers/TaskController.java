@@ -2,7 +2,7 @@ package com.Ali_Choopani.Task_Management_System.controllers;
 
 import com.Ali_Choopani.Task_Management_System.ApiResponse;
 import com.Ali_Choopani.Task_Management_System.dto.task.CreateTaskRequest;
-import com.Ali_Choopani.Task_Management_System.dto.task.TaskSummary;
+import com.Ali_Choopani.Task_Management_System.dto.task.TaskDetails;
 import com.Ali_Choopani.Task_Management_System.dto.task.UserTasksSummary;
 import com.Ali_Choopani.Task_Management_System.security.UserDetailImpl;
 import com.Ali_Choopani.Task_Management_System.services.task.TaskService;
@@ -10,7 +10,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -33,9 +32,9 @@ public class TaskController {
 
     @PreAuthorize("@projectAuthorization.isManager(authentication)")
     @PostMapping("project/{projectId}")
-    public ResponseEntity<ApiResponse<TaskSummary>> createTask(@AuthenticationPrincipal UserDetailImpl currentUser,
+    public ResponseEntity<ApiResponse<TaskDetails>> createTask(@AuthenticationPrincipal UserDetailImpl currentUser,
                                                                @PathVariable("projectId") Long projectId, @RequestBody @Valid CreateTaskRequest request) {
-        final TaskSummary responseService = service.createANewTaskOfProject(projectId, currentUser.getId(), request);
+        final TaskDetails responseService = service.createANewTaskOfProject(projectId, currentUser.getId(), request);
 
         return status(CREATED)
                 .body(new ApiResponse<>(CREATED.value(), "A new task in project was created successfully", responseService, now()));
@@ -43,11 +42,11 @@ public class TaskController {
 
     @PreAuthorize("@projectAuthorization.isManager(authentication)")
     @PatchMapping("project/{projectId}/task/{taskId}/member/{memberId}")
-    public ResponseEntity<ApiResponse<TaskSummary>> assignTaskToProjectMember(@AuthenticationPrincipal UserDetailImpl currentUser,
+    public ResponseEntity<ApiResponse<TaskDetails>> assignTaskToProjectMember(@AuthenticationPrincipal UserDetailImpl currentUser,
                                                                               @PathVariable Long projectId,
                                                                               @PathVariable Long taskId,
                                                                               @PathVariable Long memberId) {
-        final TaskSummary serviceResponse = service.assignToProjectMember(taskId, projectId, memberId, currentUser.getId());
+        final TaskDetails serviceResponse = service.assignToProjectMember(taskId, projectId, memberId, currentUser.getId());
 
         return ok(new ApiResponse<>(OK.value(), "Task was assigned to project member successfully", serviceResponse, now()));
     }
