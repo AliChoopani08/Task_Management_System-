@@ -1,10 +1,9 @@
-package com.Ali_Choopani.Task_Management_System.dto.comment;
+package com.Ali_Choopani.Task_Management_System.dto.workLog;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
 @Getter

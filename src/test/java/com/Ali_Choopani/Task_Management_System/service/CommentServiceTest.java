@@ -1,12 +1,12 @@
 package com.Ali_Choopani.Task_Management_System.service;
 
-import com.Ali_Choopani.Task_Management_System.dto.comment.CreateWorkLogRequest;
-import com.Ali_Choopani.Task_Management_System.dto.comment.WorkLogSummary;
+import com.Ali_Choopani.Task_Management_System.dto.workLog.CreateWorkLogRequest;
+import com.Ali_Choopani.Task_Management_System.dto.workLog.WorkLogDetails;
 import com.Ali_Choopani.Task_Management_System.entities.*;
 import com.Ali_Choopani.Task_Management_System.mappers.WorkLogMapper;
 import com.Ali_Choopani.Task_Management_System.repositories.WorkLogRepository;
 import com.Ali_Choopani.Task_Management_System.repositories.TaskRepository;
-import com.Ali_Choopani.Task_Management_System.services.comment.WorkLogServiceImpl;
+import com.Ali_Choopani.Task_Management_System.services.workLog.WorkLogServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -45,7 +45,7 @@ public class CommentServiceTest {
     private User user;
     private Task task;
     private WorkLog comment;
-    private WorkLogSummary summary;
+    private WorkLogDetails summary;
 
     @BeforeEach
     void setUp() {
@@ -55,7 +55,7 @@ public class CommentServiceTest {
         task = createTask(4L, "Implementation Login Feature", null, of(2026, 11, 30), IN_PROGRESS,
                 project, projectMember);
         comment = createComment(5L, "The business logic of login flow was wrote successfully", projectMember, task);
-        summary = WorkLogSummary.builder()
+        summary = WorkLogDetails.builder()
                 .description("The business logic of login flow was wrote successfully")
                 .authorId(2L)
                 .taskId(4L)
@@ -68,15 +68,15 @@ public class CommentServiceTest {
                 .description("The business logic of login flow was wrote successfully")
                 .build();
 
-        whenHelper(taskRepository.findByIdAndAssigneeId(anyLong(), anyLong()), Optional.of(task));
+        whenHelper(taskRepository.findByIdAndUserId(anyLong(), anyLong()), Optional.of(task));
         whenHelper(mapper.toEntity(any(CreateWorkLogRequest.class)), comment);
         whenHelper(repository.save(any(WorkLog.class)), comment);
-        whenHelper(mapper.toSummary(any(WorkLog.class)), summary);
+        whenHelper(mapper.toDetails(any(WorkLog.class)), summary);
 
-        final WorkLogSummary serviceResponse = service.createWorkLog(user.getId(), task.getId(), request);
+        final WorkLogDetails serviceResponse = service.createWorkLog(user.getId(), task.getId(), request);
 
         assertThat(serviceResponse)
-                .extracting(WorkLogSummary::description, WorkLogSummary::authorId, WorkLogSummary::taskId)
+                .extracting(WorkLogDetails::description, WorkLogDetails::authorId, WorkLogDetails::taskId)
                 .containsExactly("The business logic of login flow was wrote successfully", user.getId(), task.getId());
     }
 }

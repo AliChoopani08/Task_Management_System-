@@ -1,4 +1,4 @@
-package com.Ali_Choopani.Task_Management_System.dto.comment;
+package com.Ali_Choopani.Task_Management_System.dto.workLog;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
@@ -6,7 +6,7 @@ import lombok.Builder;
 import java.time.LocalDateTime;
 
 @Builder
-public record WorkLogSummary(@JsonProperty("task id") Long taskId,
+public record WorkLogDetails(@JsonProperty("task id") Long taskId,
                              @JsonProperty("task title") String taskTitle,
                              String description,
                              @JsonProperty("created at")LocalDateTime createdAt,

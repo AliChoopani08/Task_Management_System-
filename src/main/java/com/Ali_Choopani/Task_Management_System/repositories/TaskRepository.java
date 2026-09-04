@@ -23,10 +23,10 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
             FROM Task t
             JOIN t.assignee a
             JOIN a.member m
-            WHERE t.id = :taskId AND m.id = :assigneeId
+            WHERE t.id = :taskId AND m.id = :userId
             """)
     @EntityGraph(attributePaths = "assignee")
-    Optional<Task> findByIdAndAssigneeId(@Param("taskId") Long id, @Param("assigneeId") Long assigneeId);
+    Optional<Task> findByIdAndUserId(@Param("taskId") Long id, @Param("userId") Long userId);
 
     @Query("""
             SELECT new com.Ali_Choopani.Task_Management_System.dto.task.MyTasksSummary(t.id, t.title, t.status)

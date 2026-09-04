@@ -2,7 +2,7 @@ package com.Ali_Choopani.Task_Management_System.services.task;
 
 import com.Ali_Choopani.Task_Management_System.dto.task.CreateTaskRequest;
 import com.Ali_Choopani.Task_Management_System.dto.task.MyTasksSummary;
-import com.Ali_Choopani.Task_Management_System.dto.task.TaskSummary;
+import com.Ali_Choopani.Task_Management_System.dto.task.TaskDetails;
 import com.Ali_Choopani.Task_Management_System.dto.task.UserTasksSummary;
 import com.Ali_Choopani.Task_Management_System.entities.Profile;
 import com.Ali_Choopani.Task_Management_System.entities.Project;
@@ -37,7 +37,7 @@ public class TaskServiceImpl implements TaskService{
     private final ProfileRepository profileRepository;
 
     @Override
-    public TaskSummary createANewTaskOfProject(Long projectId, Long managerId, CreateTaskRequest request) {
+    public TaskDetails createANewTaskOfProject(Long projectId, Long managerId, CreateTaskRequest request) {
         final ProjectMember foundProjectManager = projectMemberRepository.findByProjectIdAndMemberIdAndRole(projectId, managerId, ROLE_MANAGER)
                 .orElseThrow(() -> new NotFoundProjectAndMemberException(projectId, managerId, ROLE_MANAGER));
         final Project project = foundProjectManager.getProject();
@@ -57,7 +57,7 @@ public class TaskServiceImpl implements TaskService{
     }
 
     @Override
-    public TaskSummary assignToProjectMember(Long taskId, Long projectId, Long memberId, Long managerId) {
+    public TaskDetails assignToProjectMember(Long taskId, Long projectId, Long memberId, Long managerId) {
         final ProjectMember projectManager = projectMemberRepository.findByProjectIdAndMemberIdAndRole(projectId, managerId, ROLE_MANAGER)
                 .orElseThrow(() -> new NotFoundProjectAndMemberException(projectId, managerId, ROLE_MANAGER));
         final ProjectMember projectMember = projectMemberRepository.findByProjectIdAndMemberId(projectId, memberId)
