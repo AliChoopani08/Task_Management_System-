@@ -4,9 +4,9 @@ import com.Ali_Choopani.Task_Management_System.entities.WorkLog;
 import com.Ali_Choopani.Task_Management_System.entities.ProjectMember;
 import com.Ali_Choopani.Task_Management_System.entities.Task;
 
-public class CommentTestFactory {
+public class WorkLogTestFactory {
 
-    public static WorkLog createComment(Long id, String description, ProjectMember author, Task task) {
+    public static WorkLog createWorkLog(Long id, String description, ProjectMember author, Task task) {
         final WorkLog comment = WorkLog.builder()
                 .id(id)
                 .description(description)

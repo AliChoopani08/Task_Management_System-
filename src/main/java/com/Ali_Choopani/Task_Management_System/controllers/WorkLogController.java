@@ -43,4 +43,12 @@ public class WorkLogController {
 
         return ok(new ApiResponse<>(OK.value(), "The task work logs summary of user were successfully returned", serviceResponse, now()));
     }
+
+    @GetMapping("/{workLogId}")
+    public ResponseEntity<ApiResponse<WorkLogDetails>> getTheRequestedWorkLogDetails(@PathVariable Long workLogId) {
+        final WorkLogDetails serviceResponse = service.getWorkLogDetails(workLogId);
+
+        return ok(new ApiResponse<>(OK.value(), "The details of requested work log were successfully returned", serviceResponse, now()));
+    }
+
 }

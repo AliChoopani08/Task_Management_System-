@@ -14,6 +14,7 @@ import com.Ali_Choopani.Task_Management_System.exceptions.user.UserWithRoleAndId
 import com.Ali_Choopani.Task_Management_System.exceptions.user.device.InvalidDeviceException;
 import com.Ali_Choopani.Task_Management_System.exceptions.user.device.refreshToken.DuplicateRefreshTokenException;
 import com.Ali_Choopani.Task_Management_System.exceptions.user.device.refreshToken.NotBeingMatchDeviceAndRefreshToken;
+import com.Ali_Choopani.Task_Management_System.exceptions.workLog.NotFoundWorkLogException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -137,6 +138,11 @@ public class GlocalExceptionHandler {
     @ExceptionHandler(NotMatchTaskWithAssigneeException.class)
     public ResponseEntity<ErrorResponse> notMatchTaskWithAssigneeHandler(NotMatchTaskWithAssigneeException ex, HttpServletRequest request) {
         return getErrorResponse(NOT_FOUND, "Not Match Task With Assignee", ex.getMessage(), request);
+    }
+
+    @ExceptionHandler(NotFoundWorkLogException.class)
+    public ResponseEntity<ErrorResponse> notFoundWorkLogHandler(NotFoundWorkLogException ex, HttpServletRequest request) {
+        return getErrorResponse(NOT_FOUND, "Not Found", ex.getMessage(), request);
     }
 
         private ResponseEntity<ErrorResponse> getErrorResponse(HttpStatus status, String error, String message, HttpServletRequest request) {

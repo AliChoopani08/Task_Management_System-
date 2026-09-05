@@ -19,7 +19,7 @@ import java.util.Optional;
 import static com.Ali_Choopani.Task_Management_System.TestMocksHelper.MockWhenHelper.whenHelper;
 import static com.Ali_Choopani.Task_Management_System.entities.ProjectRole.ROLE_DEVELOPER;
 import static com.Ali_Choopani.Task_Management_System.entities.TaskStatus.IN_PROGRESS;
-import static com.Ali_Choopani.Task_Management_System.testFactories.CommentTestFactory.createComment;
+import static com.Ali_Choopani.Task_Management_System.testFactories.WorkLogTestFactory.createWorkLog;
 import static com.Ali_Choopani.Task_Management_System.testFactories.ProjectMemberTestFactory.createProjectMember;
 import static com.Ali_Choopani.Task_Management_System.testFactories.ProjectTestFactory.createProject;
 import static com.Ali_Choopani.Task_Management_System.testFactories.TaskTestFactory.createTask;
@@ -54,7 +54,7 @@ public class CommentServiceTest {
         final ProjectMember projectMember = createProjectMember(3L, user, ROLE_DEVELOPER, project);
         task = createTask(4L, "Implementation Login Feature", null, of(2026, 11, 30), IN_PROGRESS,
                 project, projectMember);
-        comment = createComment(5L, "The business logic of login flow was wrote successfully", projectMember, task);
+        comment = createWorkLog(5L, "The business logic of login flow was wrote successfully", projectMember, task);
         summary = WorkLogDetails.builder()
                 .description("The business logic of login flow was wrote successfully")
                 .authorId(2L)
