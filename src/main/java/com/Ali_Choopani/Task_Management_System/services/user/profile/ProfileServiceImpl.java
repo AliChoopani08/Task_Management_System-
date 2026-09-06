@@ -31,4 +31,12 @@ public class ProfileServiceImpl implements ProfileService{
 
         return mapper.toSummary(updatedProfile);
      }
+
+    @Override
+    public ProfileSummary displayUserProfileView(Long userId) {
+        final Profile profile = repository.findByUserId(userId)
+                .orElseThrow(() -> new NotFoundProfileException(userId));
+
+        return mapper.toSummary(profile);
+    }
 }

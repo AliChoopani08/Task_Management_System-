@@ -43,9 +43,13 @@ public class Profile {
 
 
     public String getAge() {
-        final Period age = between(this.getBirthDate(), now());
+        if (this.getBirthDate() != null) {
+            final Period age = between(this.getBirthDate(), now());
 
-        return String.format("%d years, %d months, %d days", age.getYears(), age.getMonths(), age.getDays());
+            return format("%d years, %d months, %d days", age.getYears(), age.getMonths(), age.getDays());
+        }
+        else
+            return "";
     }
 
     public String getFullName() {

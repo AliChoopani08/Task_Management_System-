@@ -39,4 +39,11 @@ public class ProfileController {
 
         return ok(new ApiResponse<>(OK.value(), "Profile fields were successfully updated", serviceResponse, now()));
     }
+
+    @GetMapping
+    public ResponseEntity<ApiResponse<ProfileSummary>> displayUserProfileView(@AuthenticationPrincipal UserDetailImpl currentUser) {
+        final ProfileSummary serviceResponse = service.displayUserProfileView(currentUser.getId());
+
+        return ok(new ApiResponse<>(OK.value(), "User's profile view was successfully returned", serviceResponse, now()));
+    }
 }
