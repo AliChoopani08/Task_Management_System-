@@ -1,6 +1,6 @@
 package com.Ali_Choopani.Task_Management_System.services.user.profile;
 
-import com.Ali_Choopani.Task_Management_System.dto.user.profile.CompleteOrUpdateProfileRequest;
+import com.Ali_Choopani.Task_Management_System.dto.user.profile.CompleteOrUpdateProfileFieldsRequest;
 import com.Ali_Choopani.Task_Management_System.dto.user.profile.ProfileSummary;
 import com.Ali_Choopani.Task_Management_System.entities.Profile;
 import com.Ali_Choopani.Task_Management_System.exceptions.user.profile.NotFoundProfileException;
@@ -19,12 +19,14 @@ public class ProfileServiceImpl implements ProfileService{
 
     @Override
     @Transactional
-    public ProfileSummary completeProfileFields(CompleteOrUpdateProfileRequest request, Long userId) {
+    public ProfileSummary completeOrUpdateProfileFields(CompleteOrUpdateProfileFieldsRequest request, Long userId) {
         final Profile profile = repository.findByUserId(userId)
                 .orElseThrow(() -> new NotFoundProfileException(userId));
 
         mapper.updateProfile(profile, request);
-        profile.getUser().setProfileCompleted(true);
+        if (!profile.getUser().isProfileCompleted()) {
+            profile.getUser().setProfileCompleted(true);
+        }
         final Profile updatedProfile = repository.save(profile);
 
         return mapper.toSummary(updatedProfile);

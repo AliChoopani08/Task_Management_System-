@@ -1,6 +1,6 @@
 package com.Ali_Choopani.Task_Management_System.mappers;
 
-import com.Ali_Choopani.Task_Management_System.dto.user.profile.CompleteOrUpdateProfileRequest;
+import com.Ali_Choopani.Task_Management_System.dto.user.profile.CompleteOrUpdateProfileFieldsRequest;
 import com.Ali_Choopani.Task_Management_System.dto.user.profile.ProfileSummary;
 import com.Ali_Choopani.Task_Management_System.entities.Profile;
 import com.Ali_Choopani.Task_Management_System.entities.User;
@@ -35,7 +35,7 @@ public class ProfileMapperTest {
 
     @Test
     void shouldMapRequestToEntity() {
-        CompleteOrUpdateProfileRequest request = CompleteOrUpdateProfileRequest.builder()
+        CompleteOrUpdateProfileFieldsRequest request = CompleteOrUpdateProfileFieldsRequest.builder()
                 .firstName("Mohammad")
                 .surname("Rezaee")
                 .birthDate(of(2003,3,25))
@@ -50,7 +50,7 @@ public class ProfileMapperTest {
 
     @Test
     void shouldUpdateProfileName() {
-        CompleteOrUpdateProfileRequest request = CompleteOrUpdateProfileRequest.builder()
+        CompleteOrUpdateProfileFieldsRequest request = CompleteOrUpdateProfileFieldsRequest.builder()
                 .firstName("Akbar")
                 .build();
         mapper.updateProfile(profile, request);

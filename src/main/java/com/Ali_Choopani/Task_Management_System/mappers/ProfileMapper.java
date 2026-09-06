@@ -1,6 +1,6 @@
 package com.Ali_Choopani.Task_Management_System.mappers;
 
-import com.Ali_Choopani.Task_Management_System.dto.user.profile.CompleteOrUpdateProfileRequest;
+import com.Ali_Choopani.Task_Management_System.dto.user.profile.CompleteOrUpdateProfileFieldsRequest;
 import com.Ali_Choopani.Task_Management_System.dto.user.profile.ProfileSummary;
 import com.Ali_Choopani.Task_Management_System.entities.Profile;
 import org.mapstruct.Mapper;
@@ -13,9 +13,9 @@ import static org.mapstruct.NullValuePropertyMappingStrategy.IGNORE;
 , nullValuePropertyMappingStrategy = IGNORE)
 public interface ProfileMapper {
 
-    Profile toEntity(CompleteOrUpdateProfileRequest request);
+    Profile toEntity(CompleteOrUpdateProfileFieldsRequest request);
 
-    void updateProfile(@MappingTarget Profile profile, CompleteOrUpdateProfileRequest request);
+    void updateProfile(@MappingTarget Profile profile, CompleteOrUpdateProfileFieldsRequest request);
 
     @Mapping(target = "userId", source = "user.id")
     @Mapping(target = "age" , expression = "java(profile.getAge())")

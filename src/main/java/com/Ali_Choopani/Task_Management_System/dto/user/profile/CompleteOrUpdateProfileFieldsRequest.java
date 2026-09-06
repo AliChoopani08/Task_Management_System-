@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @Builder
 @Getter
 @ToString
-public class CompleteOrUpdateProfileRequest {
+public class CompleteOrUpdateProfileFieldsRequest {
 
     @NotBlank(message = "First name can't be null or empty !")
     @JsonProperty("First name")

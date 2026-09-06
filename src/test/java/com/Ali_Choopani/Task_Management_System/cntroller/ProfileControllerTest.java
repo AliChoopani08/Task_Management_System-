@@ -1,7 +1,7 @@
 package com.Ali_Choopani.Task_Management_System.cntroller;
 
 import com.Ali_Choopani.Task_Management_System.controllers.ProfileController;
-import com.Ali_Choopani.Task_Management_System.dto.user.profile.CompleteOrUpdateProfileRequest;
+import com.Ali_Choopani.Task_Management_System.dto.user.profile.CompleteOrUpdateProfileFieldsRequest;
 import com.Ali_Choopani.Task_Management_System.dto.user.profile.ProfileSummary;
 import com.Ali_Choopani.Task_Management_System.security.CustomUserDetailsService;
 import com.Ali_Choopani.Task_Management_System.security.JwtService;
@@ -67,7 +67,7 @@ public class ProfileControllerTest {
                 .biography("Site Developer")
                 .userId(2L)
                 .build();
-        CompleteOrUpdateProfileRequest request = CompleteOrUpdateProfileRequest.builder()
+        CompleteOrUpdateProfileFieldsRequest request = CompleteOrUpdateProfileFieldsRequest.builder()
                 .firstName("Reza")
                 .surname("Ahmadi")
                 .birthDate(of(2003, 3, 12))
@@ -75,7 +75,7 @@ public class ProfileControllerTest {
                 .build();
         final Long userId = fakeLoggedInUser.getId();
 
-        given(service.completeProfileFields(any(CompleteOrUpdateProfileRequest.class), anyLong()))
+        given(service.completeOrUpdateProfileFields(any(CompleteOrUpdateProfileFieldsRequest.class), anyLong()))
                 .willReturn(profileSummary);
 
         mockMvc.perform(post(("/profile"))
@@ -88,6 +88,6 @@ public class ProfileControllerTest {
                 .andExpect(jsonPath("$.data.['user id']").value(userId));
 
         verify(service)
-                .completeProfileFields(any(CompleteOrUpdateProfileRequest.class), anyLong());
+                .completeOrUpdateProfileFields(any(CompleteOrUpdateProfileFieldsRequest.class), anyLong());
     }
 }
