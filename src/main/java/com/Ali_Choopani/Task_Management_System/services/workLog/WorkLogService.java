@@ -9,5 +9,6 @@ import java.util.Set;
 public interface WorkLogService {
 
     WorkLogDetails createWorkLog(Long authorId, Long taskId, CreateWorkLogRequest request);
-    Set<WorkLogSummary> getWorkLogsSummaryOfFoundTaskAndUser(Long taskId, Long assigneeId);
+    Set<WorkLogSummary> getWorkLogsSummaryOfFoundTaskAndUser(Long taskId, Long userId);
+    WorkLogDetails getWorkLogDetails(Long workLogId);
 }

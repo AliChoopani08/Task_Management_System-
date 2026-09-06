@@ -7,19 +7,16 @@ import com.Ali_Choopani.Task_Management_System.entities.WorkLog;
 import com.Ali_Choopani.Task_Management_System.entities.Task;
 import com.Ali_Choopani.Task_Management_System.exceptions.task.NotFoundTaskAndAssigneeException;
 import com.Ali_Choopani.Task_Management_System.exceptions.task.NotMatchTaskWithAssigneeException;
+import com.Ali_Choopani.Task_Management_System.exceptions.workLog.NotFoundWorkLogException;
 import com.Ali_Choopani.Task_Management_System.mappers.WorkLogMapper;
 import com.Ali_Choopani.Task_Management_System.repositories.WorkLogRepository;
 import com.Ali_Choopani.Task_Management_System.repositories.TaskRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toSet;
 import static org.springframework.data.domain.PageRequest.of;
@@ -61,5 +58,14 @@ public class WorkLogServiceImpl implements WorkLogService {
         return workLogs.getContent()
                 .stream().map(mapper::toSummary)
                 .collect(toSet());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public WorkLogDetails getWorkLogDetails(Long workLogId) {
+        final WorkLog workLog = repository.findById(workLogId)
+                .orElseThrow(() -> new NotFoundWorkLogException(workLogId));
+
+        return mapper.toDetails(workLog);
     }
 }
