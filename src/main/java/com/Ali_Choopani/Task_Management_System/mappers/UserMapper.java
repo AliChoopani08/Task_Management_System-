@@ -5,10 +5,7 @@ import com.Ali_Choopani.Task_Management_System.dto.user.device.refreshToken.Regi
 import com.Ali_Choopani.Task_Management_System.dto.user.UserSummary;
 import com.Ali_Choopani.Task_Management_System.entities.User;
 import com.Ali_Choopani.Task_Management_System.security.UserDetailImpl;
-import org.mapstruct.AfterMapping;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
+import org.mapstruct.*;
 import org.springframework.security.core.GrantedAuthority;
 
 import static com.Ali_Choopani.Task_Management_System.entities.UserRole.valueOf;
@@ -43,4 +40,9 @@ public interface UserMapper {
 
     @Mapping(target = "fullName", expression = ("java(entity.getProfile().getFullName())"))
     UserViewSummary toViewSummary(User entity);
+
+    @Condition
+    default boolean isNotEmptyAndBlank(String value) {
+        return value != null && !value.isBlank();
+    }
 }

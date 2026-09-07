@@ -5,6 +5,7 @@ import com.Ali_Choopani.Task_Management_System.dto.task.CreateTaskRequest;
 import com.Ali_Choopani.Task_Management_System.dto.task.TaskDetails;
 import com.Ali_Choopani.Task_Management_System.entities.ProjectMember;
 import com.Ali_Choopani.Task_Management_System.entities.Task;
+import org.mapstruct.Condition;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -32,5 +33,9 @@ public interface TaskMapper {
             return toAssigneeSummary(entity);
         }
         else return null;
+    }
+    @Condition
+    default boolean isNotEmptyAndBlank(String value) {
+        return value != null && !value.isBlank();
     }
 }
