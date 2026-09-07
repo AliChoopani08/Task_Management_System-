@@ -1,8 +1,9 @@
 package com.Ali_Choopani.Task_Management_System.controllers;
 
 import com.Ali_Choopani.Task_Management_System.ApiResponse;
-import com.Ali_Choopani.Task_Management_System.dto.user.profile.CompleteOrUpdateProfileFieldsRequest;
+import com.Ali_Choopani.Task_Management_System.dto.user.profile.CompleteProfileFieldsRequest;
 import com.Ali_Choopani.Task_Management_System.dto.user.profile.ProfileSummary;
+import com.Ali_Choopani.Task_Management_System.dto.user.profile.UpdateProfileFieldsRequest;
 import com.Ali_Choopani.Task_Management_System.security.UserDetailImpl;
 import com.Ali_Choopani.Task_Management_System.services.user.profile.ProfileService;
 import jakarta.validation.Valid;
@@ -25,7 +26,7 @@ public class ProfileController {
 
     @PostMapping
     public ResponseEntity<ApiResponse<ProfileSummary>> completeProfileFields(@AuthenticationPrincipal UserDetailImpl currentUser,
-                                                                             @RequestBody @Valid CompleteOrUpdateProfileFieldsRequest request) {
+                                                                             @RequestBody @Valid CompleteProfileFieldsRequest request) {
         final ProfileSummary serviceResponse = service.completeOrUpdateProfileFields(request, currentUser.getId());
 
         return status(OK)
@@ -34,8 +35,8 @@ public class ProfileController {
 
     @PutMapping
     public ResponseEntity<ApiResponse<ProfileSummary>> updateProfileFields(@AuthenticationPrincipal UserDetailImpl currentUser,
-                                                                           @RequestBody @Valid CompleteOrUpdateProfileFieldsRequest request) {
-        final ProfileSummary serviceResponse = service.completeOrUpdateProfileFields(request, currentUser.getId());
+                                                                           @RequestBody @Valid UpdateProfileFieldsRequest request) {
+        final ProfileSummary serviceResponse = service.updateProfileFields(request, currentUser.getId());
 
         return ok(new ApiResponse<>(OK.value(), "Profile fields were successfully updated", serviceResponse, now()));
     }

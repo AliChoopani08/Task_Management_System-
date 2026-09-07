@@ -1,6 +1,6 @@
 package com.Ali_Choopani.Task_Management_System.service;
 
-import com.Ali_Choopani.Task_Management_System.dto.user.profile.CompleteOrUpdateProfileFieldsRequest;
+import com.Ali_Choopani.Task_Management_System.dto.user.profile.CompleteProfileFieldsRequest;
 import com.Ali_Choopani.Task_Management_System.dto.user.profile.ProfileSummary;
 import com.Ali_Choopani.Task_Management_System.entities.Profile;
 import com.Ali_Choopani.Task_Management_System.mappers.ProfileMapper;
@@ -58,7 +58,7 @@ public class ProfileServiceTest {
 
     @Test
     void shouldCompleteTheProfileFields_whenProfileExists() {
-        CompleteOrUpdateProfileFieldsRequest request = CompleteOrUpdateProfileFieldsRequest.builder()
+        CompleteProfileFieldsRequest request = CompleteProfileFieldsRequest.builder()
                 .firstName("Amin")
                 .surname("Mohammadi")
                 .birthDate(of(2009, 9, 17))
@@ -70,7 +70,7 @@ public class ProfileServiceTest {
         whenHelper(repository.findByUserId(anyLong()), Optional.of(profile));
         doAnswer(invocation ->  {
             Profile profile = invocation.getArgument(0);
-            CompleteOrUpdateProfileFieldsRequest dto = invocation.getArgument(1);
+            CompleteProfileFieldsRequest dto = invocation.getArgument(1);
 
             profile = Profile.builder()
                     .firstName(dto.getFirstName())
@@ -79,7 +79,7 @@ public class ProfileServiceTest {
                     .biography(dto.getBiography())
                     .build();
             return null;
-        }).when(mapper).updateProfile(any(Profile.class), any(CompleteOrUpdateProfileFieldsRequest.class));
+        }).when(mapper).updateProfile(any(Profile.class), any(CompleteProfileFieldsRequest.class));
         whenHelper(repository.save(any(Profile.class)), profile);
         whenHelper(mapper.toSummary(any(Profile.class)), summary);
 

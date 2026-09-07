@@ -1,7 +1,8 @@
 package com.Ali_Choopani.Task_Management_System.services.user.profile;
 
-import com.Ali_Choopani.Task_Management_System.dto.user.profile.CompleteOrUpdateProfileFieldsRequest;
+import com.Ali_Choopani.Task_Management_System.dto.user.profile.CompleteProfileFieldsRequest;
 import com.Ali_Choopani.Task_Management_System.dto.user.profile.ProfileSummary;
+import com.Ali_Choopani.Task_Management_System.dto.user.profile.UpdateProfileFieldsRequest;
 import com.Ali_Choopani.Task_Management_System.entities.Profile;
 import com.Ali_Choopani.Task_Management_System.exceptions.user.profile.NotFoundProfileException;
 import com.Ali_Choopani.Task_Management_System.mappers.ProfileMapper;
@@ -19,7 +20,7 @@ public class ProfileServiceImpl implements ProfileService{
 
     @Override
     @Transactional
-    public ProfileSummary completeOrUpdateProfileFields(CompleteOrUpdateProfileFieldsRequest request, Long userId) {
+    public ProfileSummary completeOrUpdateProfileFields(CompleteProfileFieldsRequest request, Long userId) {
         final Profile profile = repository.findByUserId(userId)
                 .orElseThrow(() -> new NotFoundProfileException(userId));
 
@@ -31,6 +32,20 @@ public class ProfileServiceImpl implements ProfileService{
 
         return mapper.toSummary(updatedProfile);
      }
+
+    @Override
+    public ProfileSummary updateProfileFields(UpdateProfileFieldsRequest request, Long userId) {
+        final Profile profile = repository.findByUserId(userId)
+                .orElseThrow(() -> new NotFoundProfileException(userId));
+
+        mapper.updateProfile(profile, request);
+        if (!profile.getUser().isProfileCompleted()) {
+            profile.getUser().setProfileCompleted(true);
+        }
+        final Profile updatedProfile = repository.save(profile);
+
+        return mapper.toSummary(updatedProfile);
+    }
 
     @Override
     public ProfileSummary displayUserProfileView(Long userId) {
