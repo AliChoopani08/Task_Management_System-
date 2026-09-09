@@ -2,6 +2,7 @@ package com.Ali_Choopani.Task_Management_System.mappers;
 
 import com.Ali_Choopani.Task_Management_System.dto.task.AssigneeSummary;
 import com.Ali_Choopani.Task_Management_System.dto.task.CreateTaskRequest;
+import com.Ali_Choopani.Task_Management_System.dto.task.ProjectTasksSummary;
 import com.Ali_Choopani.Task_Management_System.dto.task.TaskDetails;
 import com.Ali_Choopani.Task_Management_System.entities.ProjectMember;
 import com.Ali_Choopani.Task_Management_System.entities.Task;
@@ -27,6 +28,13 @@ public interface TaskMapper {
     @Mapping(target = "fullName", expression = "java(entity.assignee.getMember().getProfile().getFullName())")
     AssigneeSummary toAssigneeSummary(Task entity);
 
+    @Mapping(target = "taskId", source = "id")
+    @Mapping(target = "taskTitle", source = "title")
+    @Mapping(target = "assigneeId", source = "assignee.member.id")
+    @Mapping(target = "assigneeFullName", expression = "java(entity.assignee.getMember().getProfile().getFullName())")
+    @Mapping(target = "projectId", source = "project.id")
+    @Mapping(target = "projectTitle", source = "project.title")
+    ProjectTasksSummary toProjectTaskSummary(Task entity);
 
     default AssigneeSummary hasAssignee(Task entity) {
         if (entity.getAssignee() != null) {

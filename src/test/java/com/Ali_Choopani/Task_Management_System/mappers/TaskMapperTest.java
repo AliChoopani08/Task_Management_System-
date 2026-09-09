@@ -1,7 +1,12 @@
 package com.Ali_Choopani.Task_Management_System.mappers;
 
+import com.Ali_Choopani.Task_Management_System.dto.task.ProjectTasksSummary;
 import com.Ali_Choopani.Task_Management_System.dto.task.TaskDetails;
 import com.Ali_Choopani.Task_Management_System.entities.*;
+import com.Ali_Choopani.Task_Management_System.testFactories.ProjectMemberTestFactory;
+import com.Ali_Choopani.Task_Management_System.testFactories.ProjectTestFactory;
+import com.Ali_Choopani.Task_Management_System.testFactories.TaskTestFactory;
+import com.Ali_Choopani.Task_Management_System.testFactories.UserTestFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +15,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import static com.Ali_Choopani.Task_Management_System.entities.ProjectRole.ROLE_DEVELOPER;
 import static com.Ali_Choopani.Task_Management_System.entities.ProjectRole.ROLE_MANAGER;
 import static com.Ali_Choopani.Task_Management_System.entities.TaskStatus.IN_PROGRESS;
+import static com.Ali_Choopani.Task_Management_System.testFactories.ProjectMemberTestFactory.createProjectMember;
+import static com.Ali_Choopani.Task_Management_System.testFactories.ProjectTestFactory.createProject;
+import static com.Ali_Choopani.Task_Management_System.testFactories.TaskTestFactory.createTask;
+import static com.Ali_Choopani.Task_Management_System.testFactories.UserTestFactory.createUser;
 import static java.time.LocalDate.of;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -23,29 +32,22 @@ public class TaskMapperTest {
 
     private Task task;
     private ProjectMember projectManager;
-    private ProjectMember projectDeveloper;
 
     @BeforeEach
     void setUp() {
-        Project project = Project.builder()
-                .title("Implementation A Business WebSite")
-                .id(1L)
-                .dueDate(of(2026,10,10))
-                .build();
+        final Project project = createProject(1L, "Banking System", "Bank accounts management", of(2026, 10, 10));
+        final User user1 = createUser(2L, "09876543210", null, "Zahra Akbari");
+        final User user2 = createUser(3L, "091234567890", null, "Ali Ahmadi");
 
-        projectManager = createProjectMember("09876543210", "Zahra Akbari", ROLE_MANAGER, project);
-        projectDeveloper = createProjectMember("091234567890", "Ali Ahmadi", ROLE_DEVELOPER, project);
+        projectManager = createProjectMember(4L, user1, ROLE_MANAGER, project);
+        ProjectMember projectDeveloper = createProjectMember(5L, user2, ROLE_DEVELOPER, project);
 
-        task = Task.builder()
-                .title("Implementation The Authentication Flow")
-                .description("Implementation the flow of login and registration")
-                .createAt(of(2026,8,20))
-                .dueDate(of(2026,12,30))
-                .status(IN_PROGRESS)
-                .build();
+        this.task = createTask(null, "Implementation The Authentication Flow",
+                "Implementation the flow of login and registration", of(2026, 12, 30),
+                IN_PROGRESS, project, projectDeveloper);
 
-        task.addTaskProject(project);
-        task.assignTaskToMember(projectDeveloper);
+        this.task.addTaskProject(project);
+        this.task.assignTaskToMember(projectDeveloper);
     }
 
     @Test
@@ -53,27 +55,17 @@ public class TaskMapperTest {
         final TaskDetails summary = taskMapper.toSummary(task, projectManager);
 
         assertThat(summary)
-                .extracting(TaskDetails::title, t -> t.project().title(), t-> t.assignee().fullName(),
+                .extracting(TaskDetails::title, t -> t.project().title(), t -> t.assignee().fullName(),
                         t -> t.project().manager().name())
                 .containsExactly(task.getTitle(), task.getProject().getTitle(), "Ali Ahmadi", "Zahra Akbari");
     }
 
-    private ProjectMember createProjectMember(String phoneNumber, String fullName, ProjectRole projectRole, Project project) {
-        final String[] separatedFullName = fullName.split(" ");
+    @Test
+    void shouldMapToProjectTaskSummary() {
+        final ProjectTasksSummary projectTaskSummary = taskMapper.toProjectTaskSummary(task);
 
-        final User user = User.builder()
-                .phoneNumber(phoneNumber)
-                .build();
-        Profile profile = Profile.builder()
-                .firstName(separatedFullName[0])
-                .surname(separatedFullName[1])
-                .build();
-        profile.addProfileToUser(user);
-        ProjectMember projectMember = ProjectMember.builder()
-                .role(projectRole)
-                .build();
-        projectMember.addProjectMember(user, project);
-
-        return projectMember;
+        assertThat(projectTaskSummary)
+                .extracting(ProjectTasksSummary::taskTitle, ProjectTasksSummary::projectTitle, ProjectTasksSummary::assigneeFullName)
+                .containsExactly("Implementation The Authentication Flow", "Banking System", "Ali Ahmadi");
     }
 }

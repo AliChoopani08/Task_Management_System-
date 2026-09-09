@@ -1,9 +1,6 @@
 package com.Ali_Choopani.Task_Management_System.services.task;
 
-import com.Ali_Choopani.Task_Management_System.dto.task.CreateTaskRequest;
-import com.Ali_Choopani.Task_Management_System.dto.task.MyTasksSummary;
-import com.Ali_Choopani.Task_Management_System.dto.task.TaskDetails;
-import com.Ali_Choopani.Task_Management_System.dto.task.UserTasksSummary;
+import com.Ali_Choopani.Task_Management_System.dto.task.*;
 import com.Ali_Choopani.Task_Management_System.entities.Profile;
 import com.Ali_Choopani.Task_Management_System.entities.Project;
 import com.Ali_Choopani.Task_Management_System.entities.ProjectMember;
@@ -19,13 +16,18 @@ import com.Ali_Choopani.Task_Management_System.repositories.ProjectMemberReposit
 import com.Ali_Choopani.Task_Management_System.repositories.TaskRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import static com.Ali_Choopani.Task_Management_System.entities.ProjectRole.ROLE_MANAGER;
 import static com.Ali_Choopani.Task_Management_System.entities.TaskStatus.TODO;
 import static java.time.LocalDate.now;
+import static org.springframework.data.domain.PageRequest.of;
+import static org.springframework.data.domain.Sort.Direction.DESC;
+import static org.springframework.data.domain.Sort.by;
 
 @Service
 @RequiredArgsConstructor
@@ -80,5 +82,17 @@ public class TaskServiceImpl implements TaskService{
                 .orElseThrow(() -> new NotFoundProfileException(userId));
 
         return new UserTasksSummary(userProfile.getUser().getId(), userProfile.getFullName(), userTasks);
+    }
+
+    @Override
+    public ProjectTasksSummary getProjectTasksSummary(Long managerProjectId, Long projectId) {
+        final ProjectMember projectMember = projectMemberRepository.findByProjectIdAndMemberIdAndRole(projectId, managerProjectId, ROLE_MANAGER)
+                .orElseThrow(() -> new NotFoundProjectAndMemberException(projectId, managerProjectId, ROLE_MANAGER));
+
+        final Page<Task> projectTasks = repository.findByProjectId(projectId, of(0, 20, by(DESC, "createAt")));
+
+        return null;
+//        return projectTasks.getContent()
+//                .stream().map(mapper)
     }
 }
