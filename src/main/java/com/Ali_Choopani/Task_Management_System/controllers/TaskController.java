@@ -2,6 +2,7 @@ package com.Ali_Choopani.Task_Management_System.controllers;
 
 import com.Ali_Choopani.Task_Management_System.ApiResponse;
 import com.Ali_Choopani.Task_Management_System.dto.task.CreateTaskRequest;
+import com.Ali_Choopani.Task_Management_System.dto.task.ProjectTasksSummary;
 import com.Ali_Choopani.Task_Management_System.dto.task.TaskDetails;
 import com.Ali_Choopani.Task_Management_System.dto.task.UserTasksSummary;
 import com.Ali_Choopani.Task_Management_System.security.UserDetailImpl;
@@ -15,6 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Set;
 
 import static java.time.LocalDateTime.now;
 import static org.springframework.data.domain.Sort.Direction.DESC;
@@ -52,12 +55,22 @@ public class TaskController {
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<UserTasksSummary>> getMyTasksSummary(@AuthenticationPrincipal UserDetailImpl currentUser,
-                                                                           @ParameterObject
+    public ResponseEntity<ApiResponse<UserTasksSummary>> getUserTasksSummary(@AuthenticationPrincipal UserDetailImpl currentUser,
+                                                                             @ParameterObject
                                                                            @PageableDefault(sort = "title", direction = DESC)
                                                                            Pageable pageable) {
         final UserTasksSummary serviceResponse = service.getUserTasksSummary(currentUser.getId(), pageable);
 
         return ok(new ApiResponse<>(OK.value(), "User's tasks summary returned successfully", serviceResponse, now()));
     }
+
+    @PreAuthorize("@projectAuthorization.isManager(authentication)")
+    @GetMapping("/{projectId}")
+    public ResponseEntity<ApiResponse<Set<ProjectTasksSummary>>> getProjectTasksSummary(@PathVariable Long projectId,
+                                                                                   @AuthenticationPrincipal UserDetailImpl currentUser) {
+        final Set<ProjectTasksSummary> serviceResponse = service.getProjectTasksSummary(currentUser.getId(), projectId);
+
+        return ok(new ApiResponse<>(OK.value(), "Project tasks summary were successfully returned", serviceResponse, now()));
+    }
+
 }

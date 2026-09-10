@@ -30,8 +30,8 @@ public interface TaskMapper {
 
     @Mapping(target = "taskId", source = "id")
     @Mapping(target = "taskTitle", source = "title")
-    @Mapping(target = "assigneeId", source = "assignee.member.id")
-    @Mapping(target = "assigneeFullName", expression = "java(entity.assignee.getMember().getProfile().getFullName())")
+    @Mapping(target = "assigneeId", expression = "java(getAssigneeId(entity))")
+    @Mapping(target = "assigneeFullName", expression = "java(getAssigneeFullName(entity))")
     @Mapping(target = "projectId", source = "project.id")
     @Mapping(target = "projectTitle", source = "project.title")
     ProjectTasksSummary toProjectTaskSummary(Task entity);
@@ -42,8 +42,25 @@ public interface TaskMapper {
         }
         else return null;
     }
+    default Long getAssigneeId(Task entity) {
+        if (entity.getAssignee() != null) {
+            return toAssigneeSummary(entity).id();
+        }
+        else return null;
+    }
+    default String getAssigneeFullName(Task entity) {
+        if (entity.getAssignee() != null) {
+            return toAssigneeSummary(entity).fullName();
+        }
+        else return null;
+    }
     @Condition
     default boolean isNotEmptyAndBlank(String value) {
         return value != null && !value.isBlank();
     }
+    @Condition
+    default boolean isAssigneeNull(ProjectMember assignee) {
+        return assignee == null;
+    }
+
 }

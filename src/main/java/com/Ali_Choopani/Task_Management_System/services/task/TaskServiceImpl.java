@@ -16,15 +16,17 @@ import com.Ali_Choopani.Task_Management_System.repositories.ProjectMemberReposit
 import com.Ali_Choopani.Task_Management_System.repositories.TaskRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static com.Ali_Choopani.Task_Management_System.entities.ProjectRole.ROLE_MANAGER;
 import static com.Ali_Choopani.Task_Management_System.entities.TaskStatus.TODO;
 import static java.time.LocalDate.now;
+import static java.util.stream.Collectors.toSet;
 import static org.springframework.data.domain.PageRequest.of;
 import static org.springframework.data.domain.Sort.Direction.DESC;
 import static org.springframework.data.domain.Sort.by;
@@ -85,14 +87,16 @@ public class TaskServiceImpl implements TaskService{
     }
 
     @Override
-    public ProjectTasksSummary getProjectTasksSummary(Long managerProjectId, Long projectId) {
-        final ProjectMember projectMember = projectMemberRepository.findByProjectIdAndMemberIdAndRole(projectId, managerProjectId, ROLE_MANAGER)
-                .orElseThrow(() -> new NotFoundProjectAndMemberException(projectId, managerProjectId, ROLE_MANAGER));
+    @Transactional(readOnly = true)
+    public Set<ProjectTasksSummary> getProjectTasksSummary(Long projectManagerId, Long projectId) {
+        final ProjectMember projectManager = projectMemberRepository.findByProjectIdAndMemberIdAndRole(projectId, projectManagerId, ROLE_MANAGER)
+                .orElseThrow(() -> new NotFoundProjectAndMemberException(projectId, projectManagerId, ROLE_MANAGER));
+        final Long foundProjectId = projectManager.getProject().getId();
 
-        final Page<Task> projectTasks = repository.findByProjectId(projectId, of(0, 20, by(DESC, "createAt")));
+        final Page<Task> projectTasks = repository.findByProjectId(foundProjectId, of(0, 20, by(DESC, "createAt")));
 
-        return null;
-//        return projectTasks.getContent()
-//                .stream().map(mapper)
+        return projectTasks.getContent()
+                .stream().map(mapper::toProjectTaskSummary)
+                .collect(toSet());
     }
 }
