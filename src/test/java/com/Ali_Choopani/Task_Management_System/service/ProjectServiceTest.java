@@ -2,7 +2,7 @@ package com.Ali_Choopani.Task_Management_System.service;
 
 import com.Ali_Choopani.Task_Management_System.dto.project.*;
 import com.Ali_Choopani.Task_Management_System.entities.*;
-import com.Ali_Choopani.Task_Management_System.exceptions.project.DuplicateProjectMemberException;
+import com.Ali_Choopani.Task_Management_System.exceptions.project.DuplicateProjectException;
 import com.Ali_Choopani.Task_Management_System.mappers.ProjectMapper;
 import com.Ali_Choopani.Task_Management_System.mappers.ProjectMemberMapper;
 import com.Ali_Choopani.Task_Management_System.repositories.ProjectMemberRepository;
@@ -135,7 +135,7 @@ public class ProjectServiceTest {
         whenHelper(projectMemberRepository.existsByProjectIdAndMemberId(anyLong(), anyLong()), true);
 
         assertThatThrownBy(() -> service.addProjectMember(projectId, manager.getId(), member.getId(), request, PageRequest.of(0,10)))
-                .isInstanceOf(DuplicateProjectMemberException.class)
+                .isInstanceOf(DuplicateProjectException.class)
                 .hasMessage("User with id [3] is already an active member of project with id  [1] !");
 
     }

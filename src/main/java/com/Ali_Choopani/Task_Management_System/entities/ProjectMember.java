@@ -29,7 +29,7 @@ public class ProjectMember {
     @JoinColumn(name = "member_id",nullable = false)
     private User member;
 
-    @ManyToOne(cascade = ALL)
+    @ManyToOne
     @JoinColumn(name = "project_id", nullable = false)
     private Project project;
 

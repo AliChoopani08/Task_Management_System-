@@ -4,7 +4,7 @@ import com.Ali_Choopani.Task_Management_System.dto.project.*;
 import com.Ali_Choopani.Task_Management_System.entities.Project;
 import com.Ali_Choopani.Task_Management_System.entities.ProjectMember;
 import com.Ali_Choopani.Task_Management_System.entities.User;
-import com.Ali_Choopani.Task_Management_System.exceptions.project.DuplicateProjectMemberException;
+import com.Ali_Choopani.Task_Management_System.exceptions.project.DuplicateProjectException;
 import com.Ali_Choopani.Task_Management_System.exceptions.project.NotFoundProjectAndMemberException;
 import com.Ali_Choopani.Task_Management_System.exceptions.project.NotFoundProjectException;
 import com.Ali_Choopani.Task_Management_System.exceptions.user.NotFoundUserException;
@@ -33,6 +33,7 @@ public class ProjectServiceImpl implements ProjectService{
     private final ProjectRepository repository;
     private final ProjectMemberRepository projectMemberRepository;
     private final UserRepository userRepository;
+    private final ProjectRepository projectRepository;
     private final ProjectMapper projectMapper;
     private final ProjectMemberMapper projectMemberMapper;
 
@@ -47,11 +48,12 @@ public class ProjectServiceImpl implements ProjectService{
 
         projectMemberRepository.existsByMemberIdAndRoleAndProjectTitle(manager.getId(), ROLE_MANAGER, project.getTitle())
                 .ifPresent(__ -> {
-                    throw new DuplicateProjectMemberException(manager.getId(), project.getId());});
+                    throw new DuplicateProjectException(manager.getId(), project.getId());});
+        final Project savedProject = projectRepository.save(project);
         ProjectMember projectMember = ProjectMember.builder()
                 .role(ROLE_MANAGER)
                 .build();
-        projectMember.addProjectMember(manager, project);
+        projectMember.addProjectMember(manager, savedProject);
         final ProjectMember savedProjectMember = projectMemberRepository.save(projectMember);
 
         return projectMemberMapper.toSummary(savedProjectMember);
@@ -67,7 +69,7 @@ public class ProjectServiceImpl implements ProjectService{
                 .orElseThrow(() -> new NotFoundUserException(newMemberId));
 
         if (projectMemberRepository.existsByProjectIdAndMemberId(project.getId(), newMember.getId())) {
-            throw new DuplicateProjectMemberException(newMember.getId(), project.getId());
+            throw new DuplicateProjectException(newMember.getId(), project.getId());
         }
 
         ProjectMember newProjectMember = ProjectMember.builder()
