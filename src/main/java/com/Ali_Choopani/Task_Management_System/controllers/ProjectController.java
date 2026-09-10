@@ -39,7 +39,7 @@ public class ProjectController {
                 .body(new ApiResponse<>(CREATED.value(), "A New Project Was Created Successfully", methodResponse, now()));
     }
 
-    @PreAuthorize("@projectAuthorization.isManager(authentication)")
+    @PreAuthorize("@projectAuthorization.isManager(#projectId, authentication)")
     @PostMapping("/{projectId}/member/{memberId}")
     @Operation(description = "This endpoint is only accessible for project manager !")
     public ResponseEntity<ApiResponse<ProjectMembersDetails>> addNewProjectMember(@AuthenticationPrincipal UserDetailImpl currentManager,

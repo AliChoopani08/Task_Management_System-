@@ -33,7 +33,7 @@ public class TaskController {
 
     private final TaskService service;
 
-    @PreAuthorize("@projectAuthorization.isManager(authentication)")
+    @PreAuthorize("@projectAuthorization.isManager(#projectId, authentication)")
     @PostMapping("project/{projectId}")
     public ResponseEntity<ApiResponse<TaskDetails>> createTask(@AuthenticationPrincipal UserDetailImpl currentUser,
                                                                @PathVariable("projectId") Long projectId, @RequestBody @Valid CreateTaskRequest request) {
@@ -43,7 +43,7 @@ public class TaskController {
                 .body(new ApiResponse<>(CREATED.value(), "A new task in project was created successfully", responseService, now()));
     }
 
-    @PreAuthorize("@projectAuthorization.isManager(authentication)")
+    @PreAuthorize("@projectAuthorization.isManager(#projectId, authentication)")
     @PatchMapping("project/{projectId}/task/{taskId}/member/{memberId}")
     public ResponseEntity<ApiResponse<TaskDetails>> assignTaskToProjectMember(@AuthenticationPrincipal UserDetailImpl currentUser,
                                                                               @PathVariable Long projectId,
@@ -64,7 +64,7 @@ public class TaskController {
         return ok(new ApiResponse<>(OK.value(), "User's tasks summary returned successfully", serviceResponse, now()));
     }
 
-    @PreAuthorize("@projectAuthorization.isManager(authentication)")
+    @PreAuthorize("@projectAuthorization.isManager(#projectId, authentication)")
     @GetMapping("/{projectId}")
     public ResponseEntity<ApiResponse<Set<ProjectTasksSummary>>> getProjectTasksSummary(@PathVariable Long projectId,
                                                                                    @AuthenticationPrincipal UserDetailImpl currentUser) {

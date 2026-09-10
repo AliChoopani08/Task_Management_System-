@@ -107,7 +107,7 @@ public class ProjectControllerTest {
         ProjectDetails projectMemberSummary = ProjectDetails.builder()
                 .build();
 
-        given(projectAuthorization.isManager(any(Authentication.class)))
+        given(projectAuthorization.isManager(projectSummary.id(), any(Authentication.class)))
                 .willReturn(true);
         final PageRequest pageRequest = PageRequest.of(0, 10);
 //        given(service.addProjectMember(anyLong(), anyLong(), anyLong(), any(AddNewProjectMemberRequest.class), pageRequest))
