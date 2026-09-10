@@ -4,7 +4,7 @@ import static java.lang.String.format;
 
 public class DuplicateProjectException extends RuntimeException {
 
-    public DuplicateProjectException(Long memberId, Long projectId) {
-        super(format("User with id [%s] is already an active member of project with id  [%s] !", memberId, projectId));
+    public DuplicateProjectException(Long managerId, String projectTitle) {
+        super(format("User with id [%d] has an active project with title [%s] and it is duplicate !",managerId, projectTitle ));
     }
 }

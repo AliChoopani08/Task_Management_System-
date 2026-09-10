@@ -84,7 +84,7 @@ public class ProjectServiceTest {
 
         whenHelper(userRepository.findById(anyLong()), Optional.of(member));
         whenHelper(mapper.toEntity(any(CreateProjectRequest.class)), project);
-        whenHelper(projectMemberRepository.existsByMemberIdAndRoleAndProjectTitle(anyLong(),
+        whenHelper(projectMemberRepository.findByMemberIdAndRoleAndProjectTitleIgnoreCase(anyLong(),
                 any(ProjectRole.class), anyString()), Optional.empty());
         whenHelper(projectMemberRepository.save(any(ProjectMember.class)), projectManager);
         whenHelper(projectMemberMapper.toSummary(any(ProjectMember.class)), summaryManager);

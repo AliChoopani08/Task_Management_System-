@@ -14,7 +14,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Optional;
-import java.util.Set;
 
 import static com.Ali_Choopani.Task_Management_System.entities.ProjectRole.ROLE_DEVELOPER;
 import static com.Ali_Choopani.Task_Management_System.entities.ProjectRole.ROLE_MANAGER;
@@ -77,7 +76,7 @@ public class ProjectMemberRepositoryTest {
         final String projectTitle = project.getTitle();
         final ProjectRole role = projectManager.getRole();
 
-        final Optional<ProjectMember> foundEntity = repository.existsByMemberIdAndRoleAndProjectTitle(memberId, role, projectTitle);
+        final Optional<ProjectMember> foundEntity = repository.findByMemberIdAndRoleAndProjectTitleIgnoreCase(memberId, role, projectTitle);
 
         assertThat(foundEntity.isPresent()).isTrue();
         foundEntity.ifPresent(pm -> assertThat(pm)
