@@ -87,7 +87,7 @@ public class ProjectControllerTest {
                 .dueDate(of(2026,12,30))
                 .build();
 
-        given(service.createAProject(any(CreateProjectRequest.class) ,anyLong()))
+        given(service.createProject(any(CreateProjectRequest.class) ,anyLong()))
                 .willReturn(projectSummary);
 
         mockMvc.perform(post("/project")

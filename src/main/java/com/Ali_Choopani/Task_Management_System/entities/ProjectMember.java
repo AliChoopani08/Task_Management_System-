@@ -13,7 +13,11 @@ import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
-@Table(name = "project_member")
+@Table(name = "project_member",
+uniqueConstraints = {
+        @UniqueConstraint(name = "uk_project_member_project_user",
+        columnNames = {"member_id", "project_id"})
+})
 @Entity
 @Builder(toBuilder = true)
 @AllArgsConstructor

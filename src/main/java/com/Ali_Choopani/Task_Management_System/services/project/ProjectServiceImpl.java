@@ -40,7 +40,7 @@ public class ProjectServiceImpl implements ProjectService{
 
     @Override
     @Transactional
-    public ProjectSummary createAProject(CreateProjectRequest request, Long managerId) {
+    public ProjectSummary createProject(CreateProjectRequest request, Long managerId) {
         final User manager = userRepository.findById(managerId)
                 .orElseThrow(() -> new NotFoundUserException(managerId));
         if (!manager.isProfileCompleted()) {

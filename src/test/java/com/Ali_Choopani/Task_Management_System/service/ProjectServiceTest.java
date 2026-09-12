@@ -89,7 +89,7 @@ public class ProjectServiceTest {
         whenHelper(projectMemberRepository.save(any(ProjectMember.class)), projectManager);
         whenHelper(projectMemberMapper.toSummary(any(ProjectMember.class)), summaryManager);
 
-        final ProjectSummary response = service.createAProject(request, memberId);
+        final ProjectSummary response = service.createProject(request, memberId);
 
         assertThat(response)
                 .extracting(ProjectSummary::title, p -> p.manager().name())
