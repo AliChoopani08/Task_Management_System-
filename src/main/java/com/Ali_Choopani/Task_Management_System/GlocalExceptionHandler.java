@@ -1,7 +1,7 @@
 package com.Ali_Choopani.Task_Management_System;
 
 import com.Ali_Choopani.Task_Management_System.exceptions.*;
-import com.Ali_Choopani.Task_Management_System.exceptions.project.DuplicateProjectMemberException;
+import com.Ali_Choopani.Task_Management_System.exceptions.project.DuplicateProjectException;
 import com.Ali_Choopani.Task_Management_System.exceptions.project.NotFoundMemberInProjectException;
 import com.Ali_Choopani.Task_Management_System.exceptions.project.NotFoundProjectAndMemberException;
 import com.Ali_Choopani.Task_Management_System.exceptions.project.NotFoundProjectException;
@@ -100,8 +100,8 @@ public class GlocalExceptionHandler {
         return getErrorResponse(NOT_FOUND, "Not Found User", ex.getMessage(), request);
     }
 
-    @ExceptionHandler(DuplicateProjectMemberException.class)
-    public ResponseEntity<ErrorResponse> duplicateMemberInProjectHandler(DuplicateProjectMemberException ex, HttpServletRequest request) {
+    @ExceptionHandler(DuplicateProjectException.class)
+    public ResponseEntity<ErrorResponse> duplicateMemberInProjectHandler(DuplicateProjectException ex, HttpServletRequest request) {
         return getErrorResponse(CONFLICT, "Duplicate Member", ex.getMessage(), request);
     }
 

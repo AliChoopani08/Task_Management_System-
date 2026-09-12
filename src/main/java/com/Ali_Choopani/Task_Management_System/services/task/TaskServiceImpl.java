@@ -41,6 +41,7 @@ public class TaskServiceImpl implements TaskService{
     private final ProfileRepository profileRepository;
 
     @Override
+    @Transactional
     public TaskDetails createANewTaskOfProject(Long projectId, Long managerId, CreateTaskRequest request) {
         final ProjectMember foundProjectManager = projectMemberRepository.findByProjectIdAndMemberIdAndRole(projectId, managerId, ROLE_MANAGER)
                 .orElseThrow(() -> new NotFoundProjectAndMemberException(projectId, managerId, ROLE_MANAGER));
@@ -61,6 +62,7 @@ public class TaskServiceImpl implements TaskService{
     }
 
     @Override
+    @Transactional
     public TaskDetails assignToProjectMember(Long taskId, Long projectId, Long memberId, Long managerId) {
         final ProjectMember projectManager = projectMemberRepository.findByProjectIdAndMemberIdAndRole(projectId, managerId, ROLE_MANAGER)
                 .orElseThrow(() -> new NotFoundProjectAndMemberException(projectId, managerId, ROLE_MANAGER));

@@ -26,13 +26,8 @@ public interface ProjectMemberRepository extends JpaRepository<ProjectMember, Lo
 
     boolean existsByProjectIdAndMemberId(Long projectId, Long memberId);
 
-    @Query("""
-            SELECT pm 
-            FROM ProjectMember pm
-            WHERE pm.member.id = :memberId AND pm.role = :memberRole AND pm.project.title = :projectTitle
-            """)
-    Optional<ProjectMember> existsByMemberIdAndRoleAndProjectTitle(@Param("memberId") Long memberId, @Param("memberRole")ProjectRole role,
-                                                                   @Param("projectTitle") String projectTitle);
+    Optional<ProjectMember> findByMemberIdAndRoleAndProjectTitleIgnoreCase(@Param("memberId") Long memberId, @Param("memberRole")ProjectRole role,
+                                                                           @Param("projectTitle") String projectTitle);
 
     @Query("""
             SELECT new com.Ali_Choopani.Task_Management_System.dto.project

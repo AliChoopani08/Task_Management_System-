@@ -31,24 +31,24 @@ public class ProjectController {
     private final ProjectService service;
 
     @PostMapping
-    public ResponseEntity<ApiResponse<ProjectSummary>> createANewProject(@AuthenticationPrincipal UserDetailImpl currentUser,
-                                                                         @RequestBody @Valid CreateProjectRequest request) {
-        final ProjectSummary methodResponse = service.createAProject(request, currentUser.getId());
+    public ResponseEntity<ApiResponse<ProjectSummary>> createProject(@AuthenticationPrincipal UserDetailImpl currentUser,
+                                                                     @RequestBody @Valid CreateProjectRequest request) {
+        final ProjectSummary methodResponse = service.createProject(request, currentUser.getId());
 
         return status(CREATED)
                 .body(new ApiResponse<>(CREATED.value(), "A New Project Was Created Successfully", methodResponse, now()));
     }
 
-    @PreAuthorize("@projectAuthorization.isManager(authentication)")
+    @PreAuthorize("@projectAuthorization.isManager(#projectId, authentication)")
     @PostMapping("/{projectId}/member/{memberId}")
     @Operation(description = "This endpoint is only accessible for project manager !")
-    public ResponseEntity<ApiResponse<ProjectMembersDetails>> addNewProjectMember(@AuthenticationPrincipal UserDetailImpl currentManager,
-                                                                           @PathVariable("projectId") Long projectId,
-                                                                           @PathVariable("memberId") Long memberId,
-                                                                           @RequestBody @Valid AddNewProjectMemberRequest request,
-                                                                                  @ParameterObject
-                                                                                  @PageableDefault(size = 20, sort = "profile.firstName")
-                                                                                  Pageable pageable) {
+    public ResponseEntity<ApiResponse<ProjectMembersDetails>> addProjectMember(@AuthenticationPrincipal UserDetailImpl currentManager,
+                                                                               @PathVariable("projectId") Long projectId,
+                                                                               @PathVariable("memberId") Long memberId,
+                                                                               @RequestBody @Valid AddNewProjectMemberRequest request,
+                                                                               @ParameterObject
+                                                                               @PageableDefault(size = 20, sort = "profile.firstName")
+                                                                               Pageable pageable) {
         final ProjectMembersDetails response = service.addProjectMember(projectId, currentManager.getId(), memberId, request, pageable);
 
         return status(CREATED)
@@ -65,7 +65,7 @@ public class ProjectController {
     @GetMapping("/{projectId}/members")
     public ResponseEntity<ApiResponse<ProjectMembersDetails>> getProjectMembersDetails(@PathVariable Long projectId,
                                                                                        @ParameterObject
-                                                                                       @PageableDefault(size = 20, sort = "member.profile.firstName")Pageable pageable) {
+                                                                                       @PageableDefault(size = 20, sort = "member.profile.firstName") Pageable pageable) {
         final ProjectMembersDetails serviceResponse = service.getProjectMembersDetails(projectId, pageable);
 
         return ok(new ApiResponse<>(OK.value(), "Project members details were returned successfully", serviceResponse, now()));

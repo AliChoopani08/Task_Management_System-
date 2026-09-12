@@ -34,7 +34,7 @@ public class User {
     private String phoneNumber;
     @Column(unique = true)
     private String email;
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String password;
     @Enumerated(STRING)
     private UserRole role;
@@ -47,7 +47,6 @@ public class User {
     private boolean isProfileCompleted;
 
     @OneToMany(mappedBy = "member", fetch = LAZY, cascade = ALL)
-    @Column(unique = true)
     private Set<ProjectMember> projectMembers = new HashSet<>();
 
     @OneToMany(mappedBy = "user", cascade = ALL, fetch = LAZY)

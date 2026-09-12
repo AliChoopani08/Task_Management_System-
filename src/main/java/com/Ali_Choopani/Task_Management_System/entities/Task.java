@@ -2,6 +2,7 @@ package com.Ali_Choopani.Task_Management_System.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.Builder.Default;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -41,11 +42,12 @@ public class Task {
     @JoinColumn(name = "assignee_id")
     public ProjectMember assignee;
 
-    @ManyToOne(fetch = EAGER)
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "project_id", nullable = false)
     private Project project;
 
     @OneToMany(mappedBy = "task", fetch = LAZY)
+    @Default
     private Set<WorkLog> workLogs = new HashSet<>();
 
     public void assignTaskToMember(ProjectMember projectMember) {
@@ -56,9 +58,5 @@ public class Task {
     public void addTaskProject(Project project) {
         this.setProject(project);
         project.getTasks().add(this);
-    }
-
-    public Set<WorkLog> getWorkLogs() {
-        return this.workLogs == null ? new HashSet<>() : this.workLogs;
     }
 }

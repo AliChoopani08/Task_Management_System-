@@ -2,6 +2,7 @@ package com.Ali_Choopani.Task_Management_System.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.Builder.Default;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -34,18 +35,11 @@ public class Project {
     private LocalDate dueDate;
 
     @OneToMany(mappedBy = "project", fetch = LAZY)
-    @Column(unique = true)
+    @Default
     private Set<ProjectMember> projectMembers = new HashSet<>();
 
     @OneToMany(mappedBy = "project", fetch = LAZY)
+    @Default
     private Set<Task> tasks = new LinkedHashSet<>();
 
-
-    public Set<ProjectMember> getProjectMembers() {
-       return this.projectMembers == null ? new HashSet<>() : this.projectMembers;
-    }
-
-    public Set<Task> getTasks() {
-        return this.tasks == null ? new LinkedHashSet<>() : this.tasks;
-    }
 }

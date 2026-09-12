@@ -87,7 +87,7 @@ public class ProjectControllerTest {
                 .dueDate(of(2026,12,30))
                 .build();
 
-        given(service.createAProject(any(CreateProjectRequest.class) ,anyLong()))
+        given(service.createProject(any(CreateProjectRequest.class) ,anyLong()))
                 .willReturn(projectSummary);
 
         mockMvc.perform(post("/project")
@@ -107,7 +107,7 @@ public class ProjectControllerTest {
         ProjectDetails projectMemberSummary = ProjectDetails.builder()
                 .build();
 
-        given(projectAuthorization.isManager(any(Authentication.class)))
+        given(projectAuthorization.isManager(projectSummary.id(), any(Authentication.class)))
                 .willReturn(true);
         final PageRequest pageRequest = PageRequest.of(0, 10);
 //        given(service.addProjectMember(anyLong(), anyLong(), anyLong(), any(AddNewProjectMemberRequest.class), pageRequest))

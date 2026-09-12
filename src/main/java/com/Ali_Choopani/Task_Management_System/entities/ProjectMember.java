@@ -2,6 +2,7 @@ package com.Ali_Choopani.Task_Management_System.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.Builder.Default;
 
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -12,7 +13,11 @@ import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
-@Table(name = "project_member")
+@Table(name = "project_member",
+uniqueConstraints = {
+        @UniqueConstraint(name = "uk_project_member_project_user",
+        columnNames = {"member_id", "project_id"})
+})
 @Entity
 @Builder(toBuilder = true)
 @AllArgsConstructor
@@ -29,7 +34,7 @@ public class ProjectMember {
     @JoinColumn(name = "member_id",nullable = false)
     private User member;
 
-    @ManyToOne(cascade = ALL)
+    @ManyToOne
     @JoinColumn(name = "project_id", nullable = false)
     private Project project;
 
@@ -37,9 +42,11 @@ public class ProjectMember {
     private ProjectRole role;
 
     @OneToMany(mappedBy = "assignee", cascade = ALL, fetch = LAZY)
+    @Default
     public Set<Task> tasks = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "author", cascade = ALL, fetch = LAZY)
+    @Default
     public Set<WorkLog> workLogs = new HashSet<>();
 
     public void addProjectMember(User member , Project project) {
@@ -48,13 +55,5 @@ public class ProjectMember {
 
         member.getProjectMembers().add(this);
         project.getProjectMembers().add(this);
-    }
-
-    public Set<Task> getTasks() {
-        return this.tasks == null ? new LinkedHashSet<>() : this.tasks;
-    }
-
-    public Set<WorkLog> getWorkLogs() {
-        return this.workLogs == null ? new HashSet<>() : this.workLogs;
     }
 }
