@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
@@ -43,7 +44,7 @@ public class UserController {
         final AuthResponse response = service.register(request, userAgent);
 
         return status(CREATED)
-                .body(new ApiResponse<>(CREATED.value(), "A new user registered successfully", response, now()));
+                .body(new ApiResponse<>(CREATED.value(), "A new user registered successfully", response));
     }
 
     @PostMapping("/login")
@@ -56,20 +57,22 @@ public class UserController {
         final AuthResponse response = service.login(request, deviceUuid, userAgent);
 
         return status(OK)
-                .body(new ApiResponse<>(OK.value(), "User longed in successfully", response, now()));
+                .body(new ApiResponse<>(OK.value(), "User logged in successfully", response));
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<Page<UserViewSummary>>> searchUsersByFullNameOrEmail(@RequestParam String fullNameOrEmail,
-                                                                                           @PageableDefault(size = 20, sort = "profile.firstName",
+    public ResponseEntity<ApiResponse<Page<UserViewSummary>>> searchUsers(@RequestParam("search")
+                                                                                               @Size(min = 2, max = 100)
+                                                                                               String search,
+                                                                          @PageableDefault(size = 20, sort = "profile.firstName",
                                                                                                 direction = DESC)
                                                                                            @ParameterObject
                                                                                            Pageable pageable) {
 
-        final Page<UserViewSummary> response = service.searchUsersByFullNameOrEmail(fullNameOrEmail, pageable);
+        final Page<UserViewSummary> response = service.searchUsersByFullNameOrEmail(search, pageable);
 
         return status(OK)
-                .body(new ApiResponse<>(OK.value(), "Users were found successfully", response, now()));
+                .body(new ApiResponse<>(OK.value(), "Users were found successfully", response));
     }
 
     }

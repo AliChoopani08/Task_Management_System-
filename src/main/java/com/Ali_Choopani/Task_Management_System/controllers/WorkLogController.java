@@ -33,7 +33,7 @@ public class WorkLogController {
         final WorkLogDetails serviceResponse = service.createWorkLog(currentUser.getId(), taskId, request);
 
         return status(CREATED)
-                .body(new ApiResponse<>(CREATED.value(), "A new work log for task was created successfully", serviceResponse, now()));
+                .body(new ApiResponse<>(CREATED.value(), "A new work log for task was created successfully", serviceResponse));
     }
 
     @GetMapping("/task-id/{taskId}/my-work-logs/summary")
@@ -41,14 +41,14 @@ public class WorkLogController {
                                                                                  @PathVariable Long taskId) {
         final Set<WorkLogSummary> serviceResponse = service.getWorkLogsSummaryOfFoundTaskAndUser(taskId, currentUser.getId());
 
-        return ok(new ApiResponse<>(OK.value(), "The task work logs summary of user were successfully returned", serviceResponse, now()));
+        return ok(new ApiResponse<>(OK.value(), "The task work logs summary of user were successfully returned", serviceResponse));
     }
 
     @GetMapping("/{workLogId}")
-    public ResponseEntity<ApiResponse<WorkLogDetails>> getTheRequestedWorkLogDetails(@PathVariable Long workLogId) {
+    public ResponseEntity<ApiResponse<WorkLogDetails>> getWorkLogs(@PathVariable Long workLogId) {
         final WorkLogDetails serviceResponse = service.getWorkLogDetails(workLogId);
 
-        return ok(new ApiResponse<>(OK.value(), "The details of requested work log were successfully returned", serviceResponse, now()));
+        return ok(new ApiResponse<>(OK.value(), "The details of requested work log were successfully returned", serviceResponse));
     }
 
 }

@@ -30,7 +30,7 @@ public class ProfileController {
         final ProfileSummary serviceResponse = service.completeOrUpdateProfileFields(request, currentUser.getId());
 
         return status(OK)
-                .body(new ApiResponse<>(OK.value(), "Profile Fields Were Completed Successfully", serviceResponse, now()));
+                .body(new ApiResponse<>(OK.value(), "Profile Fields Were Completed Successfully", serviceResponse));
     }
 
     @PutMapping
@@ -38,13 +38,13 @@ public class ProfileController {
                                                                            @RequestBody @Valid UpdateProfileFieldsRequest request) {
         final ProfileSummary serviceResponse = service.updateProfileFields(request, currentUser.getId());
 
-        return ok(new ApiResponse<>(OK.value(), "Profile fields were successfully updated", serviceResponse, now()));
+        return ok(new ApiResponse<>(OK.value(), "Profile fields were successfully updated", serviceResponse));
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<ProfileSummary>> displayUserProfileView(@AuthenticationPrincipal UserDetailImpl currentUser) {
+    public ResponseEntity<ApiResponse<ProfileSummary>> getProfile(@AuthenticationPrincipal UserDetailImpl currentUser) {
         final ProfileSummary serviceResponse = service.displayUserProfileView(currentUser.getId());
 
-        return ok(new ApiResponse<>(OK.value(), "User's profile view was successfully returned", serviceResponse, now()));
+        return ok(new ApiResponse<>(OK.value(), "User's profile view was successfully returned", serviceResponse));
     }
 }
