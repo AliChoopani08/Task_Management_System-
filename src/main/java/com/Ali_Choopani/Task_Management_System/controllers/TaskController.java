@@ -8,6 +8,8 @@ import com.Ali_Choopani.Task_Management_System.dto.task.UserTasksSummary;
 import com.Ali_Choopani.Task_Management_System.security.UserDetailImpl;
 import com.Ali_Choopani.Task_Management_System.services.task.TaskService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Size;
+import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
@@ -40,7 +42,7 @@ public class TaskController {
         final TaskDetails responseService = service.createANewTaskOfProject(projectId, currentUser.getId(), request);
 
         return status(CREATED)
-                .body(new ApiResponse<>(CREATED.value(), "A new task in project was created successfully", responseService, now()));
+                .body(new ApiResponse<>(CREATED.value(), "A new task in project was created successfully", responseService));
     }
 
     @PreAuthorize("@projectAuthorization.isManager(#projectId, authentication)")
@@ -51,17 +53,17 @@ public class TaskController {
                                                                               @PathVariable Long memberId) {
         final TaskDetails serviceResponse = service.assignToProjectMember(taskId, projectId, memberId, currentUser.getId());
 
-        return ok(new ApiResponse<>(OK.value(), "Task was assigned to project member successfully", serviceResponse, now()));
+        return ok(new ApiResponse<>(OK.value(), "Task was assigned to project member successfully", serviceResponse));
     }
 
     @GetMapping
     public ResponseEntity<ApiResponse<UserTasksSummary>> getUserTasksSummary(@AuthenticationPrincipal UserDetailImpl currentUser,
                                                                              @ParameterObject
-                                                                           @PageableDefault(sort = "title", direction = DESC)
+                                                                           @PageableDefault(sort = "title", direction = DESC, size = 20)
                                                                            Pageable pageable) {
         final UserTasksSummary serviceResponse = service.getUserTasksSummary(currentUser.getId(), pageable);
 
-        return ok(new ApiResponse<>(OK.value(), "User's tasks summary returned successfully", serviceResponse, now()));
+        return ok(new ApiResponse<>(OK.value(), "User's tasks summary returned successfully", serviceResponse));
     }
 
     @PreAuthorize("@projectAuthorization.isManager(#projectId, authentication)")
@@ -70,7 +72,7 @@ public class TaskController {
                                                                                    @AuthenticationPrincipal UserDetailImpl currentUser) {
         final Set<ProjectTasksSummary> serviceResponse = service.getProjectTasksSummary(currentUser.getId(), projectId);
 
-        return ok(new ApiResponse<>(OK.value(), "Project tasks summary were successfully returned", serviceResponse, now()));
+        return ok(new ApiResponse<>(OK.value(), "Project tasks summary were successfully returned", serviceResponse));
     }
 
 }

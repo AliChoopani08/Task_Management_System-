@@ -36,11 +36,11 @@ public class ProjectController {
         final ProjectSummary methodResponse = service.createProject(request, currentUser.getId());
 
         return status(CREATED)
-                .body(new ApiResponse<>(CREATED.value(), "A New Project Was Created Successfully", methodResponse, now()));
+                .body(new ApiResponse<>(CREATED.value(), "A New Project Was Created Successfully", methodResponse));
     }
 
     @PreAuthorize("@projectAuthorization.isManager(#projectId, authentication)")
-    @PostMapping("/{projectId}/member/{memberId}")
+    @PostMapping("/{projectId}/members/{memberId}")
     @Operation(description = "This endpoint is only accessible for project manager !")
     public ResponseEntity<ApiResponse<ProjectMembersDetails>> addProjectMember(@AuthenticationPrincipal UserDetailImpl currentManager,
                                                                                @PathVariable("projectId") Long projectId,
@@ -52,22 +52,23 @@ public class ProjectController {
         final ProjectMembersDetails response = service.addProjectMember(projectId, currentManager.getId(), memberId, request, pageable);
 
         return status(CREATED)
-                .body(new ApiResponse<>(CREATED.value(), "A new member added to project successfully", response, now()));
+                .body(new ApiResponse<>(CREATED.value(), "A new member added to project successfully", response));
     }
 
-    @GetMapping("/my/projects-summary")
+    @GetMapping("/projects")
     public ResponseEntity<ApiResponse<Set<MyProjectsSummary>>> getMyProjectsSummary(@AuthenticationPrincipal UserDetailImpl currentUser) {
         final Set<MyProjectsSummary> serviceResponse = service.getMyProjectsSummary(currentUser.getId());
 
-        return ok(new ApiResponse<>(OK.value(), "User's projects were returned successfully", serviceResponse, now()));
+        return ok(new ApiResponse<>(OK.value(), "User's projects were returned successfully", serviceResponse));
     }
 
+    @PreAuthorize("@projectAuthorization.isManager(#projectId, authentication)")
     @GetMapping("/{projectId}/members")
     public ResponseEntity<ApiResponse<ProjectMembersDetails>> getProjectMembersDetails(@PathVariable Long projectId,
                                                                                        @ParameterObject
                                                                                        @PageableDefault(size = 20, sort = "member.profile.firstName") Pageable pageable) {
         final ProjectMembersDetails serviceResponse = service.getProjectMembersDetails(projectId, pageable);
 
-        return ok(new ApiResponse<>(OK.value(), "Project members details were returned successfully", serviceResponse, now()));
+        return ok(new ApiResponse<>(OK.value(), "Project members details were returned successfully", serviceResponse));
     }
 }
