@@ -5,5 +5,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 
 @Builder
-public record UserSummary(Long id, @JsonProperty("phone number")String phoneNumber, String email, UserRole role) {
+public record UserSummary(Long id,
+                          String phoneNumber,
+                          String email,
+                          UserRole role) {
 }

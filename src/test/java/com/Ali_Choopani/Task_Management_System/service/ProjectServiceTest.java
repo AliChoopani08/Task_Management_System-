@@ -100,7 +100,7 @@ public class ProjectServiceTest {
     void shouldAddProjectMember_whenProjectAndMemberExist() {
         final User member = projectMember.getMember();
         AddNewProjectMemberRequest request = AddNewProjectMemberRequest.builder()
-                .memberRole(ROLE_DEVELOPER.name())
+                .memberRole(ROLE_DEVELOPER)
                 .build();
         final User manager = projectManager.getMember();
         final Long projectId = project.getId();
@@ -125,7 +125,7 @@ public class ProjectServiceTest {
     void shouldThrowException_whenUserWantsToAddADuplicateProjectMember() {
         final User member = projectMember.getMember();
         AddNewProjectMemberRequest request = AddNewProjectMemberRequest.builder()
-                .memberRole(ROLE_DEVELOPER.name())
+                .memberRole(ROLE_DEVELOPER)
                 .build();
         final User manager = projectManager.getMember();
         final Long projectId = project.getId();

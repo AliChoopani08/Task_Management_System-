@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.LocalDateTime;
 
-public record WorkLogSummary(Long id,String description,
-                             @JsonProperty("created at")LocalDateTime createdAt) {
+public record WorkLogSummary(Long id,
+                             String description,
+                             LocalDateTime createdAt) {
 }

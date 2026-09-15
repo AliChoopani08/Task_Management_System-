@@ -1,6 +1,5 @@
 package com.Ali_Choopani.Task_Management_System.dto.user.profile;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,14 +12,12 @@ import java.time.LocalDate;
 @Builder
 @Getter
 @ToString
-public class CompleteProfileFieldsRequest implements ProfileFieldsMapper{
+public class CompleteProfileFieldsRequest implements ProfileFields {
 
     @NotBlank(message = "First name can't be null or empty !")
-    @JsonProperty("First name")
     private String firstName;
 
     @NotBlank(message = "Surname can't be null or empty !")
-    @JsonProperty("Surname")
     private String surname;
 
     @Past(message = "Birth date must be a date in the past")

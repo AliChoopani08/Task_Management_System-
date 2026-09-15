@@ -1,5 +1,6 @@
 package com.Ali_Choopani.Task_Management_System.services.project;
 
+import com.Ali_Choopani.Task_Management_System.dto.PageResponse;
 import com.Ali_Choopani.Task_Management_System.dto.project.*;
 import com.Ali_Choopani.Task_Management_System.entities.Project;
 import com.Ali_Choopani.Task_Management_System.entities.ProjectMember;
@@ -10,6 +11,7 @@ import com.Ali_Choopani.Task_Management_System.exceptions.project.NotFoundProjec
 import com.Ali_Choopani.Task_Management_System.exceptions.project.NotFoundProjectException;
 import com.Ali_Choopani.Task_Management_System.exceptions.user.NotFoundUserException;
 import com.Ali_Choopani.Task_Management_System.exceptions.user.profile.ProfileNotCompletedException;
+import com.Ali_Choopani.Task_Management_System.mappers.PageMapper;
 import com.Ali_Choopani.Task_Management_System.mappers.ProjectMapper;
 import com.Ali_Choopani.Task_Management_System.mappers.ProjectMemberMapper;
 import com.Ali_Choopani.Task_Management_System.repositories.ProjectMemberRepository;
@@ -37,6 +39,7 @@ public class ProjectServiceImpl implements ProjectService{
     private final ProjectRepository projectRepository;
     private final ProjectMapper projectMapper;
     private final ProjectMemberMapper projectMemberMapper;
+    private final PageMapper pageMapper;
 
     @Override
     @Transactional
@@ -80,8 +83,9 @@ public class ProjectServiceImpl implements ProjectService{
         projectMemberRepository.save(newProjectMember);
 
         final Page<MemberSummary> members = projectMemberRepository.findMembersOfProjectByProjectId(project.getId(), pageable);
+        final PageResponse<MemberSummary> pageResponse = pageMapper.toPageResponse(members);
 
-        return new ProjectMembersDetails(project.getId(), project.getTitle(), members);
+        return new ProjectMembersDetails(project.getId(), project.getTitle(), pageResponse);
     }
 
     @Override
@@ -95,9 +99,11 @@ public class ProjectServiceImpl implements ProjectService{
     public ProjectMembersDetails getProjectMembersDetails(Long projectId, Pageable pageable) {
         final Project project = repository.findById(projectId)
                 .orElseThrow(() -> new NotFoundProjectException(projectId));
-        final Page<MemberSummary> projectMembers = projectMemberRepository.findMembersOfProjectByProjectId(projectId, pageable);
 
-        return new ProjectMembersDetails(project.getId(), project.getTitle(), projectMembers);
+        final Page<MemberSummary> projectMembers = projectMemberRepository.findMembersOfProjectByProjectId(projectId, pageable);
+        final PageResponse<MemberSummary> pageResponse = pageMapper.toPageResponse(projectMembers);
+
+        return new ProjectMembersDetails(project.getId(), project.getTitle(), pageResponse);
     }
 
 

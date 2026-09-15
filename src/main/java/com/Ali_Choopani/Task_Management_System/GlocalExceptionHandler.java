@@ -15,9 +15,11 @@ import com.Ali_Choopani.Task_Management_System.exceptions.user.device.InvalidDev
 import com.Ali_Choopani.Task_Management_System.exceptions.user.device.refreshToken.DuplicateRefreshTokenException;
 import com.Ali_Choopani.Task_Management_System.exceptions.user.device.refreshToken.NotBeingMatchDeviceAndRefreshToken;
 import com.Ali_Choopani.Task_Management_System.exceptions.workLog.NotFoundWorkLogException;
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -144,6 +146,25 @@ public class GlocalExceptionHandler {
     public ResponseEntity<ErrorResponse> notFoundWorkLogHandler(NotFoundWorkLogException ex, HttpServletRequest request) {
         return getErrorResponse(NOT_FOUND, "Not Found", ex.getMessage(), request);
     }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ErrorResponse> invalidEnumValueHandler(HttpMessageNotReadableException ex, HttpServletRequest request) {
+        final Throwable cause = ex.getCause();
+        String fieldName = "";
+        String invalidValue = "";
+
+        if (cause instanceof InvalidFormatException formatException && formatException.getTargetType().isEnum()) {
+            fieldName = formatException.getPath()
+                    .getLast()
+                    .getFieldName();
+             invalidValue = formatException
+                    .getValue()
+                    .toString();
+        }
+        return getErrorResponse(BAD_REQUEST, "Invalid Value", format("Invalid value [%s] for field [%s] !",
+                invalidValue, fieldName), request);
+    }
+
 
         private ResponseEntity<ErrorResponse> getErrorResponse(HttpStatus status, String error, String message, HttpServletRequest request) {
         return ResponseEntity.status(status)

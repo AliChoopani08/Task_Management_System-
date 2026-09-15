@@ -1,6 +1,5 @@
 package com.Ali_Choopani.Task_Management_System.dto.user.device.refreshToken;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,6 +13,5 @@ import java.util.UUID;
 public class RefreshAccessTokenRequest {
 
     @NotNull(message = "Refresh token can't be null or empty !")
-    @JsonProperty("refresh token")
     private UUID refreshToken;
 }

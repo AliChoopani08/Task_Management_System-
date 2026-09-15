@@ -6,8 +6,8 @@ import lombok.Builder;
 import java.util.UUID;
 
 @Builder
-public record RefreshAccessTokenResponse(@JsonProperty("user id")Long userId,
-                                         @JsonProperty("device uuid")UUID deviceUuid,
-                                         @JsonProperty("refresh token")UUID refreshToken,
-                                         @JsonProperty("access token")String accessToken) {
+public record RefreshAccessTokenResponse(Long userId,
+                                         UUID deviceUuid,
+                                         UUID refreshToken,
+                                         String accessToken) {
 }

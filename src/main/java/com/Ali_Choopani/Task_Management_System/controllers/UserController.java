@@ -4,7 +4,7 @@ import com.Ali_Choopani.Task_Management_System.ApiResponse;
 import com.Ali_Choopani.Task_Management_System.dto.user.AuthResponse;
 import com.Ali_Choopani.Task_Management_System.dto.user.LoginRequest;
 import com.Ali_Choopani.Task_Management_System.dto.user.UserViewSummary;
-import com.Ali_Choopani.Task_Management_System.dto.user.device.refreshToken.RegisterRequest;
+import com.Ali_Choopani.Task_Management_System.dto.user.RegisterRequest;
 import com.Ali_Choopani.Task_Management_System.services.user.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
