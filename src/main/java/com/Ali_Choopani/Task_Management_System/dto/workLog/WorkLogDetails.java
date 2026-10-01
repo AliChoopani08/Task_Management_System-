@@ -6,11 +6,11 @@ import lombok.Builder;
 import java.time.LocalDateTime;
 
 @Builder
-public record WorkLogDetails(@JsonProperty("task id") Long taskId,
-                             @JsonProperty("task title") String taskTitle,
+public record WorkLogDetails(Long taskId,
+                             String taskTitle,
                              String description,
-                             @JsonProperty("created at")LocalDateTime createdAt,
-                             @JsonProperty("author id") Long authorId,
-                             @JsonProperty("author name") String authorName
-                             ) {
+                             LocalDateTime createdAt,
+                             Long authorId,
+                             String authorName
+) {
 }

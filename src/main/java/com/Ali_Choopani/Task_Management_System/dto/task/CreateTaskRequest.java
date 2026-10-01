@@ -1,6 +1,5 @@
 package com.Ali_Choopani.Task_Management_System.dto.task;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,6 +21,5 @@ public class CreateTaskRequest {
 
     @NotNull(message = "Due date can't be null or empty !")
     @Future(message = "Due date must be a date in future !")
-    @JsonProperty("due date")
     private LocalDate dueDate;
 }

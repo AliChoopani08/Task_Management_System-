@@ -102,7 +102,7 @@ public class ProjectControllerTest {
     @Test
     void shouldAddNewProjectMember_whenManagerAndProjectExistAndManagerHasLoggedIn() throws Exception {
         AddNewProjectMemberRequest request = AddNewProjectMemberRequest.builder()
-                .memberRole(ROLE_DEVELOPER.name())
+                .memberRole(ROLE_DEVELOPER)
                 .build();
         ProjectDetails projectMemberSummary = ProjectDetails.builder()
                 .build();

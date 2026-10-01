@@ -1,11 +1,8 @@
 package com.Ali_Choopani.Task_Management_System.dto.project;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import org.springframework.data.domain.Page;
+import com.Ali_Choopani.Task_Management_System.dto.PageResponse;
 
-import java.util.Set;
-
-public record ProjectMembersDetails(@JsonProperty("project id")Long projectId,
-                                    @JsonProperty("project title") String projectTitle,
-                                    Page<MemberSummary> members) {
+public record ProjectMembersDetails(Long projectId,
+                                    String projectTitle,
+                                    PageResponse<MemberSummary> members) {
 }

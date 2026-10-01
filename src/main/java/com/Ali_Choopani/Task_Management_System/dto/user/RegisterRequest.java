@@ -1,4 +1,4 @@
-package com.Ali_Choopani.Task_Management_System.dto.user.device.refreshToken;
+package com.Ali_Choopani.Task_Management_System.dto.user;
 
 import com.Ali_Choopani.Task_Management_System.exceptions.user.InsufficientInformationException;
 import jakarta.validation.constraints.Email;

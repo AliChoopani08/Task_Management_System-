@@ -3,7 +3,7 @@ package com.Ali_Choopani.Task_Management_System.service;
 import com.Ali_Choopani.Task_Management_System.dto.user.AuthResponse;
 import com.Ali_Choopani.Task_Management_System.dto.user.LoginRequest;
 import com.Ali_Choopani.Task_Management_System.dto.user.device.refreshToken.RefreshTokenSummary;
-import com.Ali_Choopani.Task_Management_System.dto.user.device.refreshToken.RegisterRequest;
+import com.Ali_Choopani.Task_Management_System.dto.user.RegisterRequest;
 import com.Ali_Choopani.Task_Management_System.dto.user.UserSummary;
 import com.Ali_Choopani.Task_Management_System.dto.user.device.DeviceSummary;
 import com.Ali_Choopani.Task_Management_System.entities.User;
